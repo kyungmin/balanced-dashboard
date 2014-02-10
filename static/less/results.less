@@ -16,7 +16,6 @@ header.results-label h3 {
       display: block;
       float: left;
       border-bottom: @searchBorderWidth solid transparent;
-      padding: 15px 10px 10px;
       margin: 0 20px;
       color: @gray5;
 
@@ -26,14 +25,20 @@ header.results-label h3 {
       a {
         text-decoration: none;
         color: @gray5;
+        padding: 15px 10px 10px;
+        display: inline-block;
         &:hover {
           color: @black;
         }
         &.dropdown-toggle {
           padding: 4px 2px 0;
+          margin: 0;
           display: inline-block;
           height: 9px;
         }
+      }
+      > div > a {
+        padding: 0;
       }
       &:hover {
         border-bottom: @searchBorder;
