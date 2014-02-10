@@ -44,7 +44,7 @@
         </div>
     </li>
 
-    <li {{bindAttr class=":accounts view.searchResult.total_customers::disabled view.customersTabSelected:selected"}} >
+    <li {{bindAttr class=":customers view.searchResult.total_customers::disabled view.customersTabSelected:selected"}} >
         {{#if view.searchResult.total_customers}}
             <a href="#" {{action changeTypeFilter "customer"}}> Customers ({{ formatNumber view.searchResult.total_customers }}) </a>
         {{else}}
