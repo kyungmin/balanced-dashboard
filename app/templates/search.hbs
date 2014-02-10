@@ -11,7 +11,7 @@
 
     <div class="results">
         <!-- TODO - put the counts back when the API supports it -->
-        {{view Balanced.ResultsFiltersHeaderView searchResultBinding=last_loaded_search_result}}
+        {{view Balanced.ResultsFiltersHeaderWithCountsView searchResultBinding=last_loaded_search_result}}
 
         {{#if ordersTabSelected}}
         <div class="items-wrapper">

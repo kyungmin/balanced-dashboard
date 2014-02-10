@@ -9,17 +9,13 @@ Balanced.SearchModelArray = Balanced.ModelArray.extend(Ember.SortableMixin, {
 		return this.get('counts.debit');
 	}.property('counts.debit'),
 
-	total_holds: function() {
-		return this.get('counts.hold');
-	}.property('counts.hold'),
+	total_card_holds: function() {
+		return this.get('counts.card_hold');
+	}.property('counts.card_hold'),
 
 	total_refunds: function() {
 		return this.get('counts.refund');
 	}.property('counts.refund'),
-
-	total_accounts: function() {
-		return this.get('counts.account');
-	}.property('counts.account'),
 
 	total_bank_accounts: function() {
 		return this.get('counts.bank_account');
@@ -33,9 +29,13 @@ Balanced.SearchModelArray = Balanced.ModelArray.extend(Ember.SortableMixin, {
 		return this.get('counts.order');
 	}.property('counts.order'),
 
+	total_customers: function() {
+		return this.get('counts.customer');
+	}.property('counts.customer'),
+
 	total_transactions: function() {
-		return this.get('total_credits') + this.get('total_debits') + this.get('total_holds') + this.get('total_refunds');
-	}.property('total_credits', 'total_debits', 'total_holds', 'total_refunds'),
+		return this.get('total_credits') + this.get('total_debits') + this.get('total_card_holds') + this.get('total_refunds');
+	}.property('total_credits', 'total_debits', 'total_card_holds', 'total_refunds'),
 
 	total_funding_instruments: function() {
 		return this.get('total_bank_accounts') + this.get('total_cards');
