@@ -11,7 +11,11 @@ Balanced.Invoice = Balanced.Model.extend({
 	refunds: Balanced.Model.hasMany('refunds', 'Balanced.Refund'),
 	reversals: Balanced.Model.hasMany('reversals', 'Balanced.Reversal'),
 	settlements: Balanced.Model.hasMany('settlements', 'Balanced.Settlement'),
+<<<<<<< HEAD
 	disputes: Balanced.Model.hasMany('disputes', 'Balanced.Dispute'),
+=======
+	// disputes: Balanced.Model.hasMany('disputes', 'Balanced.Dispute'),
+>>>>>>> Resolve merge conflict
 
 	from_date: function() {
 		var period = this.get('period');
