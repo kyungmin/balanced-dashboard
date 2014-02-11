@@ -1,5 +1,5 @@
 <nav>
-    <li {{bindAttr class=":accounts view.searchResult.total_orders::disabled view.ordersTabSelected:selected"}} >
+    <li {{bindAttr class=":orders view.searchResult.total_orders::disabled view.ordersTabSelected:selected"}} >
         {{#if view.searchResult.total_orders}}
             <a href="#" {{action changeTypeFilter "order"}}> Orders ({{ formatNumber view.searchResult.total_orders }}) </a>
         {{else}}
