@@ -7,6 +7,14 @@ Balanced.LoginController = Balanced.ObjectController.extend({
 	otpRequired: false,
 	otpCode: null,
 
+	init: function() {
+		if (Balanced.Auth.get('signedIn')) {
+			this.afterLogin();
+		} else {
+			Balanced.Auth.on('signInSuccess', _.bind(this.afterLogin, this));
+		}
+	},
+
 	reset: function() {
 		this.setProperties({
 			loginError: false,
@@ -33,13 +41,15 @@ Balanced.LoginController = Balanced.ObjectController.extend({
 		var attemptedTransition = Balanced.Auth.get('attemptedTransition');
 
 		if (attemptedTransition) {
-			attemptedTransition.retry();
-			Balanced.Auth.set('attemptedTransition', null);
+			Ember.run.next(function() {
+				attemptedTransition.retry();
+				Balanced.Auth.set('attemptedTransition', null);
+				Balanced.Auth.trigger('signInTransition');
+			});
 		} else {
 			this.transitionToRoute('index');
+			Balanced.Auth.trigger('signInTransition');
 		}
-
-		Balanced.Auth.trigger('signInTransition');
 	},
 
 	actions: {
