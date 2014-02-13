@@ -73,11 +73,11 @@ Balanced.ResultsFiltersHeaderWithCountsView = Balanced.ResultsFiltersHeaderView.
 	}.property('searchResult.total_transactions'),
 
 	totalCustomersTabHeader: function() {
-		return 'Customers (' + + this.get('searchResult.total_customers') + ')';
+		return 'Customers (' + this.get('searchResult.total_customers') + ')';
 	}.property('searchResult.total_customers'),
 
 	totalOrdersTabHeader: function() {
-		return 'Orders (' + + this.get('searchResult.total_orders') + ')';
+		return 'Orders (' + this.get('searchResult.total_orders') + ')';
 	}.property('searchResult.total_orders'),
 
 	totalFundingInstrumentsHeader: function() {
