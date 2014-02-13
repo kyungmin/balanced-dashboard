@@ -72,6 +72,14 @@ Balanced.ResultsFiltersHeaderWithCountsView = Balanced.ResultsFiltersHeaderView.
 		return 'Transactions (' + this.get('searchResult.total_transactions') + ')';
 	}.property('searchResult.total_transactions'),
 
+	totalCustomersTabHeader: function() {
+		return 'Customers (' + + this.get('searchResult.total_customers') + ')';
+	}.property('searchResult.total_customers'),
+
+	totalOrdersTabHeader: function() {
+		return 'Orders (' + + this.get('searchResult.total_orders') + ')';
+	}.property('searchResult.total_orders'),
+
 	totalFundingInstrumentsHeader: function() {
 		return 'Cards & Bank Accounts (' + this.get('searchResult.total_funding_instruments') + ')';
 	}.property('searchResult.total_funding_instruments'),
@@ -81,7 +89,7 @@ Balanced.ResultsFiltersHeaderWithCountsView = Balanced.ResultsFiltersHeaderView.
 	}.property('searchResult.total_disputes'),
 
 	transaction_type_total: function() {
-		var types = Balanced.SEARCH.TRANSACTION_TYPES;
+		var types = Balanced.SEARCH.SEARCH_TYPES;
 		var type = this.get('controller.type');
 		return (types.indexOf(type) >= 0 && this.get('searchResult.total_%@s'.fmt(type))) || this.get('searchResult.total_transactions');
 	}.property('controller.type', 'searchResult.total_transactions'),
@@ -177,17 +185,17 @@ Balanced.ResultsSortableColumnHeaderView = Balanced.View.extend({
 		var sortField = this.get('controller.sortField');
 		var sortOrder = this.get('controller.sortOrder');
 		var allowSortByNone = this.get('controller.allowSortByNone');
-		var nextSortOrder = "desc";
+		var nextSortOrder = "asc";
 		if (sortField === this.get('field')) {
 			switch (sortOrder) {
 				case 'asc':
 					nextSortOrder = 'desc';
-					if (allowSortByNone) {
-						nextSortOrder = 'none';
-					}
 					break;
 				case 'desc':
 					nextSortOrder = 'asc';
+					if (allowSortByNone) {
+						nextSortOrder = 'none';
+					}
 					break;
 			}
 		}
