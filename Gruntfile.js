@@ -218,7 +218,7 @@ module.exports = function(grunt) {
 			},
 			fonts: {
 				files: [{
-					cwd: 'static/javascripts/strapped/static/fonts/',
+					cwd: 'static/fonts/',
 					expand: true,
 					src: [
 						'*.eot',
