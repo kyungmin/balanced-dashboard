@@ -184,22 +184,6 @@ var Testing = {
 		});
 	},
 
-	_createPendingBankAccount: function() {
-		var self = this;
-		return Balanced.BankAccount.create({
-			uri: '/customers/' + self.CUSTOMER_ID + '/bank_accounts',
-			name: 'Test Account',
-			account_number: '9900000001',
-			routing_number: '321174851',
-			type: 'checking'
-		}).save().then(function(bankAccount) {
-			self.BANK_ACCOUNT_ID = bankAccount.get('id');
-			self.BANK_ACCOUNT_ROUTE = self.MARKETPLACE_ROUTE +
-				'/bank_accounts/' + self.BANK_ACCOUNT_ID;
-			return bankAccount;
-		});
-	},
-
 	_createReversal: function() {
 		var self = this;
 
