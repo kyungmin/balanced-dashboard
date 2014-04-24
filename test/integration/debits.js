@@ -13,7 +13,22 @@ module('Debits', {
 				Testing.DEBIT_ID = debit.get('id');
 				Testing.DEBIT_URI = debit.get('uri');
 				Testing.DEBIT_ROUTE = '/marketplaces/' + Testing.MARKETPLACE_ID + '/debits/' + Testing.DEBIT_ID;
+			}).then(function(){
+				Testing._createPendingBankAccount().then(function(bankAccount) {
+					return Balanced.Debit.create({
+						uri: bankAccount.get('debits_uri'),
+						appears_on_statement_as: 'Pixie Dust',
+						amount: 100000,
+						description: 'Cocaine'
+					}).save();
+				}).then(function(debit) {
+					Testing.PENDING_DEBIT_ID = debit.get('id');
+					Testing.PENDING_DEBIT_URI = debit.get('uri');
+					Testing.PENDING_DEBIT_ROUTE = '/marketplaces/' + Testing.MARKETPLACE_ID + '/debits/' + Testing.PENDING_DEBIT_ID;
+					console.log(debit.get('status'));
+				});
 			});
+
 		});
 	},
 	teardown: function() {}
@@ -37,6 +52,21 @@ test('can refund debit', function(assert) {
 			assert.ok(spy.calledOnce);
 			assert.ok(spy.calledWith(Balanced.Refund));
 			assert.equal(spy.getCall(0).args[2].debit_uri, Testing.DEBIT_URI);
+			assert.equal(spy.getCall(0).args[2].amount, '1000');
+		});
+});
+
+test('can refund a pending debit', function(assert) {
+	var spy = sinon.spy(Balanced.Adapter, "create");
+
+	visit(Testing.PENDING_DEBIT_ROUTE)
+		.click(".refund-debit-button")
+		.fillIn('#refund-debit .modal-body input[name="dollar_amount"]', "10")
+		.click('#refund-debit .modal-footer button[name="modal-submit"]')
+		.then(function() {
+			assert.ok(spy.calledOnce);
+			assert.ok(spy.calledWith(Balanced.Refund));
+			assert.equal(spy.getCall(0).args[2].debit_uri, Testing.PENDING_DEBIT_URI);
 			assert.equal(spy.getCall(0).args[2].amount, '1000');
 		});
 });
