@@ -14,6 +14,19 @@ module('Debits', {
 				Testing.DEBIT_URI = debit.get('uri');
 				Testing.DEBIT_ROUTE = '/marketplaces/' + Testing.MARKETPLACE_ID + '/debits/' + Testing.DEBIT_ID;
 			});
+			Testing._createPendingBankAccount().then(function(bankAccount) {
+				return Balanced.Debit.create({
+					uri: bankAccount.get('debits_uri'),
+					appears_on_statement_as: 'Pixie Dust',
+					amount: 100000,
+					description: 'Cocaine'
+				}).save();
+			}).then(function(debit) {
+				Testing.PENDING_DEBIT = debit;
+				Testing.PENDING_DEBIT_ID = debit.get('id');
+				Testing.PENDING_DEBIT_URI = debit.get('uri');
+				Testing.PENDING_DEBIT_ROUTE = '/marketplaces/' + Testing.MARKETPLACE_ID + '/debits/' + Testing.PENDING_DEBIT_ID;
+			});
 		});
 	},
 	teardown: function() {}
@@ -44,16 +57,16 @@ test('can refund debit', function(assert) {
 test('can refund a pending debit', function(assert) {
 	var spy = sinon.spy(Balanced.Adapter, "create");
 
-	visit(Testing.DEBIT_ROUTE).then(function() {
-		var model = Balanced.__container__.lookup('controller:debits');
-		model.set('status', 'pending');
-		stop();
-		Ember.run.next(function() {
-			start();
-			assert.equal(model.get('status'), 'pending');
+	visit(Testing.PENDING_DEBIT_ROUTE)
+		.click(".refund-debit-button")
+		.fillIn('#refund-debit .modal-body input[name="dollar_amount"]', "10")
+		.click('#refund-debit .modal-footer button[name="modal-submit"]')
+		.then(function() {
+			assert.ok(spy.calledOnce);
+			assert.ok(spy.calledWith(Balanced.Refund));
+			assert.equal(Testing.PENDING_DEBIT.get('status'), 'pending');
 			assert.equal($('#refund-debit').is(':visible'), true);
 		});
-	});
 });
 
 test('can edit debit', function(assert) {

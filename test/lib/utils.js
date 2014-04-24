@@ -6,6 +6,7 @@ var Testing = {
 	MARKETPLACE_ID: null,
 	CARD_ID: null,
 	BANK_ACCOUNT_ID: null,
+	PENDING_BANK_ACCOUNT_ID: null,
 	CREDIT_ID: null,
 	CUSTOMER_ID: null,
 	DEBIT_ID: null,
@@ -16,6 +17,7 @@ var Testing = {
 	ACTIVITY_ROUTE: null,
 	ADD_CUSTOMER_ROUTE: null,
 	BANK_ACCOUNT_ROUTE: null,
+	PENDING_BANK_ACCOUNT_ROUTE: null,
 	CARD_ROUTE: null,
 	CREDIT_ROUTE: null,
 	CUSTOMER_ROUTE: null,
@@ -180,6 +182,22 @@ var Testing = {
 			self.BANK_ACCOUNT_ID = bankAccount.get('id');
 			self.BANK_ACCOUNT_ROUTE = self.MARKETPLACE_ROUTE +
 				'/bank_accounts/' + self.BANK_ACCOUNT_ID;
+			return bankAccount;
+		});
+	},
+
+	_createPendingBankAccount: function() {
+		var self = this;
+		return Balanced.BankAccount.create({
+			uri: '/customers/' + self.CUSTOMER_ID + '/bank_accounts',
+			name: 'Test Account',
+			account_number: '9900000001',
+			routing_number: '321174851',
+			type: 'checking'
+		}).save().then(function(bankAccount) {
+			self.PENDING_BANK_ACCOUNT_ID = bankAccount.get('id');
+			self.PENDING_BANK_ACCOUNT_ROUTE = self.MARKETPLACE_ROUTE +
+				'/bank_accounts/' + self.PENDING_BANK_ACCOUNT_ID;
 			return bankAccount;
 		});
 	},
