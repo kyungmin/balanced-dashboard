@@ -105,15 +105,20 @@ Balanced.Utils = Ember.Namespace.create({
 		return tempDict;
 	},
 
-	formatCurrency: function(cents) {
+	formatCurrency: function(cents, unit) {
 		if (!cents) {
 			return '$0.00';
 		}
 
-		var prepend = '$';
+		var prepend;
+		if (unit) {
+			prepend = unit;
+		} else {
+			prepend = '$'
+		}
 		if (cents < 0) {
 			cents = cents * -1;
-			prepend = '-$';
+			prepend = '-' + prepend;
 		}
 
 		return prepend + Balanced.Utils.centsToDollars(cents);

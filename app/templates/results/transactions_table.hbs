@@ -111,7 +111,12 @@
 			<td class="span3 amount num">
 				{{#link-to transaction.route_name transaction}}
 					<span>
-						{{formatCurrency transaction.amount}}
+						{{#if view.transaction.isUSD}}
+							{{formatCurrency transaction.amount}}
+						{{else}}
+							<span class="primary">{{formatCurrency transaction.amount}}</span>
+							<span class="secondary">{{formatCurrency transaction.amount}}</span>
+						{{/if}}
 					</span>
 				{{/link-to}}
 			</td>

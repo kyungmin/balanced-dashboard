@@ -19,6 +19,12 @@ Balanced.Transaction = Balanced.Model.extend(
 			}
 		}.property('amount'),
 
+		currency: 'KRW',// TODO: remove this
+
+		isUSD: function() {
+			return (this.get('currency') === 'USD');
+		},
+
 		customer_name_summary: function() {
 			if (this.get('customer')) {
 				return this.get('customer.display_me_with_email');
