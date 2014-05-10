@@ -19,10 +19,19 @@ Balanced.Transaction = Balanced.Model.extend(
 			}
 		}.property('amount'),
 
-		currency: 'KRW',// TODO: remove this
+		// Note: Returning dummy values while waiting for the forex API to be available
+		// TODO: Remove this when the API is available
+		currency: 'USD',
+		captured_currency: 'KRW',
+
+		// Note: Returing dummy value while waiting for the forex API to be available
+		// TODO: Remove this when the API is available
+		amount_in_captured_currency: function() {
+			return this.get('amount') + 1000;
+		}.property('amount'),
 
 		isUSD: function() {
-			return (this.get('currency') === 'USD');
+			return (this.get('captured_currency') === 'USD');
 		},
 
 		customer_name_summary: function() {

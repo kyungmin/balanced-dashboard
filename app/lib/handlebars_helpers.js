@@ -2,6 +2,8 @@ require('app/lib/utils');
 
 Ember.Handlebars.registerBoundHelper('formatCurrency', Balanced.Utils.formatCurrency);
 
+Ember.Handlebars.registerBoundHelper('formatCapturedCurrency', Balanced.Utils.formatCapturedCurrency);
+
 Ember.Handlebars.registerBoundHelper('formatNumber', Balanced.Utils.formatNumber);
 
 Ember.Handlebars.registerBoundHelper('formatError', Balanced.Utils.formatError);

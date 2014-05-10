@@ -115,7 +115,7 @@
 							{{formatCurrency transaction.amount}}
 						{{else}}
 							<span class="primary">{{formatCurrency transaction.amount}}</span>
-							<span class="secondary">{{formatCurrency transaction.amount}}</span>
+							<span class="secondary">{{formatCapturedCurrency transaction.amount_in_captured_currency transaction.captured_currency}}</span>
 						{{/if}}
 					</span>
 				{{/link-to}}

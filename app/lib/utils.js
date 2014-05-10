@@ -105,23 +105,33 @@ Balanced.Utils = Ember.Namespace.create({
 		return tempDict;
 	},
 
-	formatCurrency: function(cents, unit) {
+	formatCurrency: function(cents) {
 		if (!cents) {
 			return '$0.00';
 		}
 
-		var prepend;
-		if (unit) {
-			prepend = unit;
-		} else {
-			prepend = '$'
-		}
+		var prepend = '$';
 		if (cents < 0) {
 			cents = cents * -1;
-			prepend = '-' + prepend;
+			prepend = '-$';
 		}
 
 		return prepend + Balanced.Utils.centsToDollars(cents);
+	},
+
+	formatCapturedCurrency: function(amount, unit) {
+		if (!amount) {
+			return unit + ' 0';
+		}
+
+		var prepend = unit + ' ';
+
+		if (amount < 0) {
+			amount = amount * -1;
+			prepend = '-' + prepend;
+		}
+
+		return prepend + amount;
 	},
 
 	formatNumber: function(number) {
