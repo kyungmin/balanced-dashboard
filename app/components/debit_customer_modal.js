@@ -7,8 +7,14 @@ Balanced.DebitCustomerModalComponent = Balanced.ModalComponent.extend({
 
 	selected_currency: "USD",
 
-	currency_list: Balanced.CURRENCY_LIST,
-
+	currency_list: function() {
+    return Balanced.CURRENCY_LIST.map(function(currency) {
+      return _.extend({
+        formatted_name: "%@ (%@)".fmt(currency.name, currency.code)
+      }, currency);
+    });
+  }.property(),
+	
 	actions: {
 		open: function() {
 			var fundingInstruments = this.get('customer.debitable_funding_instruments');
