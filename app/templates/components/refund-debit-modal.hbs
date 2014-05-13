@@ -18,8 +18,16 @@
                 <label class="control-label">Amount</label>
                 <div class="controls">
                     <div class="input-prepend">
-                        <span class="add-on">$</span>
-                        {{view Ember.TextField valueBinding="dollar_amount" name="dollar_amount" class="span3"}}
+                        {{#if isUSD}}
+                            <span class="add-on">$</span>
+                            {{view Ember.TextField valueBinding="dollar_amount" name="dollar_amount" class="span3"}}
+                        {{else}}
+                            <span class="add-on">{{debit.captured_currency}}</span>
+                            {{view Ember.TextField valueBinding="debit.amount_in_captured_currency" name="dollar_amount" class="span3"}}
+                        {{/if}}
+                    </div>
+                    <div class="input-note">
+                        <span>{{formatCapturedCurrency debit.amount_in_captured_currency debit.captured_currency}} = USD {{dollar_amount}}</span>
                     </div>
                 </div>
             </div>

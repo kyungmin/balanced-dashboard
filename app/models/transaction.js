@@ -27,7 +27,7 @@ Balanced.Transaction = Balanced.Model.extend(
 		// Note: Returing dummy value while waiting for the forex API to be available
 		// TODO: Remove this when the API is available
 		amount_in_captured_currency: function() {
-			return this.get('amount') + 1000;
+			return this.get('amount') * 1000;
 		}.property('amount'),
 
 		isUSD: function() {

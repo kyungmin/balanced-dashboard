@@ -130,6 +130,7 @@ Balanced.Utils = Ember.Namespace.create({
 			amount = amount * -1;
 			prepend = '-' + prepend;
 		}
+		amount = Balanced.Utils.formatNumber(amount);
 
 		return prepend + amount;
 	},

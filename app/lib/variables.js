@@ -40,7 +40,8 @@ Balanced.SEARCH = {
 //  time in ms to throttle between key presses for search
 Balanced.THROTTLE = {
 	SEARCH: 400,
-	REFRESH: 1000
+	REFRESH: 1000,
+	CURRENCY_CONVERSION: 400
 };
 
 Balanced.PASSWORD = {
@@ -60,3 +61,19 @@ Balanced.DATES = {
 	RESULTS_MAX_TIME: moment().add('hours', 2).startOf('hour').toDate(),
 	RESULTS_MIN_TIME: moment().subtract('months', 1).startOf('hour').toDate()
 };
+
+Balanced.CURRENCY_LIST = [
+	{
+		code: 'AED',
+		name: 'UAE Dirham',
+		decimal_digits: 0
+	}, {
+		code: 'AFN',
+		name: 'Afghan Afghani',
+		decimal_digits: 0
+	}, {
+		code: 'USD',
+		name: 'US Dollar',
+		decimal_digits: 2
+	}
+];

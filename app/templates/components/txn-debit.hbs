@@ -3,7 +3,7 @@
 		<div class="tt-label">Debit</div>
 		<div class="tt-content">
 			<span class="tt-title">
-				{{titleCase debit.status}}: {{formatCurrency debit.amount}}
+				{{titleCase debit.status}}: {{formatCurrency debit.amount}} ({{formatCapturedCurrency debit.amount_in_captured_currency debit.captured_currency}})
 			</span>
 			<div class="tt-buttons">
 				{{#if debit.can_refund}}

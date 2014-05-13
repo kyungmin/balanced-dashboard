@@ -5,6 +5,10 @@ Balanced.DebitCustomerModalComponent = Balanced.ModalComponent.extend({
 
 	dollar_amount: null,
 
+	selected_currency: "USD",
+
+	currency_list: Balanced.CURRENCY_LIST,
+
 	actions: {
 		open: function() {
 			var fundingInstruments = this.get('customer.debitable_funding_instruments');
@@ -13,6 +17,7 @@ Balanced.DebitCustomerModalComponent = Balanced.ModalComponent.extend({
 			var debit = Balanced.Debit.create({
 				uri: debitUri,
 				amount: null,
+				selected_currency: null,
 				order: this.get('order.href')
 			});
 
@@ -40,7 +45,10 @@ Balanced.DebitCustomerModalComponent = Balanced.ModalComponent.extend({
 				});
 				return;
 			}
-			debit.set('amount', cents);
+			debit.setProperties({
+				amount: cents,
+				currency: this.get('selected_currency')
+			});
 			this._super(debit);
 		}
 	},

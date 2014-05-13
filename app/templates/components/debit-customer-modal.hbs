@@ -33,36 +33,44 @@
                 </div>
             </div>
 
-                <div class="control-group">
-                    <label class="control-label">Account holder's name</label>
-                    <div class="controls">
-                        <span class="label1a">{{selected_funding_instrument.name}}</span>
-                    </div>
+            <div class="control-group">
+                <label class="control-label">Account holder's name</label>
+                <div class="controls">
+                    <span class="label1a">{{selected_funding_instrument.name}}</span>
                 </div>
+            </div>
 
-                <div class="control-group">
-                    <label class="control-label">Type</label>
-                    <div class="controls">
-                        <span class="label1a">{{selected_funding_instrument.brand}}</span>
-                    </div>
+            <div class="control-group">
+                <label class="control-label">Type</label>
+                <div class="controls">
+                    <span class="label1a">{{selected_funding_instrument.brand}}</span>
                 </div>
+            </div>
 
-                <div {{bind-attr class=":control-group model.validationErrors.amount:error"}}>
-                    <label class="control-label">Amount</label>
-                    <div class="controls">
-                        <div class="input-prepend">
-                            <span class="add-on">$</span>
-                            {{view Ember.TextField valueBinding="dollar_amount" name="dollar_amount" class="span"}}
-                        </div>
+            <div {{bind-attr class=":control-group model.validationErrors.amount:error"}}>
+                <label class="control-label">Amount</label>
+                <div class="controls inline-select">
+                    {{view Ember.Select
+                        contentBinding="currency_list"
+                        optionValuePath="content.code"
+                        optionLabelPath="content.name"
+                        valueBinding="selected_currency"
+                        value="selected_currency"
+                        name="selected_currency"
+                    }}
+                    {{view Ember.TextField valueBinding="dollar_amount" name="dollar_amount"}}
+                    <div class="input-note">
+                        <span>{{formatCapturedCurrency dollar_amount selected_currency}} = USD {{formatCurrency dollar_amount}}</span>
                     </div>
                 </div>
+            </div>
 
-                <div {{bind-attr class=":control-group model.validationErrors.appears_on_statement_as:error"}}>
-                    <label class="control-label">Appears on statement as ({{selected_funding_instrument.appears_on_statement_max_length}} characters max)</label>
-                    <div class="controls">
-                        {{view Ember.TextField valueBinding="model.appears_on_statement_as" name="appears_on_statement_as" class="full" maxlengthBinding="selected_funding_instrument.appears_on_statement_max_length"}}
-                    </div>
+            <div {{bind-attr class=":control-group model.validationErrors.appears_on_statement_as:error"}}>
+                <label class="control-label">Appears on statement as ({{selected_funding_instrument.appears_on_statement_max_length}} characters max)</label>
+                <div class="controls">
+                    {{view Ember.TextField valueBinding="model.appears_on_statement_as" name="appears_on_statement_as" class="full" maxlengthBinding="selected_funding_instrument.appears_on_statement_max_length"}}
                 </div>
+            </div>
 
 
             <div {{bind-attr class=":control-group model.validationErrors.description:error"}}>

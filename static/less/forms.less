@@ -73,7 +73,7 @@ form {
   .input-prepend {
     .add-on {
       font-size: @inputFontSize;
-      height: 30px;
+      height: 40px;
       min-width: @inputFontSize;
       line-height: 1.7;
       border-radius: 0;
@@ -84,6 +84,12 @@ form {
         .border-radius(0);
       }
     }
+  }
+
+  .input-note {
+    .sl-sm;
+    color: @gray5;
+    padding-top: 5px;
   }
 }
 
@@ -112,6 +118,12 @@ form {
     &.inline-control {
       select, input {
         width: 100px;
+      }
+    }
+
+    &.inline-select {
+      select, input {
+        width: 49%;
       }
     }
 
