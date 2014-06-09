@@ -103,7 +103,9 @@ module.exports = function(grunt) {
 					'static/javascripts/jquery-csv/src/jquery.csv.js',
 					'static/javascripts/moment/moment.js',
 					'static/lib/daterangepicker.js',
-					'static/javascripts/timepicker/jquery.timepicker.js'
+					'static/javascripts/timepicker/jquery.timepicker.js',
+					'static/javascripts/d3/d3.min.js',
+					'static/javascripts/nvd3/nv.d3.min.js'
 				],
 				dest: 'build/js/lib-dev.js'
 			},
@@ -129,7 +131,9 @@ module.exports = function(grunt) {
 					'static/javascripts/jquery-csv/src/jquery.csv.js',
 					'static/javascripts/moment/min/moment.min.js',
 					'static/lib/daterangepicker.js',
-					'static/javascripts/timepicker/jquery.timepicker.min.js'
+					'static/javascripts/timepicker/jquery.timepicker.min.js',
+					'static/javascripts/d3/d3.min.js',
+					'static/javascripts/nvd3/nv.d3.min.js'
 				],
 				dest: 'build/js/lib-prod.js'
 			},
