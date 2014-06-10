@@ -15,23 +15,25 @@ Balanced.ChartComponent = Ember.Component.extend({
 
 	margin: function() {
 		return {
-			top: 0,
-			bottom: 0,
-			left: 0,
-			right: 0
+			top: 30,
+			bottom: 50,
+			left: 60,
+			right: 20
 		}
 	}.property(),
 
+	width: 500,
+	height: 300,
+	xAxisLabel: 'Date',
+	yAxisLabel: 'Volume',
+
 	options: function() {
 		var self = this;
-
 		return {
-			showXAxis: true,
-			showYAxis: true,
-			showControls: true,
-			showLegend: false
+			width: self.get('width'),
+			height: self.get('height')
 		};
-	}.property('showControls', 'showLegend'),
+	}.property('width', 'height'),
 
 	chart: function() {
 		var self = this;
@@ -41,18 +43,24 @@ Balanced.ChartComponent = Ember.Component.extend({
 			chart = self.get('chartModel');
 		}
 
+		chart.showXAxis(true);
+		chart.showYAxis(true);
+		chart.showLegend(true);
+		chart.rightAlignYAxis(false);
 		chart.useInteractiveGuideline(true);
+		chart.noData('No data available.');
+		chart.tooltips(true);
 
 		chart.xAxis
-		.axisLabel('Time (ms)')
-		.tickFormat(d3.format(',r'));
+			.axisLabel(self.get('xAxisLabel'))
+			.tickFormat(d3.format(',r'))
+			.tickPadding(7);
 
 		chart.yAxis
-		.axisLabel('Voltage (v)')
-		.tickFormat(d3.format('.02f'));
+			.axisLabel(self.get('yAxisLabel'))
+			.tickFormat(d3.format('.02f'));
 
-		chart.margin(self.get('margin'))
-			.options(self.get('options'));
+		chart.options(self.get('options'));
 
 	    return chart;
 	}.property('chartModel', 'margin', 'options'),
