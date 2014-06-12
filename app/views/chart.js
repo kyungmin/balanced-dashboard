@@ -28,7 +28,7 @@ Balanced.ChartView = Ember.View.extend({
 
 		chart.options(self.get('options'));
 
-	    return chart;
+		return chart;
 	}.property('chartModel', 'margin', 'options'),
 
 	updateChart: function() {
@@ -46,7 +46,7 @@ Balanced.ChartView = Ember.View.extend({
 		self.set('_chart', chart);
 		nv.utils.windowResize(chart.update);
 
-	}.observes('chartData','chart').on('didInsertElement'),
+	}.observes('chartData', 'chart').on('didInsertElement'),
 
 	didInsertElement: function() {
 		var self = this;
@@ -89,22 +89,25 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 			cos = [];
 
 		for (var i = 0; i < 100; i++) {
-			sin.push({x: i, y: Math.sin(i/10)});
-			cos.push({x: i, y: .5 * Math.cos(i/10)});
+			sin.push({
+				x: i,
+				y: Math.sin(i / 10)
+			});
+			cos.push({
+				x: i,
+				y: .5 * Math.cos(i / 10)
+			});
 		}
 
-		return [
-			{
-				values: sin,
-				key: 'Sine Wave',
-				color: '#ff7f0e'
-			},
-			{
-				values: cos,
-				key: 'Cosine Wave',
-				color: '#2ca02c'
-			}
-		];
+		return [{
+			values: sin,
+			key: 'Sine Wave',
+			color: '#ff7f0e'
+		}, {
+			values: cos,
+			key: 'Cosine Wave',
+			color: '#2ca02c'
+		}];
 	}.property()
 });
 
@@ -122,35 +125,30 @@ Balanced.HorizontalBarChartView = Balanced.ChartView.extend({
 	}.property(),
 
 	chartData: function() {
-		return  [{
+		return [{
 			key: "Cumulative Return",
-			values: [
-				{
-					x : "A Label" ,
-					y : 29.765957771107
-				},
-				{
-					x : "B Label" ,
-					y : 0
-				},
-				{
-					x : "C Label" ,
-					y : 32.807804682612
-				},
-				{
-					x : "D Label" ,
-					y : 96.45946739256
-				},
-				{
-					x : "E Label" ,
-					y : 0.19434030906893
-				}]
-    	}]
+			values: [{
+				x: "A Label",
+				y: 29.765957771107
+			}, {
+				x: "B Label",
+				y: 0
+			}, {
+				x: "C Label",
+				y: 32.807804682612
+			}, {
+				x: "D Label",
+				y: 96.45946739256
+			}, {
+				x: "E Label",
+				y: 0.19434030906893
+			}]
+		}]
 	}.property()
 });
 
 Balanced.VerticalBarChartView = Balanced.ChartView.extend({
-	_chartModel: "discreteBar",
+	_chartModel: "triangleBar",
 	classNames: ['vertical-bar-chart'],
 
 	options: function() {
@@ -164,30 +162,24 @@ Balanced.VerticalBarChartView = Balanced.ChartView.extend({
 	}.property(),
 
 	chartData: function() {
-		return  [{
+		return [{
 			key: "Cumulative Return",
-			values: [
-				{
-					x : "A Label" ,
-					y : 29.765957771107
-				},
-				{
-					x : "B Label" ,
-					y : 0
-				},
-				{
-					x : "C Label" ,
-					y : 32.807804682612
-				},
-				{
-					x : "D Label" ,
-					y : 96.45946739256
-				},
-				{
-					x : "E Label" ,
-					y : 0.19434030906893
-				}]
-    	}]
+			values: [{
+				x: "A Label",
+				y: 29.765957771107
+			}, {
+				x: "B Label",
+				y: 0
+			}, {
+				x: "C Label",
+				y: 32.807804682612
+			}, {
+				x: "D Label",
+				y: 96.45946739256
+			}, {
+				x: "E Label",
+				y: 0.19434030906893
+			}]
+		}]
 	}.property()
 });
-
