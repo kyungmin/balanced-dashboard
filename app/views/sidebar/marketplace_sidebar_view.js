@@ -1,4 +1,9 @@
 var SIDEBAR_ITEMS = [{
+	linkText: "Overview",
+	linkIcon: "icon-overview",
+	routeName: "marketplace.overview",
+	isSelectedBinding: "controller.marketplace.overviewSelected"
+}, {
 	linkText: "Payments",
 	linkIcon: "icon-payments",
 	routeName: "activity.transactions",

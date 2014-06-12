@@ -96,6 +96,8 @@ Balanced.Router.map(function() {
 				path: 'invoices'
 			});
 
+			this.route('overview');
+
 			this.resource('activity', {
 				path: '/'
 			}, function() {
