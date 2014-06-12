@@ -2,7 +2,6 @@ Balanced.ChartView = Ember.View.extend({
 	tagName: 'svg',
 	classNames: ['chart-container'],
 
-
 	_chartModel: null,
 	chartModel: function() {
 		return nv.models[this.get('_chartModel')]();
@@ -62,6 +61,7 @@ Balanced.ChartView = Ember.View.extend({
 
 Balanced.LineChartView = Balanced.ChartView.extend({
 	_chartModel: "lineChart",
+	classNames: ['line-chart'],
 
 	options: function() {
 		return {
@@ -72,7 +72,7 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 			rightAlignYAxis: false,
 			useInteractiveGuideline: true,
 			noData: 'No data available.',
-			tooltips: true,
+			tooltips: true
 		};
 		// xAxis
 		// 	.axisLabel(self.get('xAxisLabel'))
@@ -108,15 +108,16 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 	}.property()
 });
 
-Balanced.BarChartView = Balanced.ChartView.extend({
-	_chartModel: "discreteBarChart",
+Balanced.HorizontalBarChartView = Balanced.ChartView.extend({
+	_chartModel: "discreteBar",
+	classNames: ['horizontal-bar-chart'],
 
 	options: function() {
 		return {
-			width: 500,
-			showValues: true,
+			width: 300,
 			useInteractiveGuideline: true,
-
+			tooltips: true,
+			showValues: true
 		}
 	}.property(),
 
@@ -126,7 +127,7 @@ Balanced.BarChartView = Balanced.ChartView.extend({
 			values: [
 				{
 					x : "A Label" ,
-					y : -29.765957771107
+					y : 29.765957771107
 				},
 				{
 					x : "B Label" ,
@@ -138,7 +139,49 @@ Balanced.BarChartView = Balanced.ChartView.extend({
 				},
 				{
 					x : "D Label" ,
-					y : 196.45946739256
+					y : 96.45946739256
+				},
+				{
+					x : "E Label" ,
+					y : 0.19434030906893
+				}]
+    	}]
+	}.property()
+});
+
+Balanced.VerticalBarChartView = Balanced.ChartView.extend({
+	_chartModel: "discreteBar",
+	classNames: ['vertical-bar-chart'],
+
+	options: function() {
+		return {
+			height: 300,
+			useInteractiveGuideline: true,
+			tooltips: true,
+			rectClass: 'triangle',
+			showValues: true
+		}
+	}.property(),
+
+	chartData: function() {
+		return  [{
+			key: "Cumulative Return",
+			values: [
+				{
+					x : "A Label" ,
+					y : 29.765957771107
+				},
+				{
+					x : "B Label" ,
+					y : 0
+				},
+				{
+					x : "C Label" ,
+					y : 32.807804682612
+				},
+				{
+					x : "D Label" ,
+					y : 96.45946739256
 				},
 				{
 					x : "E Label" ,

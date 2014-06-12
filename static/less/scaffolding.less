@@ -131,3 +131,20 @@
 .hidden {
   display: none;
 }
+
+
+// graph
+
+svg {
+  height: 300px;
+
+  &.horizontal-bar-chart {
+    .nv-discretebar {
+      .transform(rotate(90deg) translate(0px, -550px));
+    }
+
+    text {
+      .transform(rotate(-90deg) translate(0px, 30px));
+    }
+  }
+}
