@@ -18,10 +18,10 @@
 							</h3>
 						</header>
 						{{txn-description transaction=refund}}
+						{{txn-funding-instrument funding_instrument=refund.debit.source}}
 					</div>
+					{{view Balanced.MetaView type=refund}}
 				</section>
-
-				{{txn-funding-instrument funding_instrument=refund.debit.source}}
 			</div>
 		</div>
 		<div class="row-fluid">

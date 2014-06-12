@@ -102,6 +102,7 @@ module.exports = function(grunt) {
 					'static/javascripts/bootstrap-modal/js/bootstrap-modal.js',
 					'static/javascripts/jquery-csv/src/jquery.csv.js',
 					'static/javascripts/moment/moment.js',
+					'static/lib/moment-business-days.js',
 					'static/lib/daterangepicker.js',
 					'static/javascripts/timepicker/jquery.timepicker.js',
 					'static/javascripts/d3/d3.min.js',
@@ -130,6 +131,7 @@ module.exports = function(grunt) {
 					'static/javascripts/bootstrap-modal/js/bootstrap-modal.js',
 					'static/javascripts/jquery-csv/src/jquery.csv.js',
 					'static/javascripts/moment/min/moment.min.js',
+					'static/lib/moment-business-days.js',
 					'static/lib/daterangepicker.js',
 					'static/javascripts/timepicker/jquery.timepicker.min.js',
 					'static/javascripts/d3/d3.min.js',
@@ -649,7 +651,7 @@ module.exports = function(grunt) {
 					'app/**/*.js',
 					'static/lib/**/*.js'
 				],
-				tasks: ['_buildJSAfterTemplates'],
+				tasks: ['format', '_buildJSAfterTemplates'],
 				options: {
 					livereload: true,
 				}
@@ -659,7 +661,7 @@ module.exports = function(grunt) {
 					'test/support/**/*',
 					'test/**/*.js'
 				],
-				tasks: ['_buildTests'],
+				tasks: ['format', '_buildTests'],
 				options: {
 					livereload: true,
 				}

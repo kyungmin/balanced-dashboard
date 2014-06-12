@@ -2,7 +2,7 @@ require("app/lib/validation_helpers");
 var ValidationHelpers = Balanced.ValidationHelpers;
 
 var baseValidationsObject = {
-	"csvFields.appears_on_statement_as": ValidationHelpers.transactionAppearsOnStatementAs,
+	"csvFields.appears_on_statement_as": ValidationHelpers.bankTransactionAppearsOnStatementAs,
 	"csvFields.amount": ValidationHelpers.positiveDollarAmount,
 };
 
@@ -256,6 +256,8 @@ Balanced.ExistingCustomerCreditCreator.reopenClass({
 		var results = Balanced.Customer.findByNameOrEmail(marketplace, attributes.existing_customer_name_or_email);
 		results.addObserver("isLoaded", function() {
 			creator.set("customersCollection", results);
+		});
+		creator.addObserver("isLoaded", function() {
 			creator.validate();
 		});
 

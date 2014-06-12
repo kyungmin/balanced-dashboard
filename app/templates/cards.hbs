@@ -1,4 +1,4 @@
-<h1 class="page-title">Card</h1>
+<h1 class="page-title">{{type_name}}</h1>
 
 <div id="card">
 	<div class="funding-instrument-header main-header">
@@ -6,7 +6,7 @@
 			<div class="span2 label">
 				<div {{bind-attr class=":icon :card-info"}}>Card</div>
 			</div>
-			<div class="span18 title">
+			<div class="span14 title">
 				<span class="nav3d">
 					{{title_description}}
 				</span>
@@ -17,6 +17,9 @@
 					{{#if customer}}
 						<a class="btn hold-button" {{action "openHoldCardModal"}}>Hold</a>
 						<a class="btn debit-button" {{action "openDebitFundingInstrumentModal"}}>Debit</a>
+						{{#if can_credit}}
+							<a class="btn credit-button" {{action "openCreditFundingInstrumentModal"}}>Credit</a>
+						{{/if}}
 					{{/if}}
 				</div>
 			</div>
@@ -28,7 +31,7 @@
 			<section class="card-info">
 				<div class="key-value-display">
 					<header>
-						<h3>Card info</h3>
+						<h3>Details</h3>
 					</header>
 					<dl class="dl-horizontal">
 						<dt>ID</dt>
@@ -45,16 +48,35 @@
 						<dd><span>{{name}}</span></dd>
 						<dt>Card #</dt>
 						<dd><span>{{number}}</span></dd>
+						<dt>Bank</dt>
+						<dd><span>{{formatted_bank_name}}</span></dd>
+						<dt>Type</dt>
+						<dd><span>
+						{{#if is_prepaid}}
+							Prepaid card (You can't credit to a prepaid card.)
+						{{else}}
+							{{type_name}}
+						{{/if}}
+						</span></dd>
+						<dt>Brand</dt>
+						<dd><span>{{brand}}</span></dd>
 						<dt>Expiration</dt>
 						<dd><span>{{human_readable_expiration}}</span></dd>
-						<dt>Billing Zip Code</dt>
-						<dd><span>{{postal_code}}</span></dd>
-						<dt>Type</dt>
-						<dd><span>{{titleCase brand}}</span></dd>
-
-						{{partial 'meta'}}
+						<dt>Address line 1</dt>
+						<dd><span>{{address.line1}}</span></dd>
+						<dt>Address line 2</dt>
+						<dd><span>{{address.line2}}</span></dd>
+						<dt>City</dt>
+						<dd><span>{{address.city}}</span></dd>
+						<dt>State</dt>
+						<dd><span>{{address.state}}</span></dd>
+						<dt>Zip code</dt>
+						<dd><span>{{address.postal_code}}</span></dd>
+						<dt>Country</dt>
+						<dd><span>{{address.country_code}}</span></dd>
 					</dl>
 				</div>
+				{{view Balanced.MetaView type=model}}
 			</section>
 		</div>
 
@@ -65,7 +87,7 @@
 
 	<section class="activity">
 		<header class="results-label">
-			<h3>Activity</h3>
+			<h3>Payments</h3>
 		</header>
 		<div class="results">
 			{{view Balanced.TransactionsFiltersHeaderView}}
@@ -80,6 +102,8 @@
 {{#if show_download}}
 	{{partial "modals/download"}}
 {{/if}}
-
+{{#if can_credit}}
+	{{view Balanced.CreditFundingInstrumentModalView funding_instrumentBinding="model"}}
+{{/if}}
 {{view Balanced.DebitFundingInstrumentModalView funding_instrumentBinding="model"}}
 {{view Balanced.HoldCardModalView funding_instrumentBinding="model"}}
