@@ -2,39 +2,23 @@ Balanced.ChartView = Ember.View.extend({
 	tagName: 'svg',
 	classNames: ['chart-container'],
 
-	chartData: null,
-	_chart: null,
+
 	_chartModel: null,
-
-	x: null,
-	y: null,
-
 	chartModel: function() {
 		return nv.models[this.get('_chartModel')]();
 	}.property("_chartModel"),
-
-	margin: function() {
-		return {
-			top: 30,
-			bottom: 50,
-			left: 60,
-			right: 20
-		}
-	}.property(),
 
 	width: 500,
 	height: 500,
 	xAxisLabel: 'Date',
 	yAxisLabel: 'Volume',
 
-	options: function() {
-		var self = this;
-		return {
-			width: self.get('width'),
-			height: self.get('height')
-		};
-	}.property('width', 'height'),
+	x: null,
+	y: null,
+	chartData: null,
+	options: {},
 
+	_chart: null,
 	chart: function() {
 		var self = this;
 		var chart = self.get('_chart');
@@ -43,36 +27,10 @@ Balanced.ChartView = Ember.View.extend({
 			chart = self.get('chartModel');
 		}
 
-		chart.showXAxis(true);
-		chart.showYAxis(true);
-		chart.showLegend(true);
-		chart.rightAlignYAxis(false);
-		chart.useInteractiveGuideline(true);
-		chart.noData('No data available.');
-		chart.tooltips(true);
-
-		chart.xAxis
-			.axisLabel(self.get('xAxisLabel'))
-			.tickFormat(d3.format(',r'))
-			.tickPadding(7);
-
-		chart.yAxis
-			.axisLabel(self.get('yAxisLabel'))
-			.tickFormat(d3.format('.02f'));
-
 		chart.options(self.get('options'));
 
 	    return chart;
 	}.property('chartModel', 'margin', 'options'),
-
-	didInsertElement: function() {
-		var self = this;
-		var $el = self.$();
-		var el = $el.get(0);
-		nv.addGraph(function() {
-			return self.get('chart');
-		});
-	},
 
 	updateChart: function() {
 		var self = this;
@@ -89,12 +47,42 @@ Balanced.ChartView = Ember.View.extend({
 		self.set('_chart', chart);
 		nv.utils.windowResize(chart.update);
 
-	}.observes('chartData','chart').on('didInsertElement')
+	}.observes('chartData','chart').on('didInsertElement'),
+
+	didInsertElement: function() {
+		var self = this;
+		var $el = self.$();
+		var el = $el.get(0);
+		nv.addGraph(function() {
+			return self.get('chart');
+		});
+	}
 });
 
 
 Balanced.LineChartView = Balanced.ChartView.extend({
 	_chartModel: "lineChart",
+
+	options: function() {
+		return {
+			width: 500,
+			showXAxis: true,
+			showYAxis: true,
+			showLegend: true,
+			rightAlignYAxis: false,
+			useInteractiveGuideline: true,
+			noData: 'No data available.',
+			tooltips: true,
+		};
+		// xAxis
+		// 	.axisLabel(self.get('xAxisLabel'))
+		// 	.tickFormat(d3.format(',r'))
+		// 	.tickPadding(7);
+
+		// yAxis
+		// 	.axisLabel(self.get('yAxisLabel'))
+		// 	.tickFormat(d3.format('.02f'));
+	}.property(),
 
 	chartData: function() {
 		var sin = [],
@@ -117,6 +105,46 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 				color: '#2ca02c'
 			}
 		];
+	}.property()
+});
+
+Balanced.BarChartView = Balanced.ChartView.extend({
+	_chartModel: "discreteBarChart",
+
+	options: function() {
+		return {
+			width: 500,
+			showValues: true,
+			useInteractiveGuideline: true,
+
+		}
+	}.property(),
+
+	chartData: function() {
+		return  [{
+			key: "Cumulative Return",
+			values: [
+				{
+					x : "A Label" ,
+					y : -29.765957771107
+				},
+				{
+					x : "B Label" ,
+					y : 0
+				},
+				{
+					x : "C Label" ,
+					y : 32.807804682612
+				},
+				{
+					x : "D Label" ,
+					y : 196.45946739256
+				},
+				{
+					x : "E Label" ,
+					y : 0.19434030906893
+				}]
+    	}]
 	}.property()
 });
 
