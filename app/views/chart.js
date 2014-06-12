@@ -1,4 +1,4 @@
-Balanced.ChartComponent = Ember.Component.extend({
+Balanced.ChartView = Ember.View.extend({
 	tagName: 'svg',
 	classNames: ['chart-container'],
 
@@ -23,7 +23,7 @@ Balanced.ChartComponent = Ember.Component.extend({
 	}.property(),
 
 	width: 500,
-	height: 300,
+	height: 500,
 	xAxisLabel: 'Date',
 	yAxisLabel: 'Volume',
 
@@ -93,7 +93,7 @@ Balanced.ChartComponent = Ember.Component.extend({
 });
 
 
-Balanced.LineChart = Balanced.ChartComponent.extend({
+Balanced.LineChartView = Balanced.ChartView.extend({
 	_chartModel: "lineChart",
 
 	chartData: function() {
@@ -120,4 +120,3 @@ Balanced.LineChart = Balanced.ChartComponent.extend({
 	}.property()
 });
 
-Ember.Handlebars.helper('line-chart', Balanced.LineChart);
