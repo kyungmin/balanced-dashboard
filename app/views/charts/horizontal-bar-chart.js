@@ -8,7 +8,7 @@ Balanced.HorizontalBarChartView = Balanced.ChartView.extend({
 			useInteractiveGuideline: true,
 			tooltips: true,
 			showValues: true
-		}
+		};
 	}.property(),
 
 	chartData: function() {
@@ -29,7 +29,7 @@ Balanced.HorizontalBarChartView = Balanced.ChartView.extend({
 			}, {
 				x: "E Label",
 				y: 0.19434030906893
-			}]
-		}]
+			}];
+		}];
 	}.property()
 });

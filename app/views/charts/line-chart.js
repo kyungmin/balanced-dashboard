@@ -13,14 +13,6 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 			noData: 'No data available.',
 			tooltips: true
 		};
-		// xAxis
-		// 	.axisLabel(self.get('xAxisLabel'))
-		// 	.tickFormat(d3.format(',r'))
-		// 	.tickPadding(7);
-
-		// yAxis
-		// 	.axisLabel(self.get('yAxisLabel'))
-		// 	.tickFormat(d3.format('.02f'));
 	}.property(),
 
 	chartData: function() {

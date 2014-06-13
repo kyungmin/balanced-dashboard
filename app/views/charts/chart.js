@@ -4,7 +4,7 @@ Balanced.ChartView = Ember.View.extend({
 
 	_chartModel: null,
 	chartModel: function() {
-		return nv.models[this.get('_chartModel')]();
+		return window.nv.models[this.get('_chartModel')]();
 	}.property("_chartModel"),
 
 	width: 500,
@@ -44,7 +44,7 @@ Balanced.ChartView = Ember.View.extend({
 			.call(chart);
 
 		self.set('_chart', chart);
-		nv.utils.windowResize(chart.update);
+		window.nv.utils.windowResize(chart.update);
 
 	}.observes('chartData', 'chart').on('didInsertElement'),
 
@@ -52,7 +52,7 @@ Balanced.ChartView = Ember.View.extend({
 		var self = this;
 		var $el = self.$();
 		var el = $el.get(0);
-		nv.addGraph(function() {
+		window.nv.addGraph(function() {
 			return self.get('chart');
 		});
 	}

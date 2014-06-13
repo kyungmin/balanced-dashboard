@@ -9,7 +9,7 @@ Balanced.VerticalBarChartView = Balanced.ChartView.extend({
 			tooltips: true,
 			rectClass: 'triangle',
 			showValues: true
-		}
+		};
 	}.property(),
 
 	chartData: function() {
@@ -30,7 +30,7 @@ Balanced.VerticalBarChartView = Balanced.ChartView.extend({
 			}, {
 				x: "E Label",
 				y: 0.19434030906893
-			}]
-		}]
+			}];
+		}];
 	}.property()
 });
