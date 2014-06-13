@@ -71,6 +71,7 @@ Balanced.Router.map(function() {
 		this.resource('marketplace', {
 			path: '/:marketplace_id'
 		}, function() {
+			this.route('overview');
 			this.route('settings');
 			this.route('add_customer');
 			this.route('initial_deposit');
@@ -95,8 +96,6 @@ Balanced.Router.map(function() {
 			this.route("redirect_invoices", {
 				path: 'invoices'
 			});
-
-			this.route('overview');
 
 			this.resource('activity', {
 				path: '/'
