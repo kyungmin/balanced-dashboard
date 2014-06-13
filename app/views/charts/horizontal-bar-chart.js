@@ -29,7 +29,7 @@ Balanced.HorizontalBarChartView = Balanced.ChartView.extend({
 			}, {
 				x: "E Label",
 				y: 0.19434030906893
-			}];
+			}]
 		}];
 	}.property()
 });
