@@ -37,7 +37,7 @@ Balanced.ChartView = Ember.View.extend({
 		var chartData = self.get('chartData');
 		var chart = self.get('chart');
 
-		d3.select(el)
+		window.d3.select(el)
 			.datum(chartData)
 			.transition()
 			.duration(250)

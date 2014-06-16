@@ -9,7 +9,7 @@ Balanced.VerticalBarChartView = Balanced.ChartView.extend({
 			tooltips: true,
 			rectClass: 'triangle',
 			showValues: true
-		}
+		};
 	}.property(),
 
 	chartData: function() {
