@@ -47,8 +47,6 @@ Balanced.ChartView = Ember.View.extend({
 			.duration(250)
 			.call(chart);
 
-		window.d3.selectAll('circle.nv-point').attr("r", "3.5");
-
 		self.set('_chart', chart);
 		window.nv.utils.windowResize(chart.update);
 
@@ -59,10 +57,12 @@ Balanced.ChartView = Ember.View.extend({
 		var $el = self.$();
 		var el = $el.get(0);
 
-		$el.find('circle.nv-point').attr("r", "3.5");
-
 		window.nv.addGraph(function() {
+			$('circle.nv-point').attr("r", "5");
+
 			return self.get('chart');
 		});
+
+
 	}
 });
