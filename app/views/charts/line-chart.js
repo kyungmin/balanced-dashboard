@@ -26,18 +26,16 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 			});
 			cos.push({
 				x: i,
-				y: .5 * Math.cos(i / 10)
+				y: 0.5 * Math.cos(i / 10)
 			});
 		}
 
 		return [{
 			values: sin,
-			key: 'Sine Wave',
-			color: '#ff7f0e'
+			key: 'Sine Wave'
 		}, {
 			values: cos,
-			key: 'Cosine Wave',
-			color: '#2ca02c'
+			key: 'Cosine Wave'
 		}];
 	}.property()
 });

@@ -18,6 +18,7 @@ Balanced.ChartView = Ember.View.extend({
 	options: {},
 
 	_chart: null,
+
 	chart: function() {
 		var self = this;
 		var chart = self.get('_chart');
@@ -27,6 +28,9 @@ Balanced.ChartView = Ember.View.extend({
 		}
 
 		chart.options(self.get('options'));
+
+		chart.color(['#639ABD', '#BC8F30', '#9364A8', '#00A08E']);
+		// @egyptianBlue80, @turmericYellow80, @byzantiumPurple80, @forestGreen80
 
 		return chart;
 	}.property('chartModel', 'margin', 'options'),
@@ -43,6 +47,8 @@ Balanced.ChartView = Ember.View.extend({
 			.duration(250)
 			.call(chart);
 
+		window.d3.selectAll('circle.nv-point').attr("r", "3.5");
+
 		self.set('_chart', chart);
 		window.nv.utils.windowResize(chart.update);
 
@@ -52,6 +58,9 @@ Balanced.ChartView = Ember.View.extend({
 		var self = this;
 		var $el = self.$();
 		var el = $el.get(0);
+
+		$el.find('circle.nv-point').attr("r", "3.5");
+
 		window.nv.addGraph(function() {
 			return self.get('chart');
 		});

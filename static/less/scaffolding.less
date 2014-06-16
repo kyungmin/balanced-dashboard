@@ -138,6 +138,38 @@
 svg {
   height: 300px;
 
+  .nvd3 .nv-axis path {
+    stroke: @gray2 !important;
+  }
+
+  .nvd3 .nv-axis.nv-x path.domain {
+    stroke-opacity: 0.75;
+  }
+
+  .nvd3 .nv-axis line {
+    stroke: @gray2;
+  }
+
+  .nvd3.nv-wrap .nv-group {
+    fill-opacity: 1;
+  }
+
+  .nvd3 .nv-groups path.nv-line {
+    stroke-width: 2px;
+  }
+
+  .nvd3.nv-line .nvd3.nv-scatter .nv-groups .nv-point {
+    fill: @gray8;
+    stroke: @white;
+  }
+
+  .nvd3.nv-scatter .nv-groups .nv-point.hover,
+  .nvd3 .nv-groups .nv-point.hover {
+    stroke-width: 2px;
+    fill-opacity: .95 !important;
+    stroke-opacity: .95 !important;
+  }
+
   &.horizontal-bar-chart {
     .nv-discretebar {
       .transform(rotate(90deg) translate(0px, -550px));
@@ -145,15 +177,6 @@ svg {
 
     text {
       .transform(rotate(-90deg) translate(0px, 30px));
-    }
-  }
-
-  &.line-chart {
-    .nv-series-0 {
-      stroke: @turmericYellow80 !important;
-    }
-    .nv-series-1 {
-      stroke: @persianBlue80 !important;
     }
   }
 }
