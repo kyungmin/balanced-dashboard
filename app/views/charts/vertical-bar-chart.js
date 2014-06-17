@@ -5,8 +5,6 @@ Balanced.VerticalBarChartView = Balanced.ChartView.extend({
 	options: function() {
 		return {
 			height: 300,
-			useInteractiveGuideline: true,
-			tooltips: true,
 			rectClass: 'triangle',
 			showValues: true
 		};

@@ -138,6 +138,15 @@
 svg {
   height: 300px;
 
+  text {
+    .sl-sm;
+    fill: @gray4;
+  }
+
+  .nvd3 .nv-axis .nv-axisMaxMin text {
+    font-weight: normal;
+  }
+
   .nvd3 .nv-axis path {
     stroke: @gray2 !important;
   }
@@ -159,10 +168,13 @@ svg {
   }
 
   .nvd3.nv-line .nvd3.nv-scatter .nv-groups .nv-point {
-    fill: @gray8;
+    fill: @gray7;
     stroke: @white;
   }
 
+  .nvd3 line.nv-guideline {
+    stroke: transparent;
+  }
   .nvd3.nv-scatter .nv-groups .nv-point.hover,
   .nvd3 .nv-groups .nv-point.hover {
     stroke-width: 2px;
@@ -180,3 +192,84 @@ svg {
     }
   }
 }
+.nvtooltip {
+  .sl;
+  color: @white;
+  background-color: @gray7;
+  padding: 5px;
+  position: absolute;
+  z-index: 10000;
+  text-align: left;
+  pointer-events: all;
+
+  &:before {
+    position: absolute;
+    margin-left: -30px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid @gray7;
+  }
+
+  h3 {
+    margin: 0;
+    padding: 4px 14px;
+    line-height: 18px;
+    font-weight: normal;
+    background-color: rgba(247,247,247,0.75);
+    text-align: center;
+
+    border-bottom: 1px solid #ebebeb;
+
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    border-radius: 5px 5px 0 0;
+  }
+
+  p {
+    margin: 0;
+    padding: 5px 14px;
+    text-align: left;
+  }
+
+  span {
+    display: inline-block;
+    margin: 2px 0;
+  }
+
+  table {
+    margin: 6px;
+    border-spacing:0;
+  }
+
+  table td {
+    padding: 2px 9px 2px 0;
+    vertical-align: middle;
+  }
+
+  table td.key {
+    font-weight:normal;
+  }
+  table td.value {
+    text-align: right;
+    font-weight: bold;
+  }
+
+  table tr.highlight td {
+    padding: 1px 9px 1px 0;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-top-style: solid;
+    border-top-width: 1px;
+  }
+
+  table td.legend-color-guide div {
+    width: 8px;
+    height: 8px;
+    vertical-align: middle;
+    .border-radius(100%);
+  }
+
+}
+

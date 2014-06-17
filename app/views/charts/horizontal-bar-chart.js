@@ -5,8 +5,6 @@ Balanced.HorizontalBarChartView = Balanced.ChartView.extend({
 	options: function() {
 		return {
 			width: 300,
-			useInteractiveGuideline: true,
-			tooltips: true,
 			showValues: true
 		};
 	}.property(),

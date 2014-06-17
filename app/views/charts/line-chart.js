@@ -12,6 +12,9 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 			useInteractiveGuideline: true,
 			noData: 'No data available.',
 			tooltips: true
+			// tooltipContent: function(key, x, y, e, graph) {
+			// 	return '<h3>' + key + '</h3>' + '<p>$' + y + '</p>';
+			// }
 		};
 	}.property(),
 
