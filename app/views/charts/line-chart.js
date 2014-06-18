@@ -1,8 +1,24 @@
 Balanced.LineChartView = Balanced.ChartView.extend({
 	_chartModel: "lineChart",
 	classNames: ['line-chart'],
+	customizeChart: function(chart) {
+		chart.interactiveLayer.tooltip.contentGenerator(function(data) {
+			var html = '';
+
+			_.each(data, function(series) {
+				_.each(series, function(p) {
+					html += '<div><h4>%@</h4><p>%@</p></div>'.fmt(p.key, p.value);
+				})
+			});
+
+			return html;
+		});
+		return chart;
+	},
 
 	options: function() {
+		var self = this;
+
 		return {
 			width: 500,
 			showXAxis: true,
@@ -11,34 +27,11 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 			rightAlignYAxis: false,
 			useInteractiveGuideline: true,
 			noData: 'No data available.',
-			tooltips: true
-			// tooltipContent: function(key, x, y, e, graph) {
-			// 	return '<h3>' + key + '</h3>' + '<p>$' + y + '</p>';
-			// }
+			tooltips: true,
+			xTickFormat: function(d) {
+				return d3.time.format('%x')(new Date(d));
+			},
+			yTickFormat: d3.format(',.2f')
 		};
-	}.property(),
-
-	chartData: function() {
-		var sin = [],
-			cos = [];
-
-		for (var i = 0; i < 100; i++) {
-			sin.push({
-				x: i,
-				y: Math.sin(i / 10)
-			});
-			cos.push({
-				x: i,
-				y: 0.5 * Math.cos(i / 10)
-			});
-		}
-
-		return [{
-			values: sin,
-			key: 'Sine Wave'
-		}, {
-			values: cos,
-			key: 'Cosine Wave'
-		}];
-	}.property()
+	}.property('chart')
 });

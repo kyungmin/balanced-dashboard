@@ -9,9 +9,6 @@ Balanced.ChartView = Ember.View.extend({
 
 	width: 500,
 	height: 500,
-	xAxisLabel: 'Date',
-	yAxisLabel: 'Volume',
-
 	x: null,
 	y: null,
 	chartData: null,
@@ -27,32 +24,33 @@ Balanced.ChartView = Ember.View.extend({
 			chart = self.get('chartModel');
 		}
 
-		chart.options(self.get('options'));
-
 		chart.color(['#639ABD', '#BC8F30', '#9364A8', '#00A08E']);
 		// @egyptianBlue80, @turmericYellow80, @byzantiumPurple80, @forestGreen80
 
+		chart.options(self.get('options'));
+		return self.get('customizeChart').apply(self, [chart]);
+	}.property('chartModel', 'margin', 'options', 'customizeChart'),
+
+	customizeChart: function(chart) {
 		return chart;
-	}.property('chartModel', 'margin', 'options'),
+	},
 
 	updateChart: function() {
 		var self = this;
 		var el = self.get('element');
-		var chartData = self.get('chartData');
+		var data = self.get('data');
 		var chart = self.get('chart');
 
 		window.d3.select(el)
-			.datum(chartData)
+			.datum(data)
 			.transition()
 			.duration(250)
 			.call(chart);
 
-		window.d3.selectAll('circle.nv-point').attr("r", "5"); // TODO: figure out why L#63 doesn't work without this line
-
 		self.set('_chart', chart);
 		window.nv.utils.windowResize(chart.update);
 
-	}.observes('chartData', 'chart').on('didInsertElement'),
+	}.observes('data', 'chart').on('didInsertElement'),
 
 	didInsertElement: function() {
 		var self = this;
@@ -61,6 +59,7 @@ Balanced.ChartView = Ember.View.extend({
 
 		window.nv.addGraph(function() {
 			var chart = self.get('chart');
+
 			$('circle.nv-point').attr("r", "5");
 
 			return chart;

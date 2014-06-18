@@ -188,7 +188,23 @@ svg {
     }
 
     text {
-      .transform(rotate(-90deg) translate(0px, 30px));
+      font-size: 20px;
+      stroke: none;
+      .transform(rotate(-90deg) translate(10px, 40px));
+    }
+  }
+
+  &.vertical-bar-chart {
+    .nv-bar {
+      stroke-opacity: 0 !important;
+      fill-opacity: 0.65 !important;
+    }
+
+    text {
+      .sl-20-sb;
+      fill: @black;
+      stroke: none;
+      .transform(translateX(-60px));
     }
   }
 }
@@ -212,25 +228,21 @@ svg {
     border-right: 10px solid @gray7;
   }
 
-  h3 {
-    margin: 0;
-    padding: 4px 14px;
-    line-height: 18px;
-    font-weight: normal;
-    background-color: rgba(247,247,247,0.75);
-    text-align: center;
-
-    border-bottom: 1px solid #ebebeb;
-
-    -webkit-border-radius: 5px 5px 0 0;
-    -moz-border-radius: 5px 5px 0 0;
-    border-radius: 5px 5px 0 0;
+  h4 {
+    .sl-sm;
+    color: @white;
+    padding: 0 10px;
   }
 
   p {
-    margin: 0;
-    padding: 5px 14px;
+    .sl-20-sb;
+    color: @white;
     text-align: left;
+    padding: 0 10px;
+
+    &:before {
+      content: '$';
+    }
   }
 
   span {
@@ -238,38 +250,10 @@ svg {
     margin: 2px 0;
   }
 
-  table {
-    margin: 6px;
-    border-spacing:0;
-  }
-
-  table td {
-    padding: 2px 9px 2px 0;
-    vertical-align: middle;
-  }
-
-  table td.key {
-    font-weight:normal;
-  }
-  table td.value {
-    text-align: right;
-    font-weight: bold;
-  }
-
-  table tr.highlight td {
-    padding: 1px 9px 1px 0;
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-top-style: solid;
-    border-top-width: 1px;
-  }
-
-  table td.legend-color-guide div {
+  .legend-color-guide {
     width: 8px;
     height: 8px;
     vertical-align: middle;
-    .border-radius(100%);
+    .border-radius(50%);
   }
-
 }
-

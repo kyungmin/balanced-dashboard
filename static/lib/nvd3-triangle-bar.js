@@ -176,11 +176,6 @@
 							d3.event.stopPropagation();
 						});
 
-				// Note: Override rect drawing
-				// barsEnter.append('rect')
-				// 		.attr('height', 0)
-				// 		.attr('width', x.rangeBand() * .9 / data.length )
-
 				if (showValues) {
 					barsEnter.append('text')
 						.attr('text-anchor', 'middle')
@@ -205,7 +200,7 @@
 						.append('path')
 						.attr('d', function(d, i) {
 							var dy = Math.max(Math.abs(y(getY(d,i)) - y((yDomain && yDomain[0]) || 0)) || 1);
-							return 'M 60 0 L 0 ' + dy + ' L 120 ' + dy + ' Z';
+							return 'M 60 0 L -130 ' + dy + ' L 250 ' + dy + ' Z';
 						});
 
 				bars.transition()
