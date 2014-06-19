@@ -2,7 +2,7 @@
 	<h3>Total volume</h3>
 	<table class="list">
 		<tbody>
-			<tr {{action toggleLegend "Sine Wave" target=view.chartView}}>
+			<tr {{action toggleLegend "Sine Wave" target=view.lineChartView}}>
 				<td>
 					<span>
 						<div class="checkbox checked"></div>
@@ -14,7 +14,7 @@
 					<span>$123.45</span>
 				</td>
 			</tr>
-			<tr {{action toggleLegend "Cosine Wave" target=view.chartView}}>
+			<tr {{action toggleLegend "Cosine Wave" target=view.lineChartView}}>
 				<td>
 					<span>
 						<div class="checkbox"></div>
@@ -28,10 +28,8 @@
 			</tr>
 		</tbody>
 	</table>
-
-
 </div>
 
 <div class="panel span12">
-	{{view Balanced.LineChartView data=view.data viewName="chartView"}}
+	{{view Balanced.LineChartView data=view.data viewName="lineChartView"}}
 </div>

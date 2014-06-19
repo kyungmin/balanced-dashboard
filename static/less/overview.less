@@ -1,0 +1,26 @@
+#overview {
+  .checkbox {
+    width: 14px;
+    min-height: 14px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0;
+    margin-right: 10px;
+    margin-bottom: 2px;
+    background-color: @white;
+    border: 1px solid @gray2;
+
+    &.checked {
+      background-color: @gray4;
+      border: 1px solid @gray4;
+    }
+  }
+
+  table.list {
+    tr:hover {
+      .checkbox {
+        border: 1px solid @gray4;
+      }
+    }
+  }
+}

@@ -7,11 +7,11 @@
 	{{view Balanced.DateFilterHeaderView}}
 
 	<div class="body-panel clearfix">
-		{{view Balanced.LineChartWithLegendView chartName="totalVolume"}}
+		{{view Balanced.LineChartWithLegendView data=controller.totalVolume}}
 	</div>
 
 	<div class="body-panel clearfix">
-		{{view Balanced.LineChartWithLegendView chartName="transactionsCount"}}
+		{{view Balanced.LineChartWithLegendView data=controller.transactionsCount}}
 	</div>
 
 	<div class="body-panel clearfix">
