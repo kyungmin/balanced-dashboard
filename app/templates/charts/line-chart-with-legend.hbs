@@ -1,7 +1,35 @@
 <div class="panel side-panel span11">
 	<h3>Total volume</h3>
-	<div {{action toggleLegend "Sine Wave" target=view.chartView}}>series 2</div>
-	<div {{action toggleLegend "Cosine Wave" target=view.chartView}}>series 1</div>
+	<table class="list">
+		<tbody>
+			<tr {{action toggleLegend "Sine Wave" target=view.chartView}}>
+				<td>
+					<span>
+						<div class="checkbox checked"></div>
+						<div class="legend-color-guide series-1"></div>
+						Debits
+					</span>
+				</td>
+				<td class="num">
+					<span>$123.45</span>
+				</td>
+			</tr>
+			<tr {{action toggleLegend "Cosine Wave" target=view.chartView}}>
+				<td>
+					<span>
+						<div class="checkbox"></div>
+						<div class="legend-color-guide series-2"></div>
+						Credits
+					</span>
+				</td>
+				<td class="num">
+					<span>$123.45</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+
 </div>
 
 <div class="panel span12">

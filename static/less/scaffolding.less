@@ -208,6 +208,7 @@ svg {
     }
   }
 }
+
 .nvtooltip {
   .sl;
   color: @white;
@@ -249,15 +250,34 @@ svg {
     display: inline-block;
     margin: 2px 0;
   }
+}
 
-  .legend-color-guide {
-    width: 8px;
-    height: 8px;
-    vertical-align: middle;
-    .border-radius(50%);
+.legend-color-guide {
+  width: 8px;
+  height: 8px;
+  vertical-align: middle;
+  margin-bottom: 2px;
+  display: inline-block;
+  .border-radius(50%);
+
+  &.series-1 {
+    background-color: @egyptianBlue80;
+  }
+
+  &.series-2 {
+    background-color: @turmericYellow80;
+  }
+
+  &.series-3 {
+    background-color: @byzantiumPurple80;
+  }
+
+  &.series-4 {
+    background-color: @forestGreen80;
   }
 }
 
+// body panel
 .body-panel {
   margin-left: -45px;
   margin-right: -45px;
@@ -274,7 +294,7 @@ svg {
     }
 
     h3 {
-      .sl-md-sb;
+      .sl-sb;
     }
   }
 }

@@ -5,7 +5,7 @@ Balanced.LineChartWithLegendView = Balanced.ChartWithLegendView.extend({
 	data: function() {
 		var controller = this.get('controller');
 		var chartName = this.get('chartName');
-		console.log(chartName);
+
 		return controller.get(chartName);
 	}.property('controller', 'chartName')
 });
