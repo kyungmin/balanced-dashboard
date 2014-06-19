@@ -200,7 +200,7 @@
 						.append('path')
 						.attr('d', function(d, i) {
 							var dy = Math.max(Math.abs(y(getY(d,i)) - y((yDomain && yDomain[0]) || 0)) || 1);
-							return 'M 60 0 L -130 ' + dy + ' L 250 ' + dy + ' Z';
+							return 'M 60 0 L -30 ' + dy + ' L 150 ' + dy + ' Z';
 						});
 
 				bars.transition()

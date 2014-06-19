@@ -40,4 +40,4 @@ Balanced.MarketplaceRedirectActivityCustomersRoute = Balanced.RedirectRoute('mar
 Balanced.MarketplaceRedirectActivityFundingInstrumentsRoute = Balanced.RedirectRoute('marketplace.funding_instruments');
 Balanced.MarketplaceRedirectActivityDisputesRoute = Balanced.RedirectRoute('marketplace.disputes');
 
-Balanced.ActivityIndexRoute = Balanced.RedirectRoute('activity.transactions');
+Balanced.ActivityIndexRoute = Balanced.RedirectRoute('marketplace.overview');

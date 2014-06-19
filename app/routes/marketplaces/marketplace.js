@@ -5,10 +5,6 @@ Balanced.MarketplaceRoute = Balanced.AuthRoute.extend({
 		return marketplace;
 	},
 
-	redirect: function() {
-		this.transitionTo('marketplace.overview');
-	},
-
 	afterModel: function(model) {
 		Balanced.Utils.setCurrentMarketplace(model);
 	},

@@ -45,15 +45,15 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 			}
 
 			return [{
-				values: sin,
+				values: cos,
 				key: 'Sine Wave'
 			}, {
-				values: cos,
+				values: sin,
 				key: 'Cosine Wave'
 			}];
 		}.property(),
 
-		virticalBarChartData: function() {
+		verticalBarChartData: function() {
 			return [{
 				key: "Cumulative Return",
 				values: [{

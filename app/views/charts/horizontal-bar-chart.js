@@ -7,6 +7,7 @@ Balanced.HorizontalBarChartView = Balanced.ChartView.extend({
 	options: function() {
 		return {
 			width: 300,
+			height: 435,
 			showValues: true
 		};
 	}.property()
