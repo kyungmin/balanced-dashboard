@@ -11,7 +11,7 @@ Balanced.ChartView = Ember.View.extend({
 	height: 500,
 	x: null,
 	y: null,
-	chartData: null,
+	data: null,
 	options: {},
 
 	_chart: null,
@@ -64,5 +64,24 @@ Balanced.ChartView = Ember.View.extend({
 
 			return chart;
 		});
+	},
+
+	actions: {
+		toggleLegend: function(seriesKey) {
+			var chart = this.get('chart');
+			var data = this.get('data');
+
+			data.filterBy('key', seriesKey).forEach(function(series) {
+				series.disabled = !series.disabled;
+			});
+
+			if (data.isEvery('disabled')) {
+				data.forEach(function(series) {
+					series.disabled = false;
+				});
+			}
+
+			chart.update();
+		}
 	}
 });

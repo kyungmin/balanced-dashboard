@@ -1,3 +1,5 @@
+require("./chart");
+
 Balanced.VerticalBarChartView = Balanced.ChartView.extend({
 	_chartModel: "triangleBar",
 	classNames: ['vertical-bar-chart'],

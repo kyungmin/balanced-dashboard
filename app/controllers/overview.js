@@ -5,7 +5,31 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 		baseClassSelector: '#overview',
 		pageTitle: 'Overview',
 
-		lineChartData: function() {
+		totalVolume: function() {
+			var sin = [],
+				cos = [];
+
+			for (var i = 0; i < 100; i++) {
+				sin.push({
+					x: i,
+					y: Math.sin(i / 10)
+				});
+				cos.push({
+					x: i,
+					y: 0.5 * Math.cos(i / 10)
+				});
+			}
+
+			return [{
+				values: sin,
+				key: 'Sine Wave'
+			}, {
+				values: cos,
+				key: 'Cosine Wave'
+			}];
+		}.property(),
+
+		transactionsCount: function() {
 			var sin = [],
 				cos = [];
 

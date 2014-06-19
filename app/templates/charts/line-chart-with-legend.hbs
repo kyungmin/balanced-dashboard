@@ -1,0 +1,8 @@
+<div class="panel side-panel span11">
+	<div {{action toggleLegend "Sine Wave" target=view.chartView}}>series 2</div>
+	<div {{action toggleLegend "Cosine Wave" target=view.chartView}}>series 1</div>
+</div>
+
+<div class="panel span12">
+	{{view Balanced.LineChartView data=view.data viewName="chartView"}}
+</div>

@@ -1,3 +1,5 @@
+require("./chart");
+
 Balanced.LineChartView = Balanced.ChartView.extend({
 	_chartModel: "lineChart",
 	classNames: ['line-chart'],
@@ -31,7 +33,8 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 			xTickFormat: function(d) {
 				return d3.time.format('%x')(new Date(d));
 			},
-			yTickFormat: d3.format(',.2f')
+			yTickFormat: d3.format(',.2f'),
+			showLegend: false
 		};
 	}.property('chart')
 });

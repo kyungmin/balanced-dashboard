@@ -1,3 +1,5 @@
+require("./chart");
+
 Balanced.HorizontalBarChartView = Balanced.ChartView.extend({
 	_chartModel: "discreteBar",
 	classNames: ['horizontal-bar-chart'],

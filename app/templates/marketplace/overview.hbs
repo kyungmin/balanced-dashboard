@@ -6,7 +6,14 @@
 <div id="overview">
 	{{view Balanced.DateFilterHeaderView}}
 
-	{{view Balanced.LineChartView data=lineChartData}}
+	<div class="body-panel clearfix">
+		{{view Balanced.LineChartWithLegendView chartName="totalVolume"}}
+	</div>
+
+	<div class="body-panel clearfix">
+		{{view Balanced.LineChartWithLegendView chartName="transactionsCount"}}
+	</div>
+
 	{{view Balanced.HorizontalBarChartView data=horizontalBarChartData}}
 	{{view Balanced.VerticalBarChartView data=virticalBarChartData}}
 </div>
