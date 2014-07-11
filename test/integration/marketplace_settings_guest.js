@@ -18,7 +18,7 @@ module('Marketplace Settings Guest', {
 		Testing.restoreMethods(
 			Balanced.Adapter.create,
 			Balanced.Adapter.update,
-			Balanced.Adapter['delete'],
+			Balanced.Adapter.delete,
 			balanced.bankAccount.create,
 			balanced.card.create,
 			Ember.Logger.error,
@@ -337,19 +337,22 @@ test('create bank account only submits once when clicked multiple times', functi
 test('can delete bank accounts', function(assert) {
 	var spy = sinon.spy(Balanced.Adapter, "delete");
 	var initialLength;
-	var bankAccounts = Balanced.BankAccount.findAll();
+	var bankAccount;
+	var getModel = function() {
+		return Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
+	};
 
 	visit(Testing.SETTINGS_ROUTE)
 		.then(function() {
-			/**
-			 * WORKAROUND: I think there may be something weird happening
-			 * with the custom models when it is in synchronous mode.
-			 */
-			Ember.run(function() {
-				var model = Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
-				model.set('owner_customer', Ember.Object.create());
-				model.set('owner_customer.bank_accounts', bankAccounts);
-			});
+			return Balanced.BankAccount.findAll()
+				.then(function(bankAccounts) {
+					bankAccount = bankAccounts.objectAt(0);
+					Ember.run(function() {
+						getModel().set('owner_customer', Ember.Object.create({
+							bank_accounts: bankAccounts
+						}));
+					});
+				});
 		})
 		.then(function() {
 			initialLength = $('.bank-account-info .sidebar-items li').length;
@@ -357,14 +360,8 @@ test('can delete bank accounts', function(assert) {
 		.click(".bank-account-info .sidebar-items li:eq(0) .icon-delete")
 		.click('#delete-bank-account .modal-footer button[name="modal-submit"]')
 		.then(function() {
-			/**
-			 * WORKAROUND: since the test runner is synchronous,
-			 * lets force the model into a saving state.
-			 */
 			Ember.run(function() {
-				bankAccounts.get('content').forEach(function(bankAccount) {
-					bankAccount.set('isSaving', true);
-				});
+				bankAccount.set('isSaving', true);
 			});
 		})
 		.click('#delete-bank-account .modal-footer button[name="modal-submit"]')
@@ -421,19 +418,20 @@ test('can create cards', function(assert) {
 
 test('can delete cards', function(assert) {
 	var spy = sinon.spy(Balanced.Adapter, "delete");
-	var cards = Balanced.Card.findAll();
+	var card;
 
 	visit(Testing.SETTINGS_ROUTE)
 		.then(function() {
-			/**
-			 * WORKAROUND: I think there may be something weird happening
-			 * with the custom models when it is in synchronous mode.
-			 */
-			Ember.run(function() {
-				var model = Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
-				model.set('owner_customer', Ember.Object.create());
-				model.set('owner_customer.cards', cards);
-			});
+			return Balanced.Card.findAll()
+				.then(function(cards) {
+					card = cards.objectAt(0);
+					Ember.run(function() {
+						var model = Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
+						model.set('owner_customer', Ember.Object.create({
+							cards: cards
+						}));
+					});
+				});
 		})
 		.then(function() {
 			assert.equal($('.card-info .sidebar-items li').length, 1);
@@ -446,8 +444,7 @@ test('can delete cards', function(assert) {
 			 * lets force the model into a saving state.
 			 */
 			Ember.run(function() {
-				var model = Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
-				model.set('isSaving', true);
+				card.set('isSaving', true);
 			});
 		})
 		.click('#delete-card .modal-footer button[name="modal-submit"]')
