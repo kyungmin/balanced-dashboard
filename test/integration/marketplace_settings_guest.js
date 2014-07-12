@@ -17,8 +17,10 @@ module('Marketplace Settings Guest', {
 	teardown: function() {
 		Testing.restoreMethods(
 			Balanced.Adapter.create,
+			Balanced.Adapter.update,
+			Balanced.Adapter.delete,
 			balanced.bankAccount.create,
-			Balanced.Adapter['delete'],
+			balanced.card.create,
 			Ember.Logger.error,
 			Balanced.APIKey.prototype.save
 		);
@@ -155,76 +157,67 @@ test('updating marketplace info only submits once despite multiple clicks', func
 
 	visit(Testing.SETTINGS_ROUTE)
 		.then(function() {
-			var model = Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
-			model.set('production', true);
-			Testing.stop();
-
-			Ember.run.next(function() {
-				Testing.start();
-
-				click('.marketplace-info a.icon-edit')
-					.fillIn('#edit-marketplace-info .modal-body input[name="name"]', 'Test')
-					.click('#edit-marketplace-info .modal-footer button[name="modal-submit"]')
-					.click('#edit-marketplace-info .modal-footer button[name="modal-submit"]')
-					.click('#edit-marketplace-info .modal-footer button[name="modal-submit"]')
-					.then(function() {
-						assert.ok(stub.calledOnce);
-						stub.restore();
-					});
+			Ember.run(function() {
+				var model = Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
+				model.set('production', true);
 			});
+		})
+		.click('.marketplace-info a.icon-edit')
+		.fillIn('#edit-marketplace-info .modal-body input[name="name"]', 'Test')
+		.click('#edit-marketplace-info .modal-footer button[name="modal-submit"]')
+		.click('#edit-marketplace-info .modal-footer button[name="modal-submit"]')
+		.click('#edit-marketplace-info .modal-footer button[name="modal-submit"]')
+		.then(function() {
+			assert.ok(stub.calledOnce);
 		});
 });
 
 test('can update owner info', function(assert) {
 	var stub = sinon.stub(Balanced.Adapter, "update");
 
-	visit(Testing.SETTINGS_ROUTE).then(function() {
-		var model = Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
-		model.set('owner_customer', Balanced.Customer.create());
-		model.set('production', true);
-		Testing.stop();
-
-		Ember.run.next(function() {
-			Testing.start();
-
-			click('.owner-info a.icon-edit')
-				.fillIn('#edit-customer-info .modal-body input[name="name"]', 'TEST')
-				.fillIn('#edit-customer-info .modal-body input[name="email"]', 'TEST@example.com')
-				.fillIn('#edit-customer-info .modal-body input[name="business_name"]', 'TEST')
-				.fillIn('#edit-customer-info .modal-body input[name="ein"]', '1234')
-				.click('#edit-customer-info a.more-info')
-				.fillIn('#edit-customer-info .modal-body input[name="line1"]', '600 William St')
-				.fillIn('#edit-customer-info .modal-body input[name="line2"]', 'Apt 400')
-				.fillIn('#edit-customer-info .modal-body input[name="city"]', 'Oakland')
-				.fillIn('#edit-customer-info .modal-body input[name="state"]', 'CA')
-				.fillIn('#edit-customer-info .modal-body select[name="country_code"]', 'US')
-				.fillIn('#edit-customer-info .modal-body input[name="postal_code"]', '12345')
-				.fillIn('#edit-customer-info .modal-body input[name="phone"]', '1231231234')
-				.fillIn('#edit-customer-info .modal-body input[name="dob_month"]', '12')
-				.fillIn('#edit-customer-info .modal-body input[name="dob_year"]', '1924')
-				.fillIn('#edit-customer-info .modal-body input[name="ssn_last4"]', '1234')
-				.click('#edit-customer-info .modal-footer button[name="modal-submit"]')
-				.then(function() {
-					assert.ok(stub.calledOnce);
-					assert.ok(stub.calledWith(Balanced.Customer));
-					assert.equal(stub.getCall(0).args[2].name, "TEST");
-					assert.equal(stub.getCall(0).args[2].email, "TEST@example.com");
-					assert.equal(stub.getCall(0).args[2].business_name, "TEST");
-					assert.equal(stub.getCall(0).args[2].ein, "1234");
-					assert.equal(stub.getCall(0).args[2].address.line1, "600 William St");
-					assert.equal(stub.getCall(0).args[2].address.line2, "Apt 400");
-					assert.equal(stub.getCall(0).args[2].address.city, "Oakland");
-					assert.equal(stub.getCall(0).args[2].address.state, "CA");
-					assert.equal(stub.getCall(0).args[2].address.country_code, "US");
-					assert.equal(stub.getCall(0).args[2].address.postal_code, "12345");
-					assert.equal(stub.getCall(0).args[2].phone, "1231231234");
-					assert.equal(stub.getCall(0).args[2].dob_month, "12");
-					assert.equal(stub.getCall(0).args[2].dob_year, "1924");
-					assert.equal(stub.getCall(0).args[2].ssn_last4, "1234");
-					stub.restore();
-				});
+	visit(Testing.SETTINGS_ROUTE)
+		.then(function() {
+			Ember.run(function() {
+				var model = Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
+				model.set('owner_customer', Balanced.Customer.create());
+				model.set('production', true);
+			});
+		})
+		.click('.owner-info a.icon-edit')
+		.fillIn('#edit-customer-info .modal-body input[name="name"]', 'TEST')
+		.fillIn('#edit-customer-info .modal-body input[name="email"]', 'TEST@example.com')
+		.fillIn('#edit-customer-info .modal-body input[name="business_name"]', 'TEST')
+		.fillIn('#edit-customer-info .modal-body input[name="ein"]', '1234')
+		.click('#edit-customer-info a.more-info')
+		.fillIn('#edit-customer-info .modal-body input[name="line1"]', '600 William St')
+		.fillIn('#edit-customer-info .modal-body input[name="line2"]', 'Apt 400')
+		.fillIn('#edit-customer-info .modal-body input[name="city"]', 'Oakland')
+		.fillIn('#edit-customer-info .modal-body input[name="state"]', 'CA')
+		.fillIn('#edit-customer-info .modal-body select[name="country_code"]', 'US')
+		.fillIn('#edit-customer-info .modal-body input[name="postal_code"]', '12345')
+		.fillIn('#edit-customer-info .modal-body input[name="phone"]', '1231231234')
+		.fillIn('#edit-customer-info .modal-body input[name="dob_month"]', '12')
+		.fillIn('#edit-customer-info .modal-body input[name="dob_year"]', '1924')
+		.fillIn('#edit-customer-info .modal-body input[name="ssn_last4"]', '1234')
+		.click('#edit-customer-info .modal-footer button[name="modal-submit"]')
+		.then(function() {
+			assert.ok(stub.calledOnce);
+			assert.ok(stub.calledWith(Balanced.Customer));
+			assert.equal(stub.getCall(0).args[2].name, "TEST");
+			assert.equal(stub.getCall(0).args[2].email, "TEST@example.com");
+			assert.equal(stub.getCall(0).args[2].business_name, "TEST");
+			assert.equal(stub.getCall(0).args[2].ein, "1234");
+			assert.equal(stub.getCall(0).args[2].address.line1, "600 William St");
+			assert.equal(stub.getCall(0).args[2].address.line2, "Apt 400");
+			assert.equal(stub.getCall(0).args[2].address.city, "Oakland");
+			assert.equal(stub.getCall(0).args[2].address.state, "CA");
+			assert.equal(stub.getCall(0).args[2].address.country_code, "US");
+			assert.equal(stub.getCall(0).args[2].address.postal_code, "12345");
+			assert.equal(stub.getCall(0).args[2].phone, "1231231234");
+			assert.equal(stub.getCall(0).args[2].dob_month, "12");
+			assert.equal(stub.getCall(0).args[2].dob_year, "1924");
+			assert.equal(stub.getCall(0).args[2].ssn_last4, "1234");
 		});
-	});
 });
 
 test('can create checking accounts', function(assert) {
@@ -244,24 +237,15 @@ test('can create checking accounts', function(assert) {
 			routing_number: "123123123"
 		})
 		.click('#account_type_checking')
+		.click('#add-bank-account .modal-footer button[name="modal-submit"]')
 		.then(function() {
-			Testing.stop();
-
-			Ember.run.next(function() {
-				Testing.start();
-
-				click('#add-bank-account .modal-footer button[name="modal-submit"]')
-					.then(function() {
-						assert.ok(tokenizingStub.calledOnce);
-						assert.ok(tokenizingStub.calledWith({
-							account_type: "checking",
-							name: "TEST",
-							account_number: "123",
-							routing_number: "123123123"
-						}));
-						tokenizingStub.restore();
-					});
-			});
+			assert.ok(tokenizingStub.calledOnce);
+			assert.ok(tokenizingStub.calledWith({
+				account_type: "checking",
+				name: "TEST",
+				account_number: "123",
+				routing_number: "123123123"
+			}));
 		});
 });
 
@@ -304,7 +288,6 @@ test('can fail at creating bank accounts', function(assert) {
 
 			assert.ok($('#add-bank-account .modal-body input[name="routing_number"]').closest('.control-group').hasClass('error'), 'Validation errors being reported');
 			assert.equal($('#add-bank-account .modal-body input[name="routing_number"]').next().text().trim(), '"321171184abc" must have length <= 9');
-			tokenizingStub.restore();
 		});
 });
 
@@ -329,7 +312,6 @@ test('can create savings accounts', function(assert) {
 				account_number: "123",
 				routing_number: "123123123"
 			}));
-			tokenizingSpy.restore();
 		});
 });
 
@@ -349,56 +331,43 @@ test('create bank account only submits once when clicked multiple times', functi
 		.click('#add-bank-account .modal-footer button[name="modal-submit"]')
 		.then(function() {
 			assert.ok(spy.calledOnce);
-			spy.restore();
 		});
 });
 
 test('can delete bank accounts', function(assert) {
 	var spy = sinon.spy(Balanced.Adapter, "delete");
 	var initialLength;
-	var bankAccounts = Balanced.BankAccount.findAll();
-	var model;
+	var bankAccount;
+	var getModel = function() {
+		return Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
+	};
 
 	visit(Testing.SETTINGS_ROUTE)
 		.then(function() {
-			/**
-			 * WORKAROUND: I think there may be something weird happening
-			 * with the custom models when it is in synchronous mode.
-			 */
-			model = Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
-			model.set('owner_customer', Ember.Object.create());
-			model.set('owner_customer.bank_accounts', bankAccounts);
-			Testing.stop();
-
-			Ember.run.next(function() {
-				Testing.start();
-
-				initialLength = $('.bank-account-info .sidebar-items li').length;
-
-				click(".bank-account-info .sidebar-items li:eq(0) .icon-delete")
-					.click('#delete-bank-account .modal-footer button[name="modal-submit"]')
-					.then(function() {
-						/**
-						 * WORKAROUND: since the test runner is synchronous,
-						 * lets force the model into a saving state.
-						 */
-						bankAccounts.get('content').forEach(function(bankAccount) {
-							bankAccount.set('isSaving', true);
-						});
-
-						Testing.stop();
-						Ember.run.next(function() {
-							Testing.start();
-
-							click('#delete-bank-account .modal-footer button[name="modal-submit"]');
-						});
-					})
-					.then(function() {
-						assert.equal($('.bank-account-info .sidebar-items li').length, initialLength - 1);
-						assert.ok(spy.calledOnce, "Delete should have been called once");
-						spy.restore();
+			return Balanced.BankAccount.findAll()
+				.then(function(bankAccounts) {
+					bankAccount = bankAccounts.objectAt(0);
+					Ember.run(function() {
+						getModel().set('owner_customer', Ember.Object.create({
+							bank_accounts: bankAccounts
+						}));
 					});
+				});
+		})
+		.then(function() {
+			initialLength = $('.bank-account-info .sidebar-items li').length;
+		})
+		.click(".bank-account-info .sidebar-items li:eq(0) .icon-delete")
+		.click('#delete-bank-account .modal-footer button[name="modal-submit"]')
+		.then(function() {
+			Ember.run(function() {
+				bankAccount.set('isSaving', true);
 			});
+		})
+		.click('#delete-bank-account .modal-footer button[name="modal-submit"]')
+		.then(function() {
+			assert.equal($('.bank-account-info .sidebar-items li').length, initialLength - 1);
+			assert.ok(spy.calledOnce, "Delete should have been called once");
 		});
 });
 
@@ -410,7 +379,6 @@ test('can create cards', function(assert) {
 			href: '/cards/' + Testing.CARD_ID
 		}]
 	});
-	var model;
 
 	visit(Testing.SETTINGS_ROUTE)
 		.click('.card-info a.add')
@@ -429,16 +397,12 @@ test('can create cards', function(assert) {
 			 * WORKAROUND: since the test runner is synchronous,
 			 * lets force the model into a saving state.
 			 */
-			model = Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
-			model.set('isSaving', true);
-
-			Testing.stop();
-			Ember.run.next(function() {
-				Testing.start();
-
-				click('#add-card .modal-footer button[name="modal-submit"]');
+			Ember.run(function() {
+				var model = Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
+				model.set('isSaving', true);
 			});
 		})
+		.click('#add-card .modal-footer button[name="modal-submit"]')
 		.then(function() {
 			assert.ok(tokenizingStub.calledWith(sinon.match({
 				name: "TEST",
@@ -449,53 +413,44 @@ test('can create cards', function(assert) {
 				address: {}
 			})));
 			assert.ok(tokenizingStub.calledOnce);
-			tokenizingStub.restore();
 		});
 });
 
 test('can delete cards', function(assert) {
 	var spy = sinon.spy(Balanced.Adapter, "delete");
-	var cards = Balanced.Card.findAll();
-	var model;
+	var card;
 
 	visit(Testing.SETTINGS_ROUTE)
 		.then(function() {
-			/**
-			 * WORKAROUND: I think there may be something weird happening
-			 * with the custom models when it is in synchronous mode.
-			 */
-			model = Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
-			model.set('owner_customer', Ember.Object.create());
-			model.set('owner_customer.cards', cards);
-			Testing.stop();
-
-			Ember.run.next(function() {
-				Testing.start();
-
-				assert.equal($('.card-info .sidebar-items li').length, 1);
-
-				click(".card-info .sidebar-items li:eq(0) .icon-delete")
-					.click('#delete-card .modal-footer button[name="modal-submit"]')
-					.then(function() {
-						/**
-						 * WORKAROUND: since the test runner is synchronous,
-						 * lets force the model into a saving state.
-						 */
-						model.set('isSaving', true);
-						Testing.stop();
-
-						Ember.run.next(function() {
-							Testing.start();
-
-							click('#delete-card .modal-footer button[name="modal-submit"]');
-						});
-					})
-					.then(function() {
-						assert.equal($('.card-info .sidebar-items li').length, 0);
-						assert.ok(spy.calledOnce, "Delete should have been called once");
-						spy.restore();
+			return Balanced.Card.findAll()
+				.then(function(cards) {
+					card = cards.objectAt(0);
+					Ember.run(function() {
+						var model = Balanced.__container__.lookup('controller:marketplaceSettings').get('model');
+						model.set('owner_customer', Ember.Object.create({
+							cards: cards
+						}));
 					});
+				});
+		})
+		.then(function() {
+			assert.equal($('.card-info .sidebar-items li').length, 1);
+		})
+		.click(".card-info .sidebar-items li:eq(0) .icon-delete")
+		.click('#delete-card .modal-footer button[name="modal-submit"]')
+		.then(function() {
+			/**
+			 * WORKAROUND: since the test runner is synchronous,
+			 * lets force the model into a saving state.
+			 */
+			Ember.run(function() {
+				card.set('isSaving', true);
 			});
+		})
+		.click('#delete-card .modal-footer button[name="modal-submit"]')
+		.then(function() {
+			assert.equal($('.card-info .sidebar-items li').length, 0);
+			assert.ok(spy.calledOnce, "Delete should have been called once");
 		});
 });
 
@@ -518,7 +473,6 @@ test('can add webhooks', function(assert) {
 			assert.ok(stub.calledOnce);
 			assert.equal(stub.getCall(0).args[2].revision, '1.0');
 			assert.equal(stub.getCall(0).args[2].url, 'http://www.example.com/something');
-			stub.restore();
 		});
 });
 
@@ -536,7 +490,6 @@ test('webhooks get created once if submit button is clicked multiple times', fun
 			assert.ok(stub.calledOnce);
 			assert.equal(stub.getCall(0).args[2].revision, '1.1');
 			assert.equal(stub.getCall(0).args[2].url, 'http://www.example.com/something');
-			stub.restore();
 		});
 });
 
@@ -560,6 +513,5 @@ test('delete webhooks only submits once even if clicked multiple times', functio
 		.click('#delete-callback .modal-footer button[name="modal-submit"]')
 		.then(function() {
 			assert.ok(spy.calledOnce);
-			spy.restore();
 		});
 });
