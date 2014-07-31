@@ -19,7 +19,7 @@
   position: relative;
 }
 
-#search {
+#search, .search {
   display: block;
   height: 100%;
   text-align: left;
@@ -49,6 +49,10 @@
 
       .icon-search {
         color: @black;
+
+        &:after {
+          content: none;
+        }
       }
     }
   }

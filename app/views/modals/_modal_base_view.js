@@ -66,3 +66,13 @@ Balanced.ObjectCreatorModalBaseView = Balanced.ModalBaseView.extend({
 		}
 	}
 });
+
+Balanced.FullScreenModalView = Balanced.ModalBaseView.extend({
+	layoutName: "modals/full_screen_modal_layout",
+	classNames: ["modal", "full-screen-modal"],
+	reposition: null,
+	didInsertElement: function() {
+		console.log($('.full-screen-modal').css('marginTop'))
+		$('.full-screen-modal').css('margin', 0);
+	}
+});
