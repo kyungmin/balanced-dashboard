@@ -19,7 +19,8 @@
 		{{else}}
       {{#if auth.isAdmin}}
 	      <li class="administration">
-	        {{#link-to 'administrator'}}Administration{{/link-to}}
+	        <!-- {{#link-to 'administrator'}}Administration{{/link-to}} -->
+	        <a href="#" {{action "openModal" Balanced.Admin.SearchMarketplaceModalView}}>Admin search</a>
         </li>
       {{/if}}
 			<li class="change-email">
