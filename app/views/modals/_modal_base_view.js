@@ -92,18 +92,13 @@ Balanced.ObjectCreatorModalBaseView = Balanced.ModalBaseView.extend({
 	}
 });
 
-<<<<<<< HEAD
-Balanced.FullScreenModalView = Balanced.ModalBaseView.extend({
-	layoutName: "modals/full_screen_modal_layout",
-	classNames: ["modal", "full-screen-modal"],
-	reposition: null,
-	didInsertElement: function() {
-		console.log($('.full-screen-modal').css('marginTop'))
-		$('.full-screen-modal').css('margin', 0);
-	}
-=======
 Balanced.Modals.ModalBaseFooter = Balanced.View.extend({
 	classNameBindings: [":modal-footer"],
 	templateName: "modals/modal_base_footer"
->>>>>>> ca9a9c10ba7bb1382c3ee508cbfb063f9f8fa149
+});
+
+Balanced.FullScreenModalView = Balanced.ModalBaseView.extend({
+	layoutName: "modals/full_screen_modal_layout",
+	classNames: ["modal", "full-screen-modal"],
+	reposition: null
 });

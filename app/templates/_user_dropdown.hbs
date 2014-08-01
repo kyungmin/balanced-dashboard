@@ -18,8 +18,7 @@
 			<li>{{#link-to 'claim'}}Claim account{{/link-to}}</li>
 		{{else}}
       {{#if auth.isAdmin}}
-	      <li class="administration">
-	        <!-- {{#link-to 'administrator'}}Administration{{/link-to}} -->
+	      <li class="admin-search">
 	        <a href="#" {{action "openModal" Balanced.Admin.SearchMarketplaceModalView}}>Admin search</a>
         </li>
       {{/if}}

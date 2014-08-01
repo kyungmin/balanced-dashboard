@@ -1,31 +1,11 @@
-<<<<<<< HEAD
-<div class="page-navigation">
-	<h1 class="page-title">Settings</h1>
-</div>
-{{view Balanced.AdminMarketplaceSettingsView}}
-<div class="row-fluid">
-	<div class="span16">
-		<section class="marketplace-info">
-			<div class="key-value-display">
-				<header>
-					<h3>Marketplace info
-						{{#if can_edit}}
-							<a class="icon-edit action pull-right" title="Edit" {{action "openEditMarketplaceInfoModal" target="view"}}></a>
-						{{/if}}
-					</h3>
-				</header>
-				<dl class="dl-horizontal">
-					<dt>ID</dt>
-					<dd><span>{{id}}</span></dd>
-=======
 {{view Balanced.PageNavigationView title="Settings" hideDateFilter=true}}
 
 {{#view Balanced.BodyPanelView}}
 	{{#view Balanced.SidePanelView model=model}}
+		{{view Balanced.Admin.MarketplaceSettingsView}}
 		{{view Balanced.SettingsMarketplaceTitledKeyValuesSectionView model=model}}
 		{{view Balanced.SettingsOwnerTitledKeyValuesSectionView model=model.owner_customer}}
 	{{/view}}
->>>>>>> ca9a9c10ba7bb1382c3ee508cbfb063f9f8fa149
 
 	{{#view Balanced.MainPanelView}}
 		<section class="payment-method-info">

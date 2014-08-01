@@ -55,7 +55,7 @@ body .modal-backdrop.fade.in {
   &.full-screen-modal {
     width: 100%;
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: @white;
     margin: 0 !important;
     padding: 50px;
     position: fixed;
@@ -541,7 +541,7 @@ body .modal-backdrop.fade.in {
     color: @gray4;
     position: absolute;
     right: 45px;
-    top: 45px;
+    top: 25px;
 
     &:hover {
       cursor: pointer;
@@ -611,12 +611,6 @@ body .modal-backdrop.fade.in {
       line-height: 46px;
     }
   }
-}
-
-#admin-search {
-  margin-top: -50px;
-  margin-left: -100px;
-  margin-right: -100px;
 }
 
 @import "/static/less/bootstrap-modal/bootstrap-modal.less";
