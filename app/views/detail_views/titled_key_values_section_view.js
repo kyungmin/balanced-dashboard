@@ -16,6 +16,10 @@ Balanced.TitledKeyValuesSectionView = Balanced.View.extend({
 
 		if (_.contains(dateFields, fieldName)) {
 			value = Balanced.Utils.humanReadableDateLong(value);
+		} else if (value === true) {
+			value = "Yes";
+		} else if (value === false) {
+			value = "No";
 		}
 
 		return value;
