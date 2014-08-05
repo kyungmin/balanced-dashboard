@@ -6,21 +6,6 @@ Balanced.MarketplaceSettingsController = Balanced.ObjectController.extend(action
 
 	ownerCustomer: Ember.computed.oneWay("marketplace.owner_customer"),
 
-	addSidePanelView: function(view) {
-		this.get("additionalSidePanelViews").addObject(view);
-	},
-	additionalSidePanelViews: function() {
-		return [];
-	}.property(),
-
-	additionalInfo: function() {
-		var view = Balanced.TitledKeyValuesSectionView.create({
-			model: this.get("model")
-		});
-		return view;
-
-	}.property("model"),
-
 	fundingInstrumentsResultsLoader: function() {
 		if (this.get("owner_customer")) {
 			return this.get("owner_customer").getFundingInstrumentsLoader({

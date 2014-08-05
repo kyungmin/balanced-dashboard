@@ -1,4 +1,4 @@
-Balanced.MarketplaceSettingsView = Balanced.View.extend({
+Balanced.MarketplaceSettingsView = Balanced.ExtensibleView.extend({
 	keySecret: false,
 
 	actions: {
@@ -6,4 +6,8 @@ Balanced.MarketplaceSettingsView = Balanced.View.extend({
 			this.get('editMarketplaceInfoModal').send('open');
 		}
 	}
+});
+
+Balanced.register('view:marketplace_settings', Balanced.MarketplaceSettingsView, {
+	singleton: true
 });
