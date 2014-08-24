@@ -1,55 +1,23 @@
-Balanced.InvoiceController = Balanced.ObjectController.extend(
-	Ember.Evented,
-	Balanced.ResultsTable,
-	Balanced.TransactionsTable, {
-		needs: ['marketplace'],
-		marketplace: Ember.computed.alias('controllers.marketplace.content'),
+Balanced.InvoiceController = Balanced.ObjectController.extend(Ember.Evented, {
+	needs: ['marketplace'],
 
-		type: 'hold',
-		sortField: 'created_at',
-		sortOrder: 'desc',
-		limit: 20,
-		transactionStatus: false,
-
-		baseClassSelector: '#invoice',
-
-		init: function() {
-			var self = this;
-
-			Balanced.Model.Events.on('didCreate', function(object) {
-				if (Balanced.Transaction.prototype.isPrototypeOf(object)) {
-					self.send('reload');
-				}
-			});
+	actions: {
+		printSummary: function() {
+			window.print();
+		},
+		changeTypeFilter: function(type) {
+			this.set("transactionsResultsLoader.type", type);
 		},
 
-		actions: {
-			printSummary: function() {
-				window.print();
-			}
+		changeTransactionsSort: function(column) {
+			this.get("transactionsResultsLoader").setSortField(column);
 		},
 
-		results: function() {
-			var type = this.get("type");
-			var typeMappings = {
-				debit: "debits",
-				credit: "credits",
-				failed_credit: "failed_credits",
-				reversal: "reversals",
-				hold: "holds",
-				refund: "refunds",
-				card_debit: "card_debits",
-				bank_account_debit: "bank_account_debits"
-			};
-			if (typeMappings[type]) {
-				return this.get(typeMappings[type]);
-			}
-
-			return null;
-		}.property('type', 'debits', 'credits', 'holds', 'failed_credits', 'refunds', 'card_debits', 'bank_account_debits'),
-
-		dispute_results: Ember.computed.alias('disputes'),
-
-		results_base_uri: Ember.computed.alias('controllers.marketplace.invoices_uri')
-	}
-);
+		changeStatusFilter: function(status) {
+			this.get("transactionsResultsLoader").setStatusFilter(status);
+		},
+		changeDisputeStatusFilter: function(status) {
+			this.set('disputesResultsLoader.statusFilters', status);
+		}
+	},
+});

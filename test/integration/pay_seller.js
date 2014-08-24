@@ -13,7 +13,7 @@ test('can pay a seller', function(assert) {
 	var stub = sinon.stub(Balanced.Adapter, "create");
 
 	visit(Testing.MARKETPLACES_ROUTE)
-		.click('div a.pay-a-seller')
+		.click(".page-navigation a:contains(Credit a bank account)")
 		.fillForm('#pay-seller', {
 			'name': 'TEST',
 			'routing_number': '123123123',
@@ -23,7 +23,7 @@ test('can pay a seller', function(assert) {
 			'appears_on_statement_as': 'Transaction',
 			'description': "Cool"
 		})
-		.click('#pay-seller .modal-footer button:eq(1)')
+		.click('#pay-seller .modal-footer button:contains(Credit)')
 		.then(function() {
 			assert.ok(stub.calledOnce, "Called Once");
 			assert.deepEqual(stub.firstCall.args.slice(0, 3), [Balanced.Credit, "/credits", {
@@ -44,7 +44,7 @@ test('pay a seller only submits once despite multiple button clicks', function(a
 	var stub = sinon.stub(Balanced.Adapter, "create");
 
 	visit(Testing.MARKETPLACES_ROUTE)
-		.click('div a.pay-a-seller')
+		.click(".page-navigation a:contains(Credit a bank account)")
 		.fillForm('#pay-seller', {
 			'name': 'TEST',
 			'routing_number': '123123123',
@@ -53,7 +53,7 @@ test('pay a seller only submits once despite multiple button clicks', function(a
 			'dollar_amount': '98',
 			'appears_on_statement_as': 'Transaction'
 		}, {
-			clickMultiple: '.modal-footer button:eq(1)'
+			clickMultiple: '.modal-footer button:contains(Credit)'
 		})
 		.then(function() {
 			assert.ok(stub.calledOnce);

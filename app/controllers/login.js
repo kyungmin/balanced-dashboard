@@ -1,4 +1,5 @@
 Balanced.LoginController = Balanced.ObjectController.extend({
+	needs: ["sessions"],
 	email: null,
 	password: null,
 	loginError: false,
@@ -13,12 +14,6 @@ Balanced.LoginController = Balanced.ObjectController.extend({
 	fromForgotPassword: Ember.computed.equal('from', 'ForgotPassword'),
 
 	init: function() {
-		if (this.get('auth.signedIn')) {
-			this.afterLogin();
-		} else {
-			this.get('auth').on('signInSuccess', _.bind(this.afterLogin, this));
-		}
-
 		this._super();
 		this.focus();
 	},
@@ -52,31 +47,23 @@ Balanced.LoginController = Balanced.ObjectController.extend({
 	},
 
 	afterLogin: function() {
-		var auth = this.get('auth');
-		this.setProperties({
-			loginError: false,
-			isSubmitting: false
-		});
+		var self = this;
 
-		var attemptedTransition = auth.get('attemptedTransition');
-
-		if (attemptedTransition) {
-			Ember.run.next(function() {
-				var transition = attemptedTransition.retry();
-
-				transition.then(function() {
-					auth.trigger('signInTransition');
-				}, function() {
-					transition.retry();
-					auth.trigger('signInTransition');
-				});
-
-				auth.set('attemptedTransition', null);
+		Ember.run(function() {
+			self.setProperties({
+				loginError: false,
+				isSubmitting: false
 			});
-		} else {
-			this.transitionToRoute('index');
-			auth.trigger('signInTransition');
-		}
+		});
+		this.get("controllers.sessions").send("afterLoginTransition");
+	},
+
+	getEmail: function() {
+		return this.get('email') || $('form input[type=email]').val();
+	},
+
+	getPassword: function() {
+		return this.get('password') || $('form input[type=password]').val();
 	},
 
 	actions: {
@@ -86,18 +73,21 @@ Balanced.LoginController = Balanced.ObjectController.extend({
 
 			this.set('isSubmitting', true);
 
-			auth.confirmOTP(this.get('otpCode')).then(function() {
-				self.afterLogin();
-			}, function() {
-				auth.forgetLogin();
-				self.reset();
-				self.setProperties({
-					loginError: true,
-					loginResponse: 'Invalid OTP code. Please login again.'
-				});
+			auth.confirmOTP(this.get('otpCode'))
+				.then(function() {
+					self.afterLogin();
+				}, function() {
+					auth.forgetLogin();
+					self.reset();
+					self.setProperties({
+						loginError: true,
+						loginResponse: 'Invalid OTP code. Please login again.'
+					});
 
-				self.focus();
-			}).always(function() {
+					self.focus();
+				})
+				.
+			finally(function() {
 				self.set('isSubmitting', false);
 			});
 		},
@@ -106,81 +96,91 @@ Balanced.LoginController = Balanced.ObjectController.extend({
 			this.resetError();
 		},
 
+		signUp: function() {
+			Balanced.Analytics.trackEvent("SignUp: Opened 'Create an account'", {
+				path: "login"
+			});
+			this.transitionToRoute('setup_guest_user');
+		},
+
 		signIn: function() {
 			var self = this;
-			var auth = this.get('auth');
+			var sessionsController = this.get("controllers.sessions");
 
 			this.resetError();
 			this.set('isSubmitting', true);
 
-			auth.forgetLogin();
-			auth.signIn(
-				this.get('email') || $('form input[type=email]').val(),
-				this.get('password') || $('form input[type=password]').val()
-			).then(function() {
-				// When we add the MFA modal to ask users to login
-				// self.send('openMFAInformationModal');
-				// For now tho:
-				self.afterLogin();
-			}, function(jqxhr, status, message) {
-				self.focus();
-				self.set('password', null);
+			sessionsController.nuke();
+			sessionsController
+				.login({
+					email_address: this.getEmail(),
+					password: this.getPassword()
+				})
+				.then(function() {
+					// When we add the MFA modal to ask users to login
+					// self.send('openMFAInformationModal');
+					// For now tho:
+					self.afterLogin();
+				}, function(jqxhr, status, message) {
+					self.focus();
+					self.set('password', null);
 
-				if (jqxhr.status === 401) {
-					self.setProperties({
-						loginError: true,
-						loginResponse: 'Invalid e-mail address or password.'
-					});
-					return;
-				}
-
-				if (typeof jqxhr.responseText !== "undefined" && jqxhr.responseText) {
-					var responseText = jqxhr.responseJSON;
-
-					// What if responseJSON is null/undefined:
-					// 1. Try to parse it ourselves
-					// 2. If all else fails, assume that the responseText
-					//    is the error message to be shown
-					if (!responseText) {
-						try {
-							responseText = JSON.parse(jqxhr.responseText);
-						} catch (e) {
-							responseText = {
-								detail: jqxhr.responseText
-							};
-						}
+					if (jqxhr.status === 401) {
+						self.setProperties({
+							loginError: true,
+							loginResponse: 'Invalid e-mail address or password.'
+						});
+						return;
 					}
 
-					// OTP Required Case
-					if (jqxhr.status === 409 && responseText.status === 'OTP_REQUIRED') {
-						self.set('otpRequired', true);
-					} else {
-						self.set('loginError', true);
+					if (jqxhr.responseText !== "undefined" && jqxhr.responseText) {
+						var responseText = jqxhr.responseJSON;
 
-						var error;
-						if (typeof responseText.email_address !== 'undefined') {
-							error = responseText.email_address[0].replace('This', 'Email');
-						} else if (typeof responseText.password !== 'undefined') {
-							error = responseText.password[0].replace('This', 'Password');
-						} else if (responseText.detail) {
-							error = responseText.detail;
+						// What if responseJSON is null/undefined:
+						// 1. Try to parse it ourselves
+						// 2. If all else fails, assume that the responseText
+						//    is the error message to be shown
+						if (!responseText) {
+							try {
+								responseText = JSON.parse(jqxhr.responseText);
+							} catch (e) {
+								responseText = {
+									detail: jqxhr.responseText
+								};
+							}
 						}
 
-						if (error) {
-							self.set('loginResponse', error);
+						// OTP Required Case
+						if (jqxhr.status === 409 && responseText.status === 'OTP_REQUIRED') {
+							self.set('otpRequired', true);
+						} else {
+							self.set('loginError', true);
+
+							var error;
+							if (typeof responseText.email_address !== 'undefined') {
+								error = responseText.email_address[0].replace('This', 'Email');
+							} else if (typeof responseText.password !== 'undefined') {
+								error = responseText.password[0].replace('This', 'Password');
+							} else if (responseText.detail) {
+								error = responseText.detail;
+							}
+
+							if (error) {
+								self.set('loginResponse', error);
+							}
 						}
+					} else if (message || jqxhr.status < 100) {
+						message = message.message || message || 'Oops, something went wrong.';
+
+						self.setProperties({
+							loginError: true,
+							loginResponse: message
+						});
 					}
-				} else if (message || jqxhr.status < 100) {
-					message = message.message || message || 'Oops, something went wrong.';
-
-					self.setProperties({
-						loginError: true,
-						loginResponse: message
-					});
-				}
-			}).always(function() {
-				self.set('isSubmitting', false);
-			});
+				})
+				.finally(function() {
+					self.set('isSubmitting', false);
+				});
 		}
 	}
 });

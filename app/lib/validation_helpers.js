@@ -1,7 +1,7 @@
 var formatValidator = function(callback) {
 	return {
 		validator: function(object, attribute, value) {
-			value = (value || "").trim();
+			value = (value || "").toString().trim();
 			callback(object, attribute, value, function(messages) {
 				messages = _.isArray(messages) ? messages : [messages];
 
@@ -16,6 +16,10 @@ var formatValidator = function(callback) {
 var generateTransactionAppearsOnStatementAsValidation = function(maxLength) {
 	return formatValidator(function(object, attribute, value, cb) {
 		var messages = [];
+		maxLength = _.isString(maxLength) ?
+			object.get(maxLength) :
+			maxLength;
+
 		if (maxLength < value.length) {
 			messages.push("must be under %@ characters".fmt(maxLength + 1));
 		}
@@ -31,6 +35,13 @@ var generateTransactionAppearsOnStatementAsValidation = function(maxLength) {
 };
 
 Balanced.ValidationHelpers = Ember.Namespace.create({
+	phoneNumberValidator: function(object, attribute, value) {
+		var stripped = $.trim(value).replace(/[\d- ()+]/g, "");
+		if (stripped.length > 0) {
+			object.get("validationErrors")
+				.add(attribute, "format", null, 'has invalid characters (only "+", "-", "(", ")" spaces and numbers are accepted)');
+		}
+	},
 	positiveDollarAmount: {
 		presence: true,
 		format: formatValidator(function(object, attribute, value, cb) {
@@ -44,6 +55,8 @@ Balanced.ValidationHelpers = Ember.Namespace.create({
 			}
 		})
 	},
+
+	generateTransactionAppearsOnStatementFormatValidation: generateTransactionAppearsOnStatementAsValidation,
 
 	bankTransactionAppearsOnStatementAs: {
 		presence: true,

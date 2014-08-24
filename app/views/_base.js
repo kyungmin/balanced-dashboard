@@ -48,7 +48,6 @@ Balanced.ModalView = Balanced.View.extend({
 
 	open: function(model) {
 		var self = this;
-
 		if (model) {
 			var eventName = this.get('defaultModelAction');
 			if (eventName) {
@@ -67,6 +66,11 @@ Balanced.ModalView = Balanced.View.extend({
 		}
 
 		this._createModal();
+	},
+
+	reposition: function() {
+		// trigger a resize to reposition the dialog
+		$(document.body).trigger('resize');
 	},
 
 	actions: {

@@ -1,81 +1,84 @@
-/*
 module('Disputes', {
 	setup: function() {
-		Testing.setupMarketplace();
-		Testing.createDisputes();
+		Testing.useFixtureData();
 	},
 	teardown: function() {}
 });
 
-test('exist on the activity page', function(assert) {
-	var DISPUTES_ROUTE = Testing.MARKETPLACE_ROUTE + '/disputes';
-	var activityDisputesPage = {
-		'table.disputes tbody tr:eq(0) td.date.initiated': 1,
-		'table.disputes tbody tr:eq(0) td.date.respond-by': 1,
-		'table.disputes tbody tr:eq(0) td.type': 'Pending',
-		'table.disputes tbody tr:eq(0) td.account': 1,
-		'table.disputes tbody tr:eq(0) td.funding-instrument': 1,
-		'table.disputes tbody tr:eq(0) td.amount': '$100.00',
-		'table.disputes tfoot td:eq(0)': 1
-	};
+test('can visit page', function(assert) {
+	var DISPUTES_ROUTE = Testing.FIXTURE_MARKETPLACE_ROUTE + '/disputes';
+	var disputesController = Balanced.__container__.lookup('controller:marketplace_disputes');
+	disputesController.minDate = moment('2013-08-01T00:00:00.000Z').toDate();
+	disputesController.maxDate = moment('2013-08-01T23:59:59.999Z').toDate();
 
 	visit(DISPUTES_ROUTE)
 		.then(function() {
-			assert.ok($('table.disputes tbody tr').length >= 1, 'Correct # of Rows');
-
-			// Manually check the disputes uri is correct
-			var disputesController = Balanced.__container__.lookup('controller:marketplaceDisputes');
-			assert.equal(disputesController.get('results_base_uri'), '/disputes', 'Disputes URI is correct');
-			assert.ok(disputesController.get('results_uri').indexOf('sort=initiated_at') > 0, 'Disputes Sort is correct');
-		})
-		.checkElements(activityDisputesPage, assert)
-		.then(function() {
-			var clickEl = 'table.disputes tfoot td.load-more-results a';
-			if ($(clickEl).length > 0) {
-				click(clickEl);
-			} else {
-				Ember.Logger.error("Element " + clickEl + " does not exist");
-			}
+			Ember.run(function() {
+				disputesController.send("changeDateFilter", moment('2013-08-01T00:00:00.000Z'), moment('2013-08-01T23:59:59.999Z'));
+			});
 		})
 		.then(function() {
-			assert.ok($('table.disputes tbody tr').length >= 3, 'has more disputes');
-		});
+			var resultsLoader = disputesController.get("model");
+			assert.equal(resultsLoader.get("path"), '/disputes', 'Disputes URI is correct');
+			assert.deepEqual(resultsLoader.get("queryStringArguments"), {
+				"created_at[<]": "2013-08-01T23:59:59.999Z",
+				"created_at[>]": "2013-08-01T00:00:00.000Z",
+				"limit": 50,
+				"sort": "initiated_at,desc"
+			}, "Query string arguments match");
+		})
+		.checkElements({
+			".page-navigation h1": "Disputes",
+			"table.disputes tbody tr": 2,
+			'table.disputes tbody tr:eq(0) td.date.initiated': 1,
+			'table.disputes tbody tr:eq(0) td.date.respond-by': 1,
+			'table.disputes tbody tr:eq(0) td.status': 'pending',
+			'table.disputes tbody tr:eq(0) td.account': 1,
+			'table.disputes tbody tr:eq(0) td.funding-instrument': 1,
+			'table.disputes tbody tr:eq(0) td.amount': '$12.00',
+		}, assert);
 });
 
-test('can download disputes', function(assert) {
-	assert.equal($(".alert span").length, 0);
-	var stub = sinon.stub(Balanced.Adapter, "create");
-	stub.withArgs(Balanced.Download).callsArgWith(3, {
-		download: {}
-	});
-
-	visit(Testing.ACTIVITY_ROUTE)
-		.click("a:contains('Disputes')")
-		.click("#main #disputes .download")
-		.fillIn(".download-modal.in form input[name='email']", "test@example.com")
-		.click('.download-modal.in .modal-footer button[name="modal-submit"]')
-		.then(function() {
-			assert.ok(stub.calledOnce);
-			assert.ok(stub.calledWith(Balanced.Download, '/downloads', {
-				email_address: "test@example.com",
-				uri: "",
-				type: "disputes"
-			}));
-			assert.equal($(".alert span").length, 1);
-			assert.equal($(".alert span").text(), "We're processing your request. We will email you once the exported data is ready to view.");
-		});
-});
-
-test('can visit page', function(assert) {
+test('can upload a dispute document', function(assert) {
+	var DISPUTES_ROUTE = Testing.FIXTURE_MARKETPLACE_ROUTE + '/disputes';
+	var DISPUTE_ROUTE = DISPUTES_ROUTE + '/DT2xOc7zAdgufK4XsCIW5QgD';
 	var disputePage = {
-		'#content h1': 'Dispute',
-		'#dispute > .main-header .title': 1, // 'Brand New Electric Guitar Rosewood Fingerboard Sunset Red',
-		'#dispute .customer-info .main-header .title': 1, // 'William Henry Cavendish III (whc@example.org)',
-		'#dispute .transaction-details .dispute .tt-title': 'Pending: $100.00',
-		'#dispute .transaction-details .debit .tt-title': 1 // 'Succeeded: $13.30'
+		'#content .page-type': 'Dispute',
+		'#content .dispute-alert a': 1
 	};
 
-	visit(Testing.DISPUTE_ROUTE)
-		.checkElements(disputePage, assert);
+	visit(DISPUTE_ROUTE)
+		.then(function() {
+			var disputeController = Balanced.__container__.lookup("controller:dispute");
+			Ember.run(function() {
+				disputeController.get('model').set('canUploadDocuments', true);
+			});
+		})
+		.checkElements(disputePage, assert)
+		.click('#content .dispute-alert a')
+		.then(function() {
+			assert.equal($('#evidence-portal .modal-header h2').text(), 'Attach docs');
+			assert.equal($('#evidence-portal .fileinput-button').length, 1);
+			// check that the upload prompt shows up
+		})
+		.then(function() {
+			var disputeController = Balanced.__container__.lookup("controller:dispute");
+			Ember.run(function() {
+				disputeController.get('model').set('documents', [Balanced.DisputeDocument.create({
+					"created_at": "2014-06-26T00:27:30.544797+00:00",
+					"file_name": "test.jpg",
+					"file_url": "http://www.balancedpayments.com",
+					"guid": "DO9dJjGmyqbzDK5kXdp3fniy",
+					"mime_type": "image/jpeg",
+					"size": 129386,
+					"updated_at": "2014-06-26T00:27:30.544821+00:00"
+				})]);
+
+				disputeController.get('model').set('canUploadDocuments', false);
+			});
+		})
+		.then(function() {
+			assert.equal($('#content div.documents table tbody tr').length, 1, 'attached doc is displayed');
+			assert.equal($('#content .dispute-alert a').length, 0, 'cannot attach docs after docs are uploaded');
+		});
 });
-*/

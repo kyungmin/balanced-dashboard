@@ -384,7 +384,6 @@ module.exports = function(grunt) {
 			}
 		},
 
-
 		/*jshint multistr: true */
 		'compile-handlebars': {
 			dev: {
@@ -399,6 +398,7 @@ module.exports = function(grunt) {
 						BALANCED: {\
 							API: 'https://api.balancedpayments.com',\
 							AUTH: 'https://auth.balancedpayments.com',\
+							JUSTITIA: 'https://justitia.balancedpayments.com',\
 							WWW: 'https://www.balancedpayments.com',\
 							DOCS: 'https://docs.balancedpayments.com',\
 							DEBUG: true,\
@@ -422,6 +422,7 @@ module.exports = function(grunt) {
 						BALANCED: {\
 							API: 'https://api.balancedpayments.com',\
 							AUTH: 'https://auth.balancedpayments.com',\
+							JUSTITIA: 'https://justitia.balancedpayments.com',\
 							WWW: 'https://www.balancedpayments.com',\
 							DOCS: 'https://docs.balancedpayments.com',\
 							DEBUG: false,\
@@ -708,7 +709,7 @@ module.exports = function(grunt) {
 			options: {
 				thresholds: {
 					statements: 70,
-					branches: 58,
+					branches: 55,
 					lines: 70,
 					functions: 70
 				},

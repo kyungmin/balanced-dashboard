@@ -4,6 +4,8 @@ Ember.Handlebars.registerBoundHelper('formatCurrency', Balanced.Utils.formatCurr
 
 Ember.Handlebars.registerBoundHelper('formatNumber', Balanced.Utils.formatNumber);
 
+Ember.Handlebars.registerBoundHelper('formatFileSize', Balanced.Utils.formatFileSize);
+
 Ember.Handlebars.registerBoundHelper('formatError', Balanced.Utils.formatError);
 
 Ember.Handlebars.registerBoundHelper('capitalize', Balanced.Utils.capitalize);
@@ -18,6 +20,14 @@ Ember.Handlebars.registerBoundHelper('colorizeStatus', function(status) {
 	var statusClass = status.match(/2\d\d/) ? 'ok' : 'error';
 	return new Ember.Handlebars.SafeString(
 		'<span class="status-%@">%@</span>'.fmt(statusClass, status)
+	);
+});
+
+Ember.Handlebars.registerBoundHelper('modalFieldErrors', function(errorsList) {
+	var errors = Balanced.Utils.formatError(errorsList);
+	errors = Ember.Handlebars.Utils.escapeExpression(errors);
+	return new Ember.Handlebars.SafeString(
+		'<div class="alert alert-error label4b">%@</div>'.fmt(errors)
 	);
 });
 

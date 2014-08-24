@@ -16,7 +16,8 @@ var Computed = {
 Balanced.Invoice = Balanced.Model.extend({
 	route_name: 'invoice',
 
-	page_title: Balanced.computed.fmt('sequence_number', '#%@'),
+	page_title: Balanced.computed.fmt('sequence_number', 'No. %@'),
+	type_name: 'Account statement',
 
 	source: Balanced.Model.belongsTo('source', 'Balanced.FundingInstrument'),
 
@@ -36,14 +37,33 @@ Balanced.Invoice = Balanced.Model.extend({
 	to_date: Computed.date(1),
 
 	invoice_type: function() {
-		if (this.get('disputes_total_fee') !== 0) {
+		if (this.get('isDispute')) {
 			return 'Disputes';
 		} else {
 			return 'Transactions';
 		}
-	}.property('disputes_total_fee'),
+	}.property('isDispute'),
 
-	isDispute: Ember.computed.equal('invoice_type', 'Disputes'),
+	getInvoicesLoader: function() {
+		return Balanced.DisputesResultsLoader.create({
+			// Note: The Api is throwing an error when fetching the disputes using /invoices/:invoice_id/disputes
+			// so we are defaulting this to created_at for now.
+			// description: "Unable to sort on unknown field "initiated_at" Your request id is OHM4eadba4c092211e4b88e02b12035401b."
+			sort: "created_at,desc",
+			path: this.get("disputes_uri"),
+		});
+	},
+
+	getTransactionsLoader: function(attributes) {
+		attributes = _.extend({
+			invoice: this
+		}, attributes);
+		return Balanced.InvoiceTransactionsResultsLoader.create(attributes);
+	},
+
+	isDispute: Ember.computed.equal('type', 'dispute'),
+
+	hasHoldsFee: Ember.computed.gt('holds_total_fee', 0),
 
 	subtotal: function() {
 		var total = this.get('total_fee');
@@ -65,8 +85,8 @@ Balanced.Invoice = Balanced.Model.extend({
 	}.property('state', 'total_fee'),
 
 	is_not_paid: function() {
-		return this.get('state') !== 'pending';
-	}.property('state'),
+		return this.get('status') !== 'paid';
+	}.property('status'),
 
 	reversal_fee: 0,
 

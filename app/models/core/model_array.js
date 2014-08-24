@@ -72,12 +72,19 @@ Balanced.ModelArray = Ember.ArrayProxy.extend(Balanced.LoadPromise, {
 		var itemsArray;
 		if (json && $.isArray(json)) {
 			itemsArray = json;
-			this.set('next_uri', undefined);
-			this.set('hasNextPage', false);
-			this.set('counts', {});
+			this.setProperties({
+				next_uri: undefined,
+				hasNextPage: false,
+				counts: {},
+				total: json.length
+			});
 		} else {
 			if (json && json.items && $.isArray(json.items)) {
 				itemsArray = json.items;
+
+				if (json.linked) {
+					this.set('linked', json.linked);
+				}
 
 				if (json.next_uri) {
 					this.set('next_uri', json.next_uri);
@@ -88,6 +95,7 @@ Balanced.ModelArray = Ember.ArrayProxy.extend(Balanced.LoadPromise, {
 				}
 
 				this.set('counts', json.counts);
+				this.set('total', json.total);
 			} else {
 				this.set('isError', true);
 				return;

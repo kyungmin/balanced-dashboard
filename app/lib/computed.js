@@ -1,6 +1,6 @@
 // Use Ember.get because this.get might be over-ridden for custom objects
 var get = Ember.get,
-	a_slice = Array.prototype.slice;
+a_slice = Array.prototype.slice;
 
 Balanced.computed = Ember.Namespace.create({
 	sum: function(dependentKey, itemKey) {
@@ -41,7 +41,7 @@ Balanced.computed = Ember.Namespace.create({
 		return computed.property.apply(computed, args);
 	},
 
-	substract: function(key1, key2) {
+	subtract: function(key1, key2) {
 		return Ember.computed(function() {
 			return this.get(key1) - this.get(key2);
 		}).property(key1, key2);
@@ -125,7 +125,7 @@ Balanced.computed = Ember.Namespace.create({
 	transform: function(dependentKey, func, self) {
 		return Ember.computed(dependentKey, function() {
 			if (_.isString(func)) {
-				func = get(self || this, func);
+				func = get(self || this, func) || get(this.constructor, func);
 			}
 
 			return func.call(self || this, get(self || this, dependentKey));

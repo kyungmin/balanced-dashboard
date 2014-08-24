@@ -38,6 +38,15 @@ Balanced.Utils = Ember.Namespace.create({
 		return results;
 	},
 
+	objectToQueryString: function(object) {
+		return _.map(object, function(v, k) {
+			var value = Ember.isBlank(v) ?
+				"" :
+				v;
+			return encodeURIComponent(k) + '=' + encodeURIComponent(value);
+		}).join('&');
+	},
+
 	stripDomain: function(url) {
 		return url.replace(STRIP_DOMAIN_REGEX, '');
 	},
@@ -233,7 +242,7 @@ Balanced.Utils = Ember.Namespace.create({
 		var transformedParams = ['limit', 'offset', 'sortField', 'sortOrder', 'minDate', 'maxDate', 'type', 'query'];
 
 		var filteringParams = {
-			limit: ( !! Ember.testing && !Balanced.Adapter.dataMap) ? 2 : (params.limit || 10),
+			limit: params.limit || 10,
 			offset: params.offset || 0
 		};
 
@@ -268,16 +277,17 @@ Balanced.Utils = Ember.Namespace.create({
 		}
 
 		filteringParams = _.extend(filteringParams, _.omit(params, transformedParams));
-
 		filteringParams = Balanced.Utils.sortDict(filteringParams);
+		return this.buildUri(uri, filteringParams);
+	},
 
-		var queryString = $.map(filteringParams, function(v, k) {
-			return encodeURIComponent(k) + '=' + encodeURIComponent(v);
-		}).join('&');
-
-		uri += '?' + queryString;
-
-		return uri;
+	buildUri: function(path, queryStringObject) {
+		var queryString = _.isString(queryStringObject) ?
+			queryStringObject :
+			this.objectToQueryString(queryStringObject);
+		return Ember.isBlank(queryString) ?
+			path :
+			path + "?" + queryString;
 	},
 
 	/*
@@ -326,36 +336,30 @@ Balanced.Utils = Ember.Namespace.create({
 		long: '%B %e %Y, %l:%M %p',
 	},
 
-	humanReadableDate: function(isoDate) {
-		if (isoDate) {
-			return Date.parseISO8601(isoDate).strftime(Balanced.Utils.date_formats.date);
+	formatDate: function(date, format) {
+		if (_.isDate(date)) {
+			return date.strftime(format);
+		} else if (_.isString(date)) {
+			return Date.parseISO8601(date).strftime(format);
 		} else {
-			return isoDate;
+			return date;
 		}
+	},
+
+	humanReadableDate: function(isoDate) {
+		return Balanced.Utils.formatDate(isoDate, Balanced.Utils.date_formats.date);
 	},
 
 	humanReadableTime: function(isoDate) {
-		if (isoDate) {
-			return Date.parseISO8601(isoDate).strftime(Balanced.Utils.date_formats.time);
-		} else {
-			return isoDate;
-		}
+		return Balanced.Utils.formatDate(isoDate, Balanced.Utils.date_formats.time);
 	},
 
 	humanReadableDateShort: function(isoDate) {
-		if (isoDate) {
-			return Date.parseISO8601(isoDate).strftime(Balanced.Utils.date_formats.short);
-		} else {
-			return isoDate;
-		}
+		return Balanced.Utils.formatDate(isoDate, Balanced.Utils.date_formats.short);
 	},
 
 	humanReadableDateLong: function(isoDate) {
-		if (isoDate) {
-			return Date.parseISO8601(isoDate).strftime(Balanced.Utils.date_formats.long);
-		} else {
-			return isoDate;
-		}
+		return Balanced.Utils.formatDate(isoDate, Balanced.Utils.date_formats.long);
 	},
 
 	// filters any number that is in the form of a string and longer than 4 digits (bank codes, ccard numbers etc)
@@ -426,6 +430,30 @@ Balanced.Utils = Ember.Namespace.create({
 		});
 
 		return formattedBankName;
-	}
+	},
 
+	formatStatusCode: function(statusCode) {
+		if (statusCode) {
+			return Balanced.Utils.capitalize(statusCode.replace(/-/g, ' '));
+		} else {
+			return null;
+		}
+	},
+
+	formatFileSize: function(bytes) {
+		if (bytes >= 1000000000) {
+			bytes = (bytes / 1000000000).toFixed(2) + ' gb';
+		} else if (bytes >= 1000000) {
+			bytes = (bytes / 1000000).toFixed(2) + ' mb';
+		} else if (bytes >= 1000) {
+			bytes = (bytes / 1000).toFixed(2) + ' kb';
+		} else if (bytes > 1) {
+			bytes = bytes + ' bytes';
+		} else if (bytes === 1) {
+			bytes = bytes + ' byte';
+		} else {
+			bytes = '0 byte';
+		}
+		return bytes;
+	}
 });

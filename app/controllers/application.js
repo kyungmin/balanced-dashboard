@@ -1,62 +1,19 @@
 Balanced.ApplicationController = Ember.Controller.extend(Ember.Evented, {
-	showNotificationCenter: true,
-
-	alert: function(options) {
-		this.set('alertObj', options);
-	},
-
-	alertTransition: function() {
-		var alert = this.get('alertObj');
-		if (alert) {
-			if (alert.persists) {
-				alert.persists = false;
-			} else {
-				this.set('alertObj', null);
-			}
-		}
-	},
-
-	newUpdatesModal: function(key, token) {
-		if (arguments.length === 1) { // get
-			return $.cookie(Balanced.COOKIE.NEW_UPDATES) ? $.cookie(Balanced.COOKIE.NEW_UPDATES) : undefined;
-		} else { // set
-			$.cookie(Balanced.COOKIE.NEW_UPDATES, token, {
-				path: '/',
-				expires: Balanced.TIME.WEEK * 4,
-			});
-			return $.cookie(Balanced.COOKIE.NEW_UPDATES);
-		}
-	}.property(),
-
-	displayNewUpdatesModal: function() {
-		if (!this.get('auth.signedIn')) {
-			return false;
-		}
-
-		if (this.get('currentRouteName') === 'marketplaces.index') {
-			return false;
-		}
-
-		if (this.get('auth.newUpdates')) {
-			this.set('newUpdatesModal', this.get('auth.newUpdates'));
-		}
-
-		return this.get('newUpdatesModal') === undefined;
-	}.property('newUpdatesModal', 'auth.newUpdates'),
+	needs: ["notification_center"],
 
 	actions: {
-		closeNotificationCenter: function() {
-			this.set('showNotificationCenter', false);
+		signUp: function() {
+			Balanced.Analytics.trackEvent("SignUp: Opened 'Create an account' modal", {
+				path: this.get("container").lookup("controller:application").get('currentRouteName')
+			});
+			this.transitionToRoute('setup_guest_user');
 		},
 
-		toggleNotificationCenter: function() {
-			this.set('showNotificationCenter', !this.get('showNotificationCenter'));
-		},
-
-		closeNewUpdatesModal: function() {
-			var date = new Date();
-			this.set('newUpdatesModal', date);
-			this.set('auth.newUpdates', date);
+		register: function() {
+			Balanced.Analytics.trackEvent("SignUp: Opened 'Register for production access' modal", {
+				path: this.get("container").lookup("controller:application").get('currentRouteName')
+			});
+			this.transitionToRoute('marketplaces.apply');
 		},
 
 		openChangePasswordModal: function() {

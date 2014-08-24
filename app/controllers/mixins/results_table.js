@@ -57,7 +57,6 @@ Balanced.ResultsTable = Ember.Mixin.create({
 			if (this.TYPE_TRANSLATION[type]) {
 				type = this.TYPE_TRANSLATION[type];
 			}
-
 			this.set('type', type);
 		},
 
@@ -81,13 +80,8 @@ Balanced.ResultsTable = Ember.Mixin.create({
 		);
 
 		var type = this.get('type') || '';
-		if (['funding_instrument', 'customer', 'transaction', 'search'].indexOf(type) >= 0) {
-			searchArray.set('sortProperties', [this.get('sortField') || 'created_at']);
-			searchArray.set('sortAscending', this.get('sortOrder') === 'asc');
-		} else if (type === 'dispute') {
-			searchArray.set('sortProperties', [this.get('sortField') || 'initiated_at']);
-			searchArray.set('sortAscending', this.get('sortOrder') === 'asc');
-		}
+		searchArray.set('sortProperties', [this.get('sortField') || 'created_at']);
+		searchArray.set('sortAscending', this.get('sortOrder') === 'asc');
 
 		return searchArray;
 	}.property('fetch_results', 'results_uri', 'results_type', 'sortField', 'sortOrder'),
@@ -105,9 +99,12 @@ Balanced.ResultsTable = Ember.Mixin.create({
 		if (!marketplaceUri) {
 			return marketplaceUri;
 		}
-
-		return marketplaceUri + '/search';
-	}.property('controllers.marketplace.uri'),
+		if (this.get('type') === 'dispute') {
+			return '/disputes';
+		} else {
+			return marketplaceUri + '/search';
+		}
+	}.property('controllers.marketplace.uri', 'type'),
 
 	results_uri: function() {
 		return Balanced.Utils.applyUriFilters(

@@ -1,28 +1,46 @@
-<h1 class="page-title">Dispute</h1>
+{{view Balanced.TransactionPageNavigationView model=model}}
 
-<div id="dispute" class="transaction">
-	<div class="main-header transactions-header">
-		<div class="row">
-			<div class="span2 label">
-				<div class="icon">Dispute</div>
+{{#view Balanced.BodyPanelView}}
+	{{#view Balanced.SidePanelView model=model}}
+		{{view Balanced.DisputeSummarySectionView model=model}}
+		{{view Balanced.DisputeTitledKeyValuesSectionView model=model}}
+		{{view Balanced.MetaView type=model}}
+	{{/view}}
+
+	{{#view Balanced.MainPanelView}}
+		{{#if canUploadDocuments}}
+			<div class="dispute-alert">
+				<div class="row-fluid notification-center warning">
+					<div class="notification-center-message">
+						<span class="message">
+							Provide documentation by <span class="sl-sb">{{humanReadableDateLong respond_by}}</span> to avoid a loss.
+						</span>
+						<div class="pull-right">
+							<a class="btn" {{action "openModal" Balanced.EvidencePortalModalView model}}>Attach docs</a>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="span title">
-				<span class="nav3d">
-					{{page_title}}
-				</span>
-			</div>
+		{{/if}}
+
+		<h3>Associated transactions</h3>
+		<div class="results">
+			{{view Balanced.EmbeddedTransactionsResultsView loader=transactionsResultsLoader hasNoFilter=true}}
 		</div>
-	</div>
 
-	{{txn-customer customer=transaction.customer}}
-	
-	<div class="transaction-details">
-		{{txn-dispute dispute=model}}
+		<h3>Documents</h3>
+		<div class="results documents">
+			{{view Balanced.ResourceDocumentsView content=model}}
+		</div>
 
-		{{#each refund in transaction.refunds}}
-			{{txn-refund refund=refund}}
-		{{/each}}
+		<h3>Logs</h3>
+		<div class="results">
+			{{view Balanced.ResourceLogsView content=model}}
+		</div>
 
-		{{txn-debit debit=transaction marketplace=controllers.marketplace.model}}
-	</div>
-</div>
+		<h3>Events</h3>
+		<div class="results">
+			{{view Balanced.ResourceEventsView content=model}}
+		</div>
+	{{/view}}
+{{/view}}

@@ -101,16 +101,18 @@ var Testing = {
 	setupMarketplace: function() {
 		var self = this;
 		Ember.run(function() {
-			return Balanced.NET.loadCSRFTokenIfNotLoaded(function() {
-				return Balanced.Auth.createNewGuestUser().then(function(apiKey) {
+			return Balanced.NET.loadCSRFTokenIfNotLoaded()
+				.then(function() {
+					return Balanced.Auth.createNewGuestUser();
+				})
+				.then(function(apiKey) {
 					self.GUEST_USER_API_KEY = apiKey;
-
 					return Balanced.Marketplace.create().save();
-				}).then(function(marketplace) {
+				})
+				.then(function(marketplace) {
 					Balanced.Auth.setupGuestUserMarketplace(marketplace);
 					self.setupCreatedMarketplace(marketplace);
 				});
-			});
 		});
 	},
 
@@ -285,6 +287,27 @@ var Testing = {
 		});
 	},
 
+	createHold: function() {
+		var self = this;
+		var cardAttributes = {
+			number: '4111111111111111',
+			expiration_year: 2020,
+			expiration_month: 11
+		};
+
+		return Balanced.Card.create(cardAttributes)
+			.save()
+			.then(function(card) {
+				var hold = Balanced.Hold.create({
+					uri: card.get("card_holds_uri"),
+					source_uri: card.get("uri"),
+					appears_on_statement_as: 'Test Hold',
+					amount: 10000
+				});
+				return hold.save();
+			});
+	},
+
 	createCard: function() {
 		var self = this;
 		Ember.run(function() {
@@ -431,7 +454,7 @@ var Testing = {
 	},
 
 	setupActivity: function(howMany, type) {
-		this.setupResults(this.ACTIVITY_ROUTE, 'activity', 'transaction', howMany, type);
+		this.setupResults(this.ACTIVITY_ROUTE, 'marketplace', 'transaction', howMany, type);
 	},
 
 	createDisputes: function(number) {

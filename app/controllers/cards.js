@@ -1,18 +1,22 @@
-Balanced.CardsController = Balanced.ObjectController.extend(
-	Balanced.ActionEvented('openDebitFundingInstrumentModal', 'openCreditFundingInstrumentModal', 'openHoldCardModal'),
-	Balanced.ResultsTable,
-	Balanced.TransactionsTable, {
-		needs: ['marketplace'],
+var EventMixin = Balanced.ActionEvented('openDebitFundingInstrumentModal', 'openCreditFundingInstrumentModal', 'openHoldCardModal');
 
-		sortField: 'created_at',
-		sortOrder: 'desc',
+Balanced.CardsController = Balanced.ObjectController.extend(EventMixin, {
+	needs: ['marketplace'],
 
-		baseClassSelector: "#card",
+	actions: {
+		changeTypeFilter: function(type) {
+			if (type === "transaction") {
+				type = null;
+			}
+			this.set("transactionsResultsLoader.type", type);
+		},
 
-		results_base_uri: function() {
-			return this.get('type') === 'dispute' ?
-				'/disputes' :
-				this.get("content.transactions_uri");
-		}.property("type", "content.transactions_uri")
+		changeTransactionsSort: function(column) {
+			this.get("transactionsResultsLoader").setSortField(column);
+		},
+
+		changeStatusFilter: function(status) {
+			this.get("transactionsResultsLoader").setStatusFilter(status);
+		},
 	}
-);
+});
