@@ -5,6 +5,11 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 		baseClassSelector: '#overview',
 		pageTitle: 'Overview',
 
+		init: function() {
+			this._super();
+			this.fetchTotalVolume();
+		},
+
 		totalVolume: function() {
 			var sin = [],
 				cos = [];
@@ -28,6 +33,20 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 				key: 'Cosine Wave'
 			}];
 		}.property(),
+
+		fetchTotalVolume: function() {
+			var connection = Balanced.Connections.ApiConnection.create();
+			var self = this;
+
+			connection.ajax({
+				uri: "/analytics?type=volume"
+			}).then(function(response) {
+				console.log(response.analytics);
+				// process data
+				self.set('totalVolume', []);
+				console.log(self.get('totalVolume'));
+			});
+		},
 
 		transactionsCount: function() {
 			var sin = [],
