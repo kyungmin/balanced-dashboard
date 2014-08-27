@@ -7,7 +7,7 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 
 		init: function() {
 			this._super();
-			this.fetchTotalVolume();
+			this.loadAnalytics();
 		},
 
 		totalVolume: function() {
@@ -34,18 +34,24 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 			}];
 		}.property(),
 
-		fetchTotalVolume: function() {
+		loadAnalytics: function() {
 			var connection = Balanced.Connections.ApiConnection.create();
 			var self = this;
 
 			connection.ajax({
 				uri: "/analytics?type=volume"
 			}).then(function(response) {
-				console.log(response.analytics);
-				// process data
-				self.set('totalVolume', []);
-				console.log(self.get('totalVolume'));
+				this.fetchTotalVolume(response.analytics);
+				this.fetchTransactionsCount(response.analytics);
 			});
+		},
+
+		fetchTotalVolume: function(data) {
+			self.set('totalVolume', newData);
+		},
+
+		fetchTransactionsCount: function(data) {
+			self.set('transactionsCount', newData);
 		},
 
 		transactionsCount: function() {
