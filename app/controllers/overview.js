@@ -10,29 +10,8 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 			this.loadAnalytics();
 		},
 
-		totalVolume: function() {
-			var sin = [],
-				cos = [];
-
-			for (var i = 0; i < 100; i++) {
-				sin.push({
-					x: i,
-					y: Math.sin(i / 10)
-				});
-				cos.push({
-					x: i,
-					y: 0.5 * Math.cos(i / 10)
-				});
-			}
-
-			return [{
-				values: sin,
-				key: 'Sine Wave'
-			}, {
-				values: cos,
-				key: 'Cosine Wave'
-			}];
-		}.property(),
+		totalVolume: [],
+		transactionsCount: [],
 
 		loadAnalytics: function() {
 			var connection = Balanced.Connections.ApiConnection.create();
@@ -41,42 +20,51 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 			connection.ajax({
 				uri: "/analytics?type=volume"
 			}).then(function(response) {
-				this.fetchTotalVolume(response.analytics);
-				this.fetchTransactionsCount(response.analytics);
+				self.fetchTotalVolume(response.analytics);
+				self.fetchTransactionsCount(response.analytics);
 			});
 		},
 
-		fetchTotalVolume: function(data) {
-			self.set('totalVolume', newData);
+		fetchTotalVolume: function(days) {
+			var totalDebitVolume = [],
+				totalCreditVolume = [],
+				totalRefundVolume = [],
+				totalReversalVolume = [];
+
+			var TRANSACTION_TYPES = {
+				'debit': totalDebitVolume,
+				'credit': totalCreditVolume,
+				'refund': totalRefundVolume,
+				'reversal': totalReversalVolume,
+			};
+
+			days.forEach(function(day) {
+				day.transactions.forEach(function(transaction) {
+					TRANSACTION_TYPES[transaction.type].push({
+						x: day["start_at"],
+						y: transaction.amount
+					});
+				});
+			});
+
+			this.set('totalVolume', [{
+				key: 'Debits',
+				values: totalDebitVolume
+			}, {
+				key: 'Credits',
+				values: totalCreditVolume
+			}, {
+				key: 'Refunds',
+				values: totalRefundVolume
+			}, {
+				key: 'Reversals',
+				values: totalReversalVolume
+			}]);
 		},
 
 		fetchTransactionsCount: function(data) {
-			self.set('transactionsCount', newData);
+			var newData = data;
 		},
-
-		transactionsCount: function() {
-			var sin = [],
-				cos = [];
-
-			for (var i = 0; i < 100; i++) {
-				sin.push({
-					x: i,
-					y: Math.sin(i / 10)
-				});
-				cos.push({
-					x: i,
-					y: 0.5 * Math.cos(i / 10)
-				});
-			}
-
-			return [{
-				values: cos,
-				key: 'Sine Wave'
-			}, {
-				values: sin,
-				key: 'Cosine Wave'
-			}];
-		}.property(),
 
 		verticalBarChartData: function() {
 			return [{
