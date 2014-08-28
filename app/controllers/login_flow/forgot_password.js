@@ -1,15 +1,16 @@
 Balanced.ForgotPasswordController = Balanced.ObjectController.extend({
+	needs: ["notification_center"],
 	content: null,
 	email_address: null,
-	submitted: false,
 	hasError: false,
 
 	actions: {
 		forgotPass: function() {
-			var model = this.get('content');
+			var model = this.get("model");
+			var controller = this.get("controllers.notification_center");
 			var self = this;
 
-			model.set('email_address', this.get('email_address'));
+			model.set('email_address', model.get('email_address'));
 
 			if (model.validate()) {
 				self.set('hasError', false);
@@ -23,14 +24,17 @@ Balanced.ForgotPasswordController = Balanced.ObjectController.extend({
 				});
 
 				model.save().then(function() {
-					self.setProperties({
-						email_address: '',
-						submitted: true
-					});
+					self.set('email_address', null);
 
 					self.transitionToRoute('login').then(function(loginRoute) {
-						loginRoute.controller.set('from', 'ForgotPassword');
+						controller.clearAlerts();
+						controller.alertSuccess("We've sent you an email with password reset instructions.");
 					});
+				}, function(response) {
+					if (response.detail === 'Not found') {
+						controller.clearAlerts();
+						controller.alertError("The email address you entered could not be found.");
+					}
 				});
 			} else {
 				self.set('hasError', true);

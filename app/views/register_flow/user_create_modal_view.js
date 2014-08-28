@@ -23,6 +23,12 @@ Balanced.UserCreateModalView = Balanced.RegisterFlowBaseModal.extend({
 		return this.$().modal("show");
 	},
 
+	close: function() {
+		this._super();
+		var controller = this.getNotificationController();
+		controller.clearAlerts();
+	},
+
 	save: function(model, apiKey) {
 		var self = this;
 		var controller = this.getRegistrationController();
@@ -41,7 +47,7 @@ Balanced.UserCreateModalView = Balanced.RegisterFlowBaseModal.extend({
 
 	actions: {
 		nextStep: function(marketplace) {
-			this.openNext(Balanced.ApiKeyCreateModalView);
+			this.openNext(Balanced.NextStepView);
 			var controller = this.getModalNotificationController();
 			controller.alertSuccess("Login created");
 		},
