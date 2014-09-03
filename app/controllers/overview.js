@@ -10,7 +10,7 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 			this.loadAnalytics();
 		},
 
-		transactionsVolume: [],
+		totalVolume: [],
 		transactionsCount: [],
 
 		loadAnalytics: function() {
@@ -20,85 +20,55 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 			connection.ajax({
 				uri: "/analytics?type=volume"
 			}).then(function(response) {
-				self.fetchTransactionsVolume(response.analytics);
+				self.fetchTotalVolume(response.analytics);
 				self.fetchTransactionsCount(response.analytics);
 			});
 		},
 
-		fetchTransactionsVolume: function(days) {
-			var DebitVolume = [],
-				CreditVolume = [],
-				RefundVolume = [],
-				ReversalVolume = [];
+		fetchTotalVolume: function(days) {
+			var totalDebitVolume = [],
+				totalCreditVolume = [],
+				totalRefundVolume = [],
+				totalReversalVolume = [];
 
 			var TRANSACTION_TYPES = {
-				'debit': DebitVolume,
-				'credit': CreditVolume,
-				'refund': RefundVolume,
-				'reversal': ReversalVolume,
+				'debit': totalDebitVolume,
+				'credit': totalCreditVolume,
+				'refund': totalRefundVolume,
+				'reversal': totalReversalVolume,
 			};
 
 			days.forEach(function(day) {
+				var type, amount = 0;
+
 				day.transactions.forEach(function(transaction) {
-					console.log(day.start_at, transaction.amount)
-					TRANSACTION_TYPES[transaction.type].push({
-						x: day.start_at,
-						y: transaction.amount
-					});
+					type = transaction.type;
+					amount += transaction.amount;
+				});
+
+				TRANSACTION_TYPES[type].push({
+					x: new Date.parseISO8601(day.start_at),
+					y: amount
 				});
 			});
 
-			this.set('transactionsVolume', [{
+			this.set('totalVolume', [{
 				key: 'Debits',
-				values: DebitVolume
+				values: totalDebitVolume
 			}, {
 				key: 'Credits',
-				values: CreditVolume
+				values: totalCreditVolume
 			}, {
 				key: 'Refunds',
-				values: RefundVolume
+				values: totalRefundVolume
 			}, {
 				key: 'Reversals',
-				values: ReversalVolume
+				values: totalReversalVolume
 			}]);
 		},
 
 		fetchTransactionsCount: function(data) {
-			var DebitCount = [],
-				CreditCount = [],
-				RefundCount = [],
-				ReversalCount = [];
-
-			var TRANSACTION_TYPES = {
-				'debit': DebitCount,
-				'credit': CreditCount,
-				'refund': RefundCount,
-				'reversal': ReversalCount,
-			};
-
-			days.forEach(function(day) {
-				day.transactions.forEach(function(transaction) {
-					console.log(day.start_at, transaction.amount)
-					TRANSACTION_TYPES[transaction.type].push({
-						x: day.start_at,
-						y: transaction.count
-					});
-				});
-			});
-
-			this.set('transactionsCount', [{
-				key: 'Debits',
-				values: DebitCount
-			}, {
-				key: 'Credits',
-				values: CreditCount
-			}, {
-				key: 'Refunds',
-				values: RefundCount
-			}, {
-				key: 'Reversals',
-				values: ReversalCount
-			}]);
+			var newData = data;
 		},
 
 		verticalBarChartData: function() {

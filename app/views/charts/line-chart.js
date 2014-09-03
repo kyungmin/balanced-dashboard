@@ -31,7 +31,7 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 			noData: 'No data available.',
 			tooltips: true,
 			xTickFormat: function(d) {
-				return d3.time.format('%x')(new Date(d));
+				return d3.time.format('%x')(d);
 			},
 			yTickFormat: d3.format(',.2f'),
 			showLegend: false
