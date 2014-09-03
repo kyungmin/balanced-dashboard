@@ -95,7 +95,7 @@ module.exports = function(grunt) {
 					'static/javascripts/lodash/dist/lodash.underscore.js',
 					'static/javascripts/mixpanel/mixpanel.js',
 					'static/javascripts/google-code-prettify/src/prettify.js',
-					'static/javascripts/strftime/index.js',
+					'static/javascripts/crossfilter/index.js',
 					'static/javascripts/jquery-hotkeys/jquery.hotkeys.js',
 					'static/javascripts/jquery.cookie/jquery.cookie.js',
 					'static/javascripts/bootstrap-modal/js/bootstrap-modalmanager.js',
@@ -107,7 +107,8 @@ module.exports = function(grunt) {
 					'static/javascripts/timepicker/jquery.timepicker.js',
 					'static/javascripts/d3/d3.min.js',
 					'static/javascripts/nvd3/nv.d3.js',
-					'static/lib/nvd3-triangle-bar.js'
+					'static/lib/nvd3-triangle-bar.js',
+					'static/javascripts/strftime/index.js'
 				],
 				dest: 'build/js/lib-dev.js'
 			},
@@ -137,7 +138,8 @@ module.exports = function(grunt) {
 					'static/javascripts/timepicker/jquery.timepicker.min.js',
 					'static/javascripts/d3/d3.min.js',
 					'static/javascripts/nvd3/nv.d3.min.js',
-					'static/lib/nvd3-triangle-bar.js'
+					'static/lib/nvd3-triangle-bar.js',
+					'static/javascripts/strftime/index.js'
 				],
 				dest: 'build/js/lib-prod.js'
 			},

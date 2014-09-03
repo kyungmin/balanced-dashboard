@@ -20,55 +20,28 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 			connection.ajax({
 				uri: "/analytics?type=volume"
 			}).then(function(response) {
-				self.fetchTotalVolume(response.analytics);
-				self.fetchTransactionsCount(response.analytics);
+				var transactions = response.analytics.map(function(day) {
+					return day.transactions.map(function(transaction) {
+						return _.extend({}, transaction, {
+							start_at: day.start_at
+						});
+					});
+				});
+				transactions = _.flatten(transactions);
+				self.group(transactions);
 			});
 		},
 
-		fetchTotalVolume: function(days) {
-			var totalDebitVolume = [],
-				totalCreditVolume = [],
-				totalRefundVolume = [],
-				totalReversalVolume = [];
-
-			var TRANSACTION_TYPES = {
-				'debit': totalDebitVolume,
-				'credit': totalCreditVolume,
-				'refund': totalRefundVolume,
-				'reversal': totalReversalVolume,
-			};
-
-			days.forEach(function(day) {
-				var type, amount = 0;
-
-				day.transactions.forEach(function(transaction) {
-					type = transaction.type;
-					amount += transaction.amount;
-				});
-
-				TRANSACTION_TYPES[type].push({
-					x: new Date.parseISO8601(day.start_at),
-					y: amount
-				});
+		group: function(data) {
+			var cf = crossfilter(data);
+			var byType = cf.dimension(function(p) {
+				return p.type;
 			});
 
-			this.set('totalVolume', [{
-				key: 'Debits',
-				values: totalDebitVolume
-			}, {
-				key: 'Credits',
-				values: totalCreditVolume
-			}, {
-				key: 'Refunds',
-				values: totalRefundVolume
-			}, {
-				key: 'Reversals',
-				values: totalReversalVolume
-			}]);
-		},
-
-		fetchTransactionsCount: function(data) {
-			var newData = data;
+			var groupByType = byType.group();
+			groupByType.top(Infinity).forEach(function(p, i) {
+				console.log(p.key + ": " + p.value);
+			});
 		},
 
 		verticalBarChartData: function() {
