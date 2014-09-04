@@ -34,14 +34,28 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 
 		group: function(data) {
 			var cf = crossfilter(data);
-			var byType = cf.dimension(function(p) {
-				return p.type;
+			var byDate = cf.dimension(function(p) {
+				return p.start_at;
 			});
 
-			var groupByType = byType.group();
+			var groupByType = byDate.group();
 			groupByType.top(Infinity).forEach(function(p, i) {
-				console.log(p.key + ": " + p.value);
+				// console.log(p.key + ": " + p.value);
 			});
+
+			var transactions = groupByType.all().map(function(transaction) {
+				console.log(transaction, Date.parseISO8601(transaction.key))
+				return _.extend({}, {
+					x: Date.parseISO8601(transaction.key),
+					y: transaction.value
+				});
+			});
+			// console.log(transactions);
+
+			this.set("totalVolume", [{
+				key: "Debits",
+				values: transactions
+			}]);
 		},
 
 		verticalBarChartData: function() {

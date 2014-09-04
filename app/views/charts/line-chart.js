@@ -15,6 +15,13 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 
 			return html;
 		});
+
+		chart.xAxis.tickFormat(function(d) {
+			var date = new Date()
+			date.setTime(d);
+			return d3.time.format('%x')(date);
+		});
+
 		return chart;
 	},
 
@@ -22,7 +29,7 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 		var self = this;
 
 		return {
-			width: 500,
+			width: 800,
 			showXAxis: true,
 			showYAxis: true,
 			showLegend: true,
@@ -30,11 +37,6 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 			useInteractiveGuideline: true,
 			noData: 'No data available.',
 			tooltips: true,
-			xTickFormat: function(d) {
-				nv.log(d)
-				return d3.time.format('%x')(d);
-			},
-			yTickFormat: d3.format(',.2f'),
 			showLegend: false
 		};
 	}.property('chart')
