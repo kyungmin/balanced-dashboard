@@ -31,7 +31,8 @@ var SIDEBAR_ITEMS = [{
 	linkText: "Disputes",
 	linkIcon: "icon-disputes",
 	routeName: "marketplace.disputes",
-	isSelectedBinding: "controller.marketplace.disputeSelected"
+	isSelectedBinding: "controller.marketplace.disputeSelected",
+	alertCountBinding: "controller.marketplace.disputeAlertCount",
 }, {
 	linkText: "Logs",
 	linkIcon: "icon-logs",
