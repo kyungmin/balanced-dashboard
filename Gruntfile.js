@@ -106,9 +106,7 @@ module.exports = function(grunt) {
 					'static/lib/daterangepicker.js',
 					'static/javascripts/timepicker/jquery.timepicker.js',
 					'static/javascripts/d3/d3.min.js',
-					'static/javascripts/nvd3/nv.d3.js',
 					'static/javascripts/c3/c3.min.js',
-					'static/lib/nvd3-triangle-bar.js',
 					'static/javascripts/strftime/index.js'
 				],
 				dest: 'build/js/lib-dev.js'
@@ -138,9 +136,7 @@ module.exports = function(grunt) {
 					'static/lib/daterangepicker.js',
 					'static/javascripts/timepicker/jquery.timepicker.min.js',
 					'static/javascripts/d3/d3.min.js',
-					'static/javascripts/nvd3/nv.d3.min.js',
 					'static/javascripts/c3/c3.min.js',
-					'static/lib/nvd3-triangle-bar.js',
 					'static/javascripts/strftime/index.js'
 				],
 				dest: 'build/js/lib-prod.js'

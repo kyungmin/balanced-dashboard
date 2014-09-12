@@ -1,70 +1,77 @@
 Balanced.ChartView = Ember.View.extend({
-	tagName: 'svg',
-	classNames: ['chart-container'],
+	tagName: 'div',
+	classNames: ['chart'],
+	data: {},
+	axis: {},
+	regions: {},
+	grid: {},
+	transition: {},
+	legend: {},
+	tooltip: {},
+	subchart: {},
+	zoom: {},
+	size: {},
+	padding: {},
+	color: {
+		pattern: ['#639ABD', '#BC8F30', '#9364A8', '#00A08E']
+	},
+	// @egyptianBlue80, @turmericYellow80, @byzantiumPurple80, @forestGreen80
 
-	_chartModel: null,
-	chartModel: function() {
-		return window.nv.models[this.get('_chartModel')]();
-	}.property("_chartModel"),
 
-	width: 500,
-	height: 500,
-	x: null,
-	y: null,
-	data: null,
-	options: {},
+	bar: {},
+	pie: {},
+	donut: {},
+	gauge: {},
 
-	_chart: null,
+	_chart: undefined,
 
 	chart: function() {
 		var self = this;
-		var chart = self.get('_chart');
-
-		if (!chart) {
-			chart = self.get('chartModel');
+		if (Ember.isEqual(self.get('_chart'), undefined)) {
+			// Empty, create it.
+			var container = self.get('element');
+			if (Ember.isEqual(container, undefined)) {
+				return undefined;
+			} else {
+				var config = self.get('_config');
+				var chart = c3.generate(config);
+				self.set('_chart', chart);
+				return chart;
+			}
+		} else {
+			// Editor is already created and cached.
+			return self.get('_chart');
 		}
+	}.property('element', '_config'),
 
-		chart.color(['#639ABD', '#BC8F30', '#9364A8', '#00A08E']);
-		// @egyptianBlue80, @turmericYellow80, @byzantiumPurple80, @forestGreen80
+	_config: function() {
+		var c = this.getProperties([
+			'data',
+			'axis',
+			'regions',
+			'bar',
+			'pie',
+			'donut',
+			'gauge',
+			'grid',
+			'legend',
+			'tooltip',
+			'subchart',
+			'zoom',
+			'size',
+			'padding',
+			'color',
+			'transition'
+		]);
+		c.bindto = this.get('element');
+		return c;
+	}.property('element', 'data', 'axis', 'regions', 'bar', 'pie', 'donut', 'gauge', 'grid', 'legend', 'tooltip', 'subchart', 'zoom', 'size', 'padding', 'color', 'transition'),
 
-		chart.options(self.get('options'));
-		return self.get('customizeChart').apply(self, [chart]);
-	}.property('chartModel', 'margin', 'options', 'customizeChart'),
-
-	customizeChart: function(chart) {
-		return chart;
-	},
-
-	updateChart: function() {
-		var self = this;
-		var el = self.get('element');
-		var data = self.get('data');
-		var chart = self.get('chart');
-
-		window.d3.select(el)
-			.datum(data)
-			.transition()
-			.duration(250)
-			.call(chart);
-
-		self.set('_chart', chart);
-		window.nv.utils.windowResize(chart.update);
-
-	}.observes('data', 'chart').on('didInsertElement'),
-
-	didInsertElement: function() {
-		var self = this;
-		var $el = self.$();
-		var el = $el.get(0);
-
-		window.nv.addGraph(function() {
-			var chart = self.get('chart');
-
-			$('circle.nv-point').attr("r", "5");
-
-			return chart;
-		});
-	},
+	dataDidChange: function() {
+		var chart = this.get('chart');
+		chart.load(this.get('data'));
+	}.observes('data').on('didInsertElement')
+});
 
 	actions: {
 		toggleLegend: function(seriesKey) {

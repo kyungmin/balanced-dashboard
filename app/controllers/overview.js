@@ -28,68 +28,82 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 					});
 				});
 				transactions = _.flatten(transactions);
-				self.group(transactions);
+				self.formatTransactions(transactions);
 			});
 		},
 
-		group: function(data) {
+		formatTransactions: function(data) {
 			var cf = crossfilter(data);
 			var byDate = cf.dimension(function(p) {
 				return p.start_at;
 			});
 
+			var byType = cf.dimension(function(p) {
+				return p.type;
+			});
+
 			var groupByType = byDate.group();
-			groupByType.top(Infinity).forEach(function(p, i) {
-				// console.log(p.key + ": " + p.value);
+
+			var dates = groupByType.all().map(function(transaction) {
+				return Date.parseISO8601(transaction.key);
+			});
+			dates = ['x'].concat(dates);
+
+			var debitCount = ['debits'];
+			var creditCount = ['credits'];
+			var refundCount = ['refunds'];
+			var reversalCount = ['reversals'];
+
+			var debitAmount = ['debits'];
+			var creditAmount = ['credits'];
+			var refundAmount = ['refunds'];
+			var reversalAmount = ['reversals'];
+
+			byType.filterExact('debit');
+			byType.top(Infinity).forEach(function(p, i) {
+				debitCount.push(p.count);
+				debitAmount.push(p.amount);
 			});
 
-			var transactions = groupByType.all().map(function(transaction) {
-				console.log(transaction, Date.parseISO8601(transaction.key))
-				return _.extend({}, {
-					x: Date.parseISO8601(transaction.key),
-					y: transaction.value
-				});
+			byType.filterExact('credit');
+			byType.top(Infinity).forEach(function(p, i) {
+				creditCount.push(p.count);
+				creditAmount.push(p.amount);
 			});
-			// console.log(transactions);
 
-			this.set("totalVolume", [{
-				key: "Debits",
-				values: transactions
-			}]);
+			byType.filterExact('refund');
+			byType.top(Infinity).forEach(function(p, i) {
+				refundCount.push(p.count);
+				refundAmount.push(p.amount);
+			});
+
+			byType.filterExact('reversal');
+			byType.top(Infinity).forEach(function(p, i) {
+				reversalCount.push(p.count);
+				reversalAmount.push(p.amount);
+			});
+
+			this.set("totalVolume", {
+				x: 'x',
+				columns: [dates, debitAmount, creditAmount, refundAmount, reversalAmount],
+				type: 'spline'
+			});
+
+			this.set("transactionsCount", {
+				x: 'x',
+				columns: [dates, debitCount, creditCount, refundCount, reversalCount],
+				type: 'spline'
+			});
+
+			this.set("verticalBarChartData", {
+				x: 'x',
+				columns: [dates, debitCount]
+			});
+
+			this.set("horizontalBarChartData", {
+				x: 'x',
+				columns: [dates, debitCount]
+			});
 		},
 
-		verticalBarChartData: function() {
-			return [{
-				key: "Cumulative Return",
-				values: [{
-					x: "A Label",
-					y: 29.765957771107
-				}, {
-					x: "B Label",
-					y: 52.52
-				}, {
-					x: "C Label",
-					y: 32.807804682612
-				}]
-			}];
-		}.property(),
-
-		horizontalBarChartData: function() {
-			return [{
-				key: "Cumulative Return",
-				values: [{
-					x: "A Label",
-					y: 29.765957771107
-				}, {
-					x: "B Label",
-					y: 10
-				}, {
-					x: "C Label",
-					y: 32.807804682612
-				}, {
-					x: "D Label",
-					y: 96.45946739256
-				}]
-			}];
-		}.property()
 	});
