@@ -51,6 +51,7 @@ Balanced.ControllerRoute = Balanced.AuthRoute.extend({
 Balanced.RedirectRoute = function redirectRoute(routeName, modelFor, baseRoute) {
 	baseRoute = baseRoute || Balanced.AuthRoute;
 	modelFor = modelFor || 'marketplace';
+
 	return baseRoute.extend({
 		redirect: function() {
 			this.transitionTo(routeName, this.modelFor(modelFor));
