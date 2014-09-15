@@ -34,20 +34,6 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 
 		formatTransactions: function(data) {
 			var cf = crossfilter(data);
-			var byDate = cf.dimension(function(p) {
-				return p.start_at;
-			});
-
-			var byType = cf.dimension(function(p) {
-				return p.type;
-			});
-
-			var groupByType = byDate.group();
-
-			var dates = groupByType.all().map(function(transaction) {
-				return Date.parseISO8601(transaction.key);
-			});
-			dates = ['x'].concat(dates);
 
 			var debitCount = ['debits'];
 			var creditCount = ['credits'];
@@ -59,40 +45,91 @@ Balanced.MarketplaceOverviewController = Balanced.ObjectController.extend(
 			var refundAmount = ['refunds'];
 			var reversalAmount = ['reversals'];
 
-			byType.filterExact('debit');
-			byType.top(Infinity).forEach(function(p, i) {
-				debitCount.push(p.count);
-				debitAmount.push(p.amount);
+			function reduceAdd(type) {
+				return function(p, v) {
+					if (v["type"] === type) {
+						p.count += v.count;
+						p.amount += v.amount;
+					}
+					return p;
+				};
+			}
+
+			function reduceRemove(type) {
+				return function(p, v) {
+					if (v["type"] === type) {
+						p.count -= v.count;
+						p.amount -= v.amount;
+					}
+					return p;
+				};
+			}
+
+			function reduceInitial() {
+				return {
+					count: 0,
+					amount: 0
+				};
+			}
+
+			// group transactions by date
+			var transactionsByDate = cf.dimension(function(p) {
+				return p.start_at;
 			});
 
-			byType.filterExact('credit');
-			byType.top(Infinity).forEach(function(p, i) {
-				creditCount.push(p.count);
-				creditAmount.push(p.amount);
+			var dates = transactionsByDate.group().all().map(function(transaction) {
+				return Date.parseISO8601(transaction.key);
 			});
+			dates = ['x'].concat(dates);
 
-			byType.filterExact('refund');
-			byType.top(Infinity).forEach(function(p, i) {
-				refundCount.push(p.count);
-				refundAmount.push(p.amount);
-			});
+			var debits = transactionsByDate.group().reduce(reduceAdd('debit'), reduceRemove('debit'), reduceInitial).all();
 
-			byType.filterExact('reversal');
-			byType.top(Infinity).forEach(function(p, i) {
-				reversalCount.push(p.count);
-				reversalAmount.push(p.amount);
-			});
+			debitAmount = debitAmount.concat(_.map(debits, function(debit) {
+				return debit.value.amount
+			}));
+
+			debitCount = debitCount.concat(_.map(debits, function(debit) {
+				return debit.value.count
+			}));
+
+			var credits = transactionsByDate.group().reduce(reduceAdd('credit'), reduceRemove('credit'), reduceInitial).all();
+
+			creditAmount = creditAmount.concat(_.map(credits, function(credit) {
+				return credit.value.amount
+			}));
+
+			creditCount = creditCount.concat(_.map(credits, function(credit) {
+				return credit.value.count
+			}));
+
+			var refunds = transactionsByDate.group().reduce(reduceAdd('refund'), reduceRemove('refund'), reduceInitial).all();
+
+			refundAmount = refundAmount.concat(_.map(refunds, function(refund) {
+				return refund.value.amount
+			}));
+
+			refundCount = refundCount.concat(_.map(refunds, function(refund) {
+				return refund.value.count
+			}));
+
+			var reversals = transactionsByDate.group().reduce(reduceAdd('reversal'), reduceRemove('reversal'), reduceInitial).all();
+
+			reversalAmount = reversalAmount.concat(_.map(reversals, function(reversal) {
+				return reversal.value.amount
+			}));
+
+			reversalCount = reversalCount.concat(_.map(reversals, function(reversal) {
+				return reversal.value.count
+			}));
 
 			this.set("totalVolume", {
 				x: 'x',
-				columns: [dates, debitAmount, creditAmount, refundAmount, reversalAmount],
-				type: 'spline'
+				columns: [dates, debitAmount, creditAmount, refundAmount, reversalAmount]
 			});
 
 			this.set("transactionsCount", {
 				x: 'x',
-				columns: [dates, debitCount, creditCount, refundCount, reversalCount],
-				type: 'spline'
+				columns: [dates, debitCount, creditCount, refundCount, reversalCount]
 			});
 
 			this.set("verticalBarChartData", {

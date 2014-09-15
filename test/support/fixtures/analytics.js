@@ -880,12 +880,12 @@ Balanced.Adapter.addFixtures([{
 			"card_brand": "visa",
 			"type": "refund"
 		}, {
-			"count": 1,
+			"count": 3,
 			"status": "succeeded",
 			"card_type": null,
 			"amount": 1600,
 			"card_brand": "visa",
-			"type": "refund"
+			"type": "credit"
 		}],
 		"escrow_at_end": 3403184,
 		"end_at": "2014-09-12T16:04:30.281013Z"

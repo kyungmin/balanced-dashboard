@@ -14,5 +14,6 @@ Balanced.LineChartView = Balanced.ChartView.extend({
 	size: {
 		width: 600,
 		height: 320
-	}
+	},
+	type: 'spline'
 });

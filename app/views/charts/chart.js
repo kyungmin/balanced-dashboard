@@ -12,16 +12,14 @@ Balanced.ChartView = Ember.View.extend({
 	zoom: {},
 	size: {},
 	padding: {},
+	type: null,
 	color: {
 		pattern: ['#639ABD', '#BC8F30', '#9364A8', '#00A08E']
 	},
 	// @egyptianBlue80, @turmericYellow80, @byzantiumPurple80, @forestGreen80
 
-
+	spline: {},
 	bar: {},
-	pie: {},
-	donut: {},
-	gauge: {},
 
 	_chart: undefined,
 
@@ -50,9 +48,6 @@ Balanced.ChartView = Ember.View.extend({
 			'axis',
 			'regions',
 			'bar',
-			'pie',
-			'donut',
-			'gauge',
 			'grid',
 			'legend',
 			'tooltip',
@@ -63,15 +58,15 @@ Balanced.ChartView = Ember.View.extend({
 			'color',
 			'transition'
 		]);
+		c.data.type = this.get('type');
 		c.bindto = this.get('element');
 		return c;
-	}.property('element', 'data', 'axis', 'regions', 'bar', 'pie', 'donut', 'gauge', 'grid', 'legend', 'tooltip', 'subchart', 'zoom', 'size', 'padding', 'color', 'transition'),
+	}.property('element', 'data', 'type', 'axis', 'regions', 'bar', 'grid', 'legend', 'tooltip', 'subchart', 'zoom', 'size', 'padding', 'color', 'transition'),
 
 	dataDidChange: function() {
 		var chart = this.get('chart');
 		chart.load(this.get('data'));
-	}.observes('data').on('didInsertElement')
-});
+	}.observes('data').on('didInsertElement'),
 
 	actions: {
 		toggleLegend: function(seriesKey) {
