@@ -8,15 +8,15 @@ var Log = Model.extend({
 	route_name: 'log',
 	type_name: 'Log',
 
-	order: Model.belongsTo('order', 'order'),
-	debit: Model.belongsTo('debit', 'debit'),
-	credit: Model.belongsTo('credit', 'credit'),
-	refund: Model.belongsTo('refund', 'refund'),
-	reversal: Model.belongsTo('reversal', 'reversal'),
-	hold: Model.belongsTo('hold', 'hold'),
-	customer: Model.belongsTo('customer', 'customer'),
-	card: Model.belongsTo('card', 'card'),
-	bank_account: Model.belongsTo('bank_account', 'bank_account'),
+	order: Model.belongsToWithUri('order', 'order_uri'),
+	debit: Model.belongsToWithUri('debit', 'debit_uri'),
+	credit: Model.belongsToWithUri('credit', 'credit_uri'),
+	refund: Model.belongsToWithUri('refund', 'refund_uri'),
+	reversal: Model.belongsToWithUri('reversal', 'reversal_uri'),
+	hold: Model.belongsToWithUri('hold', 'hold_uri'),
+	customer: Model.belongsToWithUri('customer', 'customer_uri'),
+	card: Model.belongsToWithUri('card', 'card_uri'),
+	bank_account: Model.belongsToWithUri('bank_account', 'bank_account_uri'),
 
 	order_uri: Ember.computed.reads('message.response.body.orders.0.href'),
 	debit_uri: Ember.computed.reads('message.response.body.debits.0.href'),
@@ -47,7 +47,11 @@ var Log = Model.extend({
 	description: Computed.orProperties('message.response.body.description', 'message.response.body.errors.0.description'),
 
 	ip_address: function() {
+<<<<<<< HEAD
 		return "%@ %@".fmt(this.get("message.request.headers.X-Real-Ip"), this.get("geo_ip"))
+=======
+		return "%@ %@".fmt(this.get("message.request.headers.X-Real-Ip"), this.get("geo_ip"));
+>>>>>>> ecb3323be32476310b4031662bb3d50c41959894
 	}.property("message.request.headers.X-Real-Ip", "geo_ip"),
 
 	geo_ip: function() {
