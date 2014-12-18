@@ -47,11 +47,7 @@ var Log = Model.extend({
 	description: Computed.orProperties('message.response.body.description', 'message.response.body.errors.0.description'),
 
 	ip_address: function() {
-<<<<<<< HEAD
-		return "%@ %@".fmt(this.get("message.request.headers.X-Real-Ip"), this.get("geo_ip"))
-=======
 		return "%@ %@".fmt(this.get("message.request.headers.X-Real-Ip"), this.get("geo_ip"));
->>>>>>> ecb3323be32476310b4031662bb3d50c41959894
 	}.property("message.request.headers.X-Real-Ip", "geo_ip"),
 
 	geo_ip: function() {
