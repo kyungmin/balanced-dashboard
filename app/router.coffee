@@ -61,6 +61,9 @@ Router.map ->
 			this.route("customers")
 			this.resource('customer', path: '/customers/:item_id')
 
+			this.route("settlements")
+			this.resource('settlement', path: '/settlements/:item_id')
+
 			this.route("disputes")
 			this.resource('dispute', path: '/disputes/:item_id')
 

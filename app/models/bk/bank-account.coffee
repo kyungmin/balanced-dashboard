@@ -1,7 +1,7 @@
 `import Ember from "ember";`
-`import BankAccount from "balanced-addon-models/models/bank-account";`
+`import BkBankAccount from "balanced-addon-models/models/bank-account";`
 
-BkBankAccount = BankAccount.extend(
+BankAccount = BkBankAccount.extend(
 )
 
-`export default BkBankAccount;`
+`export default BankAccount;`
