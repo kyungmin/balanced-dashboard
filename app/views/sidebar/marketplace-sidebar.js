@@ -6,15 +6,10 @@ var SIDEBAR_ITEMS = [{
 	routeName: "marketplace.orders",
 	isSelectedBinding: "controller.controllers.marketplace.paymentSelected",
 }, {
-	linkText: "Customers",
-	linkIcon: "icon-customers",
-	routeName: "marketplace.customers",
-	isSelectedBinding: "controller.controllers.marketplace.customerSelected"
-}, {
-	linkText: "Payment methods",
-	linkIcon: "icon-card",
-	routeName: "marketplace.funding_instruments",
-	isSelectedBinding: "controller.controllers.marketplace.fundingInstrumentSelected"
+	linkText: "Settlements",
+	linkIcon: "icon-settlements",
+	routeName: "marketplace.settlements",
+	isSelectedBinding: "controller.controllers.marketplace.settlementSelected",
 }, {
 	linkText: "Disputes",
 	linkIcon: "icon-disputes",
@@ -26,6 +21,16 @@ var SIDEBAR_ITEMS = [{
 	linkIcon: "icon-logs",
 	routeName: "marketplace.logs",
 	isSelectedBinding: "controller.controllers.marketplace.logSelected"
+}, {
+	linkText: "Customers",
+	linkIcon: "icon-customers",
+	routeName: "marketplace.customers",
+	isSelectedBinding: "controller.controllers.marketplace.customerSelected"
+}, {
+	linkText: "Payment methods",
+	linkIcon: "icon-card",
+	routeName: "marketplace.funding_instruments",
+	isSelectedBinding: "controller.controllers.marketplace.fundingInstrumentSelected"
 }, {
 	linkText: "Account statements",
 	linkIcon: "icon-invoices",
