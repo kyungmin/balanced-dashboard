@@ -9,7 +9,7 @@ var CustomerRoute = ModelRoute.extend({
 	setupController: function(controller, customer) {
 		this._super(controller, customer);
 
-		var store = this.container.lookup("controller:marketplace").get("store");
+		var store = this.getStore();
 		store.fetchCollection("account", customer.get("accounts_uri"), { limit: 10 }).then(function(collection) {
 			var wrapper = LegacyResultsLoaderWrapper.create({collection: collection});
 			controller.set("accountsResultsLoader", wrapper);

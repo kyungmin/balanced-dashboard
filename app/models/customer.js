@@ -3,7 +3,6 @@ import Model from "./core/model";
 import Computed from "balanced-dashboard/utils/computed";
 import FundingInstrumentsResultsLoader from "./results-loaders/funding-instruments";
 import TransactionsResultsLoader from "./results-loaders/transactions";
-import AccountsResultsLoader from "./results-loaders/accounts";
 
 var CUSTOMER_TYPES = {
 	BUSINESS: 'Business',
@@ -73,12 +72,6 @@ var Customer = Model.extend({
 			path: this.get("transactions_uri"),
 		}, attributes);
 		return TransactionsResultsLoader.create(attributes);
-	},
-	getAccountsLoader: function(attributes) {
-		attributes = _.extend({
-			path: this.get("accounts_uri"),
-		}, attributes);
-		return AccountsResultsLoader.create(attributes);
 	},
 
 	type: function() {

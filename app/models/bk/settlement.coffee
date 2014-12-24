@@ -2,7 +2,8 @@
 `import BkSettlement from "balanced-addon-models/models/settlement";`
 
 Settlement = BkSettlement.extend(
-	routeName: "settlement"
+	routeName: "settlement",
+	type_name: "settlement"
 )
 
 `export default Settlement;`

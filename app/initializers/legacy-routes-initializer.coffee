@@ -7,10 +7,6 @@ LegacyRoutesInitializer =
 			klass = createRedirectRoute(createArgs...)
 			container.register("route:#{name}", klass)
 
-		defineRoute("account", "customer", "account")
-		defineRoute("accounts", "marketplace.customer")
-		defineRoute("accounts.index", 'marketplace.customers', "accounts")
-
 		defineRoute("bank-account.index", 'activity.funding_instruments')
 		defineRoute("cards.index", "activity.funding_instruments")
 

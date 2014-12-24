@@ -30,7 +30,7 @@ var MarketplaceController = Ember.ObjectController.extend({
 	settlementSelected: isSelected('marketplace.settlements', 'settlement'),
 	disputeSelected: isSelected('marketplace.disputes', 'dispute'),
 	customerSelected: isSelected('marketplace.customers', 'customer'),
-	fundingInstrumentSelected: isSelected('marketplace.funding_instruments', 'bank_accounts', 'cards'),
+	fundingInstrumentSelected: isSelected('marketplace.funding_instruments', 'bank_accounts', 'cards', 'accounts'),
 	logSelected: isSelected('marketplace.logs', 'log'),
 	invoiceSelected: isSelected('marketplace.invoices', 'invoice'),
 	settingSelected: isSelected('marketplace.settings'),
