@@ -19,11 +19,11 @@
 {{/if}}
 
 <tbody>
-	{{#each dispute in view.loader.results}}
+	{{#each settlement in view.loader.results}}
 		<tr>
 			<td class="grouped-transactions-container" colspan="5">
 				{{#view "results/grouped-transactions-table"}}
-					{{view "results/grouped-settlement-row" item=view.parentView.transaction.dispute}}
+					{{view "results/grouped-settlement-row" item=settlement}}
 				{{/view}}
 			</td>
 		</tr>

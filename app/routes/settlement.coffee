@@ -9,6 +9,12 @@ SettlementRoute = ModelRoute.extend(
 	setupController: (controller, model) ->
 		@_super(controller, model)
 
+		# this.get("container").lookupFactory("model:bk/account").find(model.get("source_uri")).then (source) ->
+		# 	model.set("source", source)
+
+		this.get("container").lookupFactory("model:bank_account").find(model.get("destination_uri")).then (destination) ->
+			model.set("destination", destination)
+
 		creditsResultsLoader = this.get("container").lookupFactory("results-loader:transactions").create({
 			path: model.get("credits_uri")
 		});

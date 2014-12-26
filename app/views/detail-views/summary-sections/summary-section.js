@@ -50,6 +50,7 @@ var SummarySectionView = Ember.View.extend({
 	},
 
 	generateResourceLink: function(parentModel, model) {
+		var Account = this.get("container").lookupFactory("model:bk/account");
 		var BankAccount = this.get("container").lookupFactory("model:bank-account");
 		var Card = this.get("container").lookupFactory("model:card");
 		var Credit = this.get("container").lookupFactory("model:credit");
@@ -149,9 +150,15 @@ var SummarySectionView = Ember.View.extend({
 		}
 
 		if (model.constructor === BankAccount) {
+			title = model.get('type_name').split(' ')[0];
+
+			if (parentModel.routeName === 'account') {
+				title = "To";
+			}
+
 			return {
 				className: 'icon-bank-account',
-				title: model.get('type_name').split(' ')[0],
+				title: title,
 				resource: model,
 			};
 		}

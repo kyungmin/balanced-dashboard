@@ -3,9 +3,9 @@ import Computed from "balanced-dashboard/utils/computed";
 import LinkedTwoLinesCellView from "../tables/cells/linked-two-lines-cell";
 import Utils from "balanced-dashboard/lib/utils";
 
-var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
+var GroupedSettlementRowView = LinkedTwoLinesCellView.extend({
 	tagName: 'tr',
-	templateName: 'results/grouped-transaction-row',
+	templateName: 'results/grouped-settlement-row',
 	routeName: Ember.computed.oneWay("item.route_name"),
 	spanClassNames: Ember.computed.oneWay("item.status"),
 
@@ -64,4 +64,4 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 	}.property("item.amount")
 });
 
-export default GroupedTransactionRowView;
+export default GroupedSettlementRowView;
