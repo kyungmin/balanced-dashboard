@@ -51,13 +51,21 @@ var GroupedSettlementRowView = LinkedTwoLinesCellView.extend({
 	}.property('item.created_at'),
 
 	paymentMethodText: function() {
+		var bankAccount = this.get('bankAccount');
 		var label = '<span class="primary">%@</span><span class="secondary">%@</span>';
-		var secondaryLabel = this.get('paymentMethodSecondaryLabelText') || '';
-		return Utils.safeFormat(label, this.get('paymentMethodPrimaryLabelText'), secondaryLabel).htmlSafe();
-	}.property('paymentMethodPrimaryLabelText', 'paymentMethodSecondaryLabelText'),
+		console.log(bankAccount)
+		var primaryLabel = "%@ %@".fmt(bankAccount.get("last_four"), bankAccount.get("brand"));
+		var secondaryLabel = bankAccount.get("funding_instrument_type");
+		return Utils.safeFormat(label, primaryLabel, secondaryLabel).htmlSafe();
+	}.property("bankAccount.last_four", "bankAccount.brand", "bankAccount.funding_instrument_type"),
 
-	paymentMethodPrimaryLabelText: Computed.fmt('item.last_four', 'item.brand', '%@ %@'),
-	paymentMethodSecondaryLabelText: Ember.computed.reads('item.funding_instrument_type'),
+	bankAccount: function() {
+		var BankAccount = this.container.lookupFactory("model:bank-account");
+		return BankAccount.find(this.get("item.destination_uri"));
+	}.property("item.destination_uri"),
+
+	// paymentMethodPrimaryLabelText: Computed.fmt('settlementSource.last_four', 'settlementSource.brand', '%@ %@'),
+	// paymentMethodSecondaryLabelText: Ember.computed.reads('item.funding_instrument_type'),
 
 	amountText: function() {
 		return Utils.formatCurrency(this.get("item.amount"));

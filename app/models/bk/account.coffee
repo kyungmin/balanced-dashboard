@@ -9,7 +9,7 @@ Account = BkAccount.extend(
 		type = @get("type").capitalize()
 		"%@ account".fmt(type)
 	).property("type"),
-	title_description: Ember.computed.reads("customer.display_me")
+	title_description: Ember.computed.reads("customer.display_me"),
 )
 
 `export default Account;`

@@ -50,7 +50,6 @@ var SummarySectionView = Ember.View.extend({
 	},
 
 	generateResourceLink: function(parentModel, model) {
-		var Account = this.get("container").lookupFactory("model:bk/account");
 		var BankAccount = this.get("container").lookupFactory("model:bank-account");
 		var Card = this.get("container").lookupFactory("model:card");
 		var Credit = this.get("container").lookupFactory("model:credit");
@@ -149,16 +148,28 @@ var SummarySectionView = Ember.View.extend({
 			};
 		}
 
-		if (model.constructor === BankAccount) {
-			title = model.get('type_name').split(' ')[0];
+		if (parentModel.routeName === 'settlement') {
+			var title = "";
+			var className = "";
 
-			if (parentModel.routeName === 'account') {
+			if (model.routeName === 'account') {
+				title = "From";
+			} else if (model.route_name === 'bank_accounts') {
 				title = "To";
+				className = "icon-bank-account";
 			}
 
 			return {
-				className: 'icon-bank-account',
+				className: className,
 				title: title,
+				resource: model,
+			};
+		}
+
+		if (model.constructor === BankAccount) {
+			return {
+				className: 'icon-bank-account',
+				title: model.get('type_name').split(' ')[0],
 				resource: model,
 			};
 		}

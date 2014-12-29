@@ -3,7 +3,6 @@
 
 Customer = BkCustomer.extend(
 	routeName: "customer",
-	display_me: "XXXX"
 )
 
 `export default Customer;`
