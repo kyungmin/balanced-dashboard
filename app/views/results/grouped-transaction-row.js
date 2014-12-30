@@ -6,20 +6,16 @@ import Utils from "balanced-dashboard/lib/utils";
 var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 	tagName: 'tr',
 	templateName: 'results/grouped-transaction-row',
-	routeName: Ember.computed.oneWay("item.route_name"),
-	spanClassNames: Ember.computed.oneWay("item.status"),
+	routeName: Computed.orProperties("item.route_name", "item.routeName"),
+	spanClassNames: Ember.computed.reads("item.status"),
 
 	title: function() {
-		var description = this.get("item.description");
-
-		if (description) {
-			return description;
-		}
 		if (_.contains(this.get("classNames"), "current")) {
 			return 'You are currently viewing this transaction.';
 		}
-		return '(Created at %@)'.fmt(this.get("secondaryLabelText"));
-	}.property("item.description", "primaryLabelText", "secondaryLabelText"),
+
+		return this.get("primaryLabelText");
+	}.property("primaryLabelText"),
 
 	primaryLabelText: function() {
 		if (_.contains(this.get("classNames"), "current")) {
@@ -29,26 +25,24 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 		var description = this.get('item.description');
 		var status = Utils.capitalize(this.get('item.status'));
 
-		if (status) {
-			status = status.toLowerCase();
-		}
-
 		if (description) {
-			transactionText = '%@ (%@) %@'.fmt(this.get('item.type_name'), description, status);
+			transactionText = '%@ (%@)'.fmt(this.get('item.type_name'), description);
 		} else {
-			transactionText = '%@ %@'.fmt(this.get('item.type_name'), status);
+			transactionText = this.get('item.type_name');
 		}
 
-		if (this.get('item.type_name') === 'Dispute') {
-			transactionText = '%@ %@'.fmt(this.get('item.type_name'), status);
+		if (status) {
+			transactionText = '%@ %@'.fmt(transactionText, status.toLowerCase());
 		}
 
-		return Utils.safeFormat(transactionText).htmlSafe();
-	}.property('classNames', 'item.type_name', 'item.status', 'item.description'),
+		return transactionText;
+	}.property('classNames', 'item.status', 'item.description'),
 
 	secondaryLabelText: function () {
 		return Utils.humanReadableDateTime(this.get('item.created_at'));
 	}.property('item.created_at'),
+
+	customerText: Ember.computed.reads("item.customer.display_me"),
 
 	paymentMethodText: function() {
 		var label = '<span class="primary">%@</span><span class="secondary">%@</span>';
@@ -56,8 +50,22 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 		return Utils.safeFormat(label, this.get('paymentMethodPrimaryLabelText'), secondaryLabel).htmlSafe();
 	}.property('paymentMethodPrimaryLabelText', 'paymentMethodSecondaryLabelText'),
 
-	paymentMethodPrimaryLabelText: Computed.fmt('item.last_four', 'item.brand', '%@ %@'),
-	paymentMethodSecondaryLabelText: Ember.computed.reads('item.funding_instrument_type'),
+	paymentMethodPrimaryLabelText: function() {
+		if (this.get("item.destination.type") === "payable") {
+			return this.get("item.destination.id");
+		} else {
+			return "%@ %@".fmt(this.get("item.destination.last_four"), this.get("item.destination.brand"));
+		}
+
+	}.property("item.destination.id", "item.destination.last_four", "item.destination.brand"),
+	paymentMethodSecondaryLabelText: function() {
+		if (this.get("item.destination.type") === "payable") {
+			return "Payable account";
+		} else {
+			return this.get('item.destination.funding_instrument_type');
+		}
+
+	}.property('item.destination.funding_instrument_type'),
 
 	amountText: function() {
 		return Utils.formatCurrency(this.get("item.amount"));

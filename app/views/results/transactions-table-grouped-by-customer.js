@@ -1,7 +1,7 @@
 import TransactionsTableView from "./transactions-table";
 
-var OrderTransactionsTableView = TransactionsTableView.extend({
-	templateName: 'results/order-transactions-table',
+var TransactionsTableGroupedByCustomerView = TransactionsTableView.extend({
+	templateName: 'results/transactions-table-grouped-by-customer',
 	classNames: 'non-interactive',
 
 	customersArray: function() {
@@ -17,24 +17,24 @@ var OrderTransactionsTableView = TransactionsTableView.extend({
 		var results = this.get("loader.results");
 		var groupedTransactions = [];
 
-		results.forEach(function(transactions) {
-			var buyer = customers.findBy("uri", transactions.get('customer_uri'));
-			var customer = groupedTransactions.findBy('customer_uri', transactions.get('customer_uri'));
+		results.forEach(function(transaction) {
+			var buyer = customers.findBy("uri", transaction.get('customer_uri'));
+			var customer = groupedTransactions.findBy('customer_uri', transaction.get('customer_uri'));
 
 			if(!customer) {
 				customer = Ember.Object.create({
-					customer_uri: transactions.get('customer_uri'),
+					customer_uri: transaction.get('customer_uri'),
 					customer: buyer,
 					transactions: []
 				});
 				groupedTransactions.pushObject(customer);
 			}
 
-			customer.get('transactions').pushObject(transactions);
+			customer.get('transactions').pushObject(transaction);
 		});
 
 		return groupedTransactions;
 	}.property("customersArray", "loader.results.length"),
 });
 
-export default OrderTransactionsTableView;
+export default TransactionsTableGroupedByCustomerView;

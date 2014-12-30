@@ -1,0 +1,44 @@
+<thead>
+	<tr>
+		<th class="col-md-5"><span>Transaction</span></th>
+		{{#unless view.embedded}}
+			<th class="col-md-2"><span>Customer</span></th>
+		{{/unless}}
+		<th class="col-md-3"><span>Payment method</span></th>
+		<th class="col-md-2 num"><span>Amount</span></th>
+	</tr>
+</thead>
+{{#if view.loader.results.hasNextPage}}
+	{{view "results/results-load-more" results=view.loader.results columns="view.colspan"}}
+{{/if}}
+
+<tbody>
+	{{#each settlement_group in view.groupedResults}}
+		<tr>
+			<td class="grouped-transactions-container nested" {{bind-attr colspan="view.colspan"}}>
+				{{#view "results/grouped-transactions-table"}}
+					{{view "results/grouped-transaction-row" item=settlement_group.settlement embedded=view.parentView.embedded}}
+
+					{{#each transaction in settlement_group.transactions}}
+						{{view "results/grouped-transaction-row" item=transaction embedded=view.parentView.embedded}}
+
+						{{#if transaction.reversals}}
+							{{#each reversal in transaction.reversals}}
+								{{view "results/grouped-transaction-row" item=reversal embedded=view.parentView.embedded}}
+							{{/each}}
+						{{/if}}
+					{{/each}}
+				{{/view}}
+			</td>
+	{{else}}
+		<tr>
+			<td {{bind-attr colspan="view.colspan"}} class="no-results">
+				{{#if view.loader.results.isLoaded}}
+					No transactions
+				{{else}}
+					Loading...
+				{{/if}}
+			</td>
+		</tr>
+	{{/each}}
+</tbody>

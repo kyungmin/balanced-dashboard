@@ -1,26 +1,30 @@
-<td {{bind-attr class="view.item.route_name :status :two-lines"}}>
-	{{#link-to view.item.routeName view.item}}
+<td {{bind-attr class="view.item.route_name :status :two-lines :col-md-6"}}>
+	{{#link-to view.routeName view.item}}
 		<span {{bind-attr class="view.isBlank:sl-none view.spanClassNames"}}>
 			{{view.displayValue}}
 		</span>
 	{{/link-to}}
 </td>
-<td class="customer two-lines">
-	{{#link-to view.item.routeName view.item}}
+
+{{#unless view.embedded}}
+	<td class="col-md-3 customer two-lines">
+		{{#link-to view.routeName view.item}}
+			<span {{bind-attr class="view.spanClassNames"}}>
+				{{view.customerText}}
+			</span>
+		{{/link-to}}
+	</td>
+{{/unless}}
+
+<td class="col-md-3 payment-method two-lines">
+	{{#link-to view.routeName view.item}}
 		<span {{bind-attr class="view.spanClassNames"}}>
 			{{view.paymentMethodText}}
 		</span>
 	{{/link-to}}
 </td>
-<td class="payment-method two-lines">
-	{{#link-to view.item.routeName view.item}}
-		<span {{bind-attr class="view.spanClassNames"}}>
-			{{view.paymentMethodText}}
-		</span>
-	{{/link-to}}
-</td>
-<td class="amount num">
-	{{#link-to view.item.routeName view.item}}
+<td class="col-md-3 amount num">
+	{{#link-to view.routeName view.item}}
 		<span {{bind-attr class="view.spanClassNames"}}>
 			{{view.amountText}}
 		</span>

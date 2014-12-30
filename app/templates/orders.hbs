@@ -18,13 +18,13 @@
 
 		{{#if view.isChargesTabSelected}}
 			<div class="results table-responsive">
-				{{view "results/order-transactions-table" loader=debitsResultsLoader customers=model.buyers}}
+				{{view "results/transactions-table-grouped-by-customer" loader=debitsResultsLoader customers=model.buyers}}
 			</div>
 		{{/if}}
 
 		{{#if view.isPayoutsTabSelected}}
 			<div class="results table-responsive">
-				{{view "results/order-transactions-table" loader=creditsResultsLoader customers=model.seller}}
+				{{view "results/transactions-table-grouped-by-customer" loader=creditsResultsLoader customers=model.seller}}
 			</div>
 		{{/if}}
 

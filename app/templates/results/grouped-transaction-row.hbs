@@ -5,6 +5,15 @@
 		</span>
 	{{/link-to}}
 </td>
+{{#unless view.embedded}}
+	<td class="col-md-3 customer two-lines">
+		{{#link-to view.routeName view.item}}
+			<span {{bind-attr class="view.spanClassNames"}}>
+				{{view.customerText}}
+			</span>
+		{{/link-to}}
+	</td>
+{{/unless}}
 <td class="col-md-3 payment-method two-lines">
 	{{#link-to view.routeName view.item}}
 		<span {{bind-attr class="view.spanClassNames"}}>

@@ -1,4 +1,4 @@
-{{view "page-navigations/page-navigation" pageType=model.type_name title=model.title_description}}
+{{view "page-navigations/page-navigation" pageType=model.type_name title=model.id}}
 
 {{#view "detail-views/body-panel"}}
 	{{#view "detail-views/api-model-panel" model=model}}
@@ -10,11 +10,11 @@
 	{{#view "detail-views/main-panel"}}
 		<h3>Unsettled transactions</h3>
 		<div class="results">
-			{{view "results/embedded-transactions-table" loader=creditsResultsLoader}}
+		{{view "results/transactions-table-grouped-by-order" loader=creditsResultsLoader embedded=true}}
 		</div>
 		<h3>Settled transactions</h3>
 		<div class="results">
-			{{view "results/embedded-transactions-table" loader=settlementsResultsLoader}}
+			{{view "results/transactions-table-grouped-by-settlement" loader=settlementsResultsLoader embedded=true}}
 		</div>
 		<h3>Logs</h3>
 		<div class="results">
