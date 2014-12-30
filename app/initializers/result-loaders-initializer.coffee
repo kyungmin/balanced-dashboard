@@ -12,6 +12,7 @@ LOADER_NAMES = [
 	"marketplace-search"
 	"orders"
 	"transactions"
+	"unsettled-transactions"
 ]
 
 ResultLoadersInitializer =

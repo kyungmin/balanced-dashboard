@@ -12,15 +12,16 @@ AccountRoute = ModelRoute.extend(
 		this.get("container").lookupFactory("model:customer").find(model.get("customer_uri")).then (customer) ->
 			model.set("customer", customer)
 
-		creditsResultsLoader = this.get("container").lookupFactory("results-loader:transactions").create({
-			path: model.get("credits_uri")
-		});
-
 		settlementsResultsLoader = this.get("container").lookupFactory("results-loader:transactions").create({
 			path: model.get("settlements_uri")
 		});
 
-		controller.set("creditsResultsLoader", creditsResultsLoader);
+		unsettledCreditsResultsLoader = this.get("container").lookupFactory("results-loader:unsettled_transactions").create({
+			path: model.get("credits_uri"),
+			settledTransactionsResultsLoader: settlementsResultsLoader
+		});
+
+		controller.set("creditsResultsLoader", unsettledCreditsResultsLoader);
 		controller.set("settlementsResultsLoader", settlementsResultsLoader);
 )
 

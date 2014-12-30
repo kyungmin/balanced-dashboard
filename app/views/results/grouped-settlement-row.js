@@ -62,9 +62,9 @@ var GroupedSettlementRowView = LinkedTwoLinesCellView.extend({
 			var label = '<span class="primary">%@</span><span class="secondary">%@</span>';
 			var primaryLabel = customer.get("display_me");
 			var secondaryLabel = customer.get("email_address");
-			console.log(primaryLabel)
+
 			return Utils.safeFormat(label, primaryLabel, secondaryLabel).htmlSafe();
-		})
+		});
 	}.property("bankAccount", "bankAccount.customer", "bankAccount.customer.display_me", "bankAccount.customer.email_address"),
 
 	paymentMethodText: function() {
