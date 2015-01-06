@@ -19,31 +19,31 @@
 	{{#each transaction in view.filteredResults}}
 		<tr>
 			<td class="grouped-transactions-container" colspan="3">
-				{{#view "results/grouped-transactions-table"}}
+				{{#view "results/grouped-transactions-table" embedded=true}}
 					{{#if transaction.order}}
-						{{view "results/grouped-order-row" item=transaction.order}}
+						{{view "results/grouped-order-row" item=transaction.order embedded=true}}
 					{{/if}}
 
 					{{#if transaction.dispute}}
-						{{view "results/grouped-transaction-row" item=transaction.dispute}}
+						{{view "results/grouped-transaction-row" item=transaction.dispute embedded=true}}
 					{{/if}}
 
 					{{#if transaction.refunds}}
 						{{#each refund in transaction.refunds}}
-							{{view "results/grouped-transaction-row" item=refund}}
+							{{view "results/grouped-transaction-row" item=refund embedded=true}}
 						{{/each}}
 					{{/if}}
 
 					{{#if transaction.reversals}}
 						{{#each reversal in transaction.reversals}}
-							{{view "results/grouped-transaction-row" item=reversal}}
+							{{view "results/grouped-transaction-row" item=reversal embedded=true}}
 						{{/each}}
 					{{/if}}
 
-					{{view "results/grouped-transaction-row" item=transaction}}
+					{{view "results/grouped-transaction-row" item=transaction embedded=true}}
 
 					{{#if transaction.hold}}
-						{{view "results/grouped-transaction-row" item=transaction.hold}}
+						{{view "results/grouped-transaction-row" item=transaction.hold embedded=true}}
 					{{/if}}
 				{{/view}}
 			</td>
