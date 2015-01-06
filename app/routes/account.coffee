@@ -18,7 +18,7 @@ AccountRoute = ModelRoute.extend(
 
 		unsettledCreditsResultsLoader = this.get("container").lookupFactory("results-loader:unsettled_transactions").create({
 			path: model.get("credits_uri"),
-			settledTransactionsResultsLoader: settlementsResultsLoader
+			settlementsResultsLoader: settlementsResultsLoader
 		});
 
 		controller.set("creditsResultsLoader", unsettledCreditsResultsLoader);

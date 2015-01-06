@@ -23,13 +23,27 @@ var UnsettledTransactionsResultsLoader = TransactionsResultsLoader.extend({
 
 	results: function() {
 		var self = this;
+
 		return this.get("unfilteredResults").filter(function(credit) {
 			return !self.get("settledTransactionIds").contains(credit.get("id"));
 		})
 	}.property("unfilteredResults.@each.id", "settledTransactionIds"),
 
 	// TODO: populate settled transaction IDs
-	settledTransactionIds: []
+	settledTransactionIds: function() {
+		var self = this;
+		var settlements = this.get("settlementsResultsLoader.results");
+		var settledTransactions = [];
+
+		settlements.forEach(function(settlement) {
+			var credits = TransactionsResultsLoader.create({
+				path: settlement.get("credits_uri")
+			}).get("results.content");
+			settledTransactions.pushObject(credits);
+		});
+
+		return _.flatten(settledTransactions);
+	}.property("settlementsResultsLoader.results.length")
 });
 
 export default UnsettledTransactionsResultsLoader;
