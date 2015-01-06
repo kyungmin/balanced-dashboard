@@ -1,4 +1,5 @@
 import TransactionsResultsLoader from "./transactions";
+import ModelArray from "../core/model-array";
 import SearchModelArray from "../core/search-model-array";
 
 var UnsettledTransactionsResultsLoader = TransactionsResultsLoader.extend({
@@ -26,23 +27,25 @@ var UnsettledTransactionsResultsLoader = TransactionsResultsLoader.extend({
 
 		return this.get("unfilteredResults").filter(function(credit) {
 			return !self.get("settledTransactionIds").contains(credit.get("id"));
-		})
+		});
 	}.property("unfilteredResults.@each.id", "settledTransactionIds"),
 
-	// TODO: populate settled transaction IDs
 	settledTransactionIds: function() {
+		return this.get("settledTransactions").mapBy("id");
+	}.property("settledTransactions.@each.id"),
+
+	settledTransactions: function() {
 		var self = this;
 		var settlements = this.get("settlementsResultsLoader.results");
 		var settledTransactions = [];
 
 		settlements.forEach(function(settlement) {
-			var credits = TransactionsResultsLoader.create({
-				path: settlement.get("credits_uri")
-			}).get("results.content");
-			settledTransactions.pushObject(credits);
+			var promise = SearchModelArray.newArrayLoadedFromUri(settlement.get("credits_uri"), "credit");
+			promise.then(function(credits) {
+				settledTransactions.pushObjects(credits.content);
+			});
 		});
-
-		return _.flatten(settledTransactions);
+		return settledTransactions;
 	}.property("settlementsResultsLoader.results.length")
 });
 

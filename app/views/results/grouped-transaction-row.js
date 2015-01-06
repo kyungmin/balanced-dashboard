@@ -17,6 +17,11 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 		return this.get("primaryLabelText");
 	}.property("primaryLabelText"),
 
+	bankAccount: function() {
+		var BankAccount = this.container.lookupFactory("model:bank-account");
+		return BankAccount.find(this.get("item.destination_uri"));
+	}.property("item.destination_uri"),
+
 	primaryLabelText: function() {
 		if (_.contains(this.get("classNames"), "current")) {
 			return '%@ (currently viewing)'.fmt(this.get('item.type_name'));
@@ -42,13 +47,48 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 		return Utils.humanReadableDateTime(this.get('item.created_at'));
 	}.property('item.created_at'),
 
-	customerText: Ember.computed.reads("item.customer.display_me"),
+	customerText: function() {
+		if (this.get('item.type_name') === "Settlement") {
+			console.log(this.get("settlementCustomerText"))
+			return this.get("settlementCustomerText");
+		} else {
+			return this.get("item.customer.display_me");
+		}
+	}.property("item.customer.display_me", "settlementCustomerText"),
+
+	// customer: function() {
+	// 	var self = this;
+	// 	this.get("bankAccount").then(function(bankAccount) {
+	// 		var customer = self.container.lookupFactory("model:customer").find(bankAccount.get("customer_uri"));
+	// 		return customer;
+	// 	});
+	// }.property("bankAccount", "bankAccount.customer_uri"),
+	customer: Ember.computed.reads("bankAccount.customer"),
+
+	settlementCustomerText: function() {
+		var label = '<span class="primary">%@</span><span class="secondary">%@</span>';
+		var primaryLabel = this.get("customer.display_me");
+		var secondaryLabel = this.get("customer.email_address");
+
+		return Utils.safeFormat(label, primaryLabel, secondaryLabel).htmlSafe();
+	}.property("customer.display_me", "customer.email_address"),
 
 	paymentMethodText: function() {
+		if (this.get('item.type_name') === "Settlement") {
+			return this.get("settlementPaymentMethodText");
+		}
 		var label = '<span class="primary">%@</span><span class="secondary">%@</span>';
 		var secondaryLabel = this.get('paymentMethodSecondaryLabelText') || '';
 		return Utils.safeFormat(label, this.get('paymentMethodPrimaryLabelText'), secondaryLabel).htmlSafe();
-	}.property('paymentMethodPrimaryLabelText', 'paymentMethodSecondaryLabelText'),
+	}.property('paymentMethodPrimaryLabelText', 'paymentMethodSecondaryLabelText', "settlementPaymentMethodText", "item.type_name"),
+
+	settlementPaymentMethodText: function() {
+		var bankAccount = this.get('bankAccount');
+		var label = '<span class="primary">%@</span><span class="secondary">%@</span>';
+		var primaryLabel = "%@ %@".fmt(bankAccount.get("last_four"), bankAccount.get("brand"));
+		var secondaryLabel = bankAccount.get("funding_instrument_type");
+		return Utils.safeFormat(label, primaryLabel, secondaryLabel).htmlSafe();
+	}.property("bankAccount.last_four", "bankAccount.brand", "bankAccount.funding_instrument_type"),
 
 	paymentMethodPrimaryLabelText: function() {
 		if (this.get("item.destination.type") === "payable") {
@@ -58,6 +98,7 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 		}
 
 	}.property("item.destination.id", "item.destination.last_four", "item.destination.brand"),
+
 	paymentMethodSecondaryLabelText: function() {
 		if (this.get("item.destination.type") === "payable") {
 			return "Payable account";

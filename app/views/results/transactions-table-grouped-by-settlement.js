@@ -1,4 +1,5 @@
 import ResultsTableView from "./results-table";
+import SearchModelArray from "balanced-dashboard/models/core/search-model-array";
 
 var TransactionsTableGroupedBySettlement = ResultsTableView.extend({
 	templateName: 'results/transactions-table-grouped-by-settlement',
@@ -14,21 +15,43 @@ var TransactionsTableGroupedBySettlement = ResultsTableView.extend({
 		var groupedTransactions = [];
 
 		settlements.forEach(function(settlement) {
-			var credits = self.container.lookupFactory("results-loader:transactions").create({
-				path: settlement.get("credits_uri")
-			}).get("results.content");
+			var promise = SearchModelArray.newArrayLoadedFromUri(settlement.get("credits_uri"), "credit");
+			promise.then(function(credits) {
+				// credits = self.groupCreditsByOrder(credits);
 
-			var settlementGroup = Ember.Object.create({
-				settlement_uri: settlement.get('uri'),
-				settlement: settlement,
-				transactions: credits
+				var settlementGroup = Ember.Object.create({
+					settlement_uri: settlement.get('uri'),
+					settlement: settlement,
+					transactions: credits
+				});
+				groupedTransactions.pushObject(settlementGroup);
 			});
-			groupedTransactions.pushObject(settlementGroup);
 		});
 
 		return groupedTransactions;
 	}.property("loader.results.length"),
 
+	groupCreditsByOrder: function(credits) {
+		var groupedCredits = [];
+		var Order = this.container.lookupFactory("model:order");
+
+		credits.forEach(function(transaction) {
+			var order = Order.find(transaction.get('order_uri'));
+			var orderGroup = groupedCredits.findBy('order_uri', transaction.get('order_uri'));
+
+			if (!orderGroup) {
+				orderGroup = Ember.Object.create({
+					order_uri: transaction.get('order_uri'),
+					order: order,
+					transactions: []
+				});
+				groupedCredits.pushObject(orderGroup);
+			}
+			orderGroup.get('transactions').pushObject(transaction);
+		});
+
+		return groupedCredits;
+	}
 });
 
 export default TransactionsTableGroupedBySettlement;
