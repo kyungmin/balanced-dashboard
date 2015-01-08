@@ -18,7 +18,8 @@
 			<td class="grouped-transactions-container nested" {{bind-attr colspan="view.colspan"}}>
 				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
 					{{view "results/grouped-transaction-row" item=order_group.order embedded=view.embedded}}
-
+				{{/view}}
+				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
 					{{#each transaction in order_group.transactions}}
 						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
 
