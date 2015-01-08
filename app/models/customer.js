@@ -25,6 +25,8 @@ var Customer = Model.extend({
 	type_name: 'Customer',
 
 	has_bank_account: Ember.computed.and('bank_accounts.isLoaded', 'bank_accounts.length'),
+	account: Ember.computed.reads("accountsResultsLoader.results.content.0"),
+	accountBalance: Ember.computed.reads("accountsResultsLoader.results.content.0.balance"),
 
 	orders_list: function() {
 		var customer_uri = this.get('href');

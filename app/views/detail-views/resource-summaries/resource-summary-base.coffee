@@ -21,7 +21,7 @@ ResourceSummaryBase = Ember.View.extend(
 		else if @isType("bank-account")
 			"#{model.get('last_four')} #{model.get('formatted_bank_name')}"
 		else if @isType("bk/account")
-			"Payable account"
+			"Payable account: #{model.get('balance')}"
 		else
 			null
 	).property("model.amount_escrowed", "model.amount", "model.display_me", "model.last_four", "model.brand", "model.formatted_bank_name")

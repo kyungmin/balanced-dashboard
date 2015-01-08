@@ -17,7 +17,7 @@
 		{{#if view.isActivityTabSelected}}
 			<h3>Payments</h3>
 			<div class="results">
-				{{view "results/embedded-transactions-table" loader=transactionsResultsLoader}}
+				{{view "results/transactions-table-grouped-by-order" loader=transactionsResultsLoader embedded=true}}
 			</div>
 		{{/if}}
 		{{#if view.isDisputesTabSelected}}

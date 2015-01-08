@@ -148,12 +148,21 @@ var SummarySectionView = Ember.View.extend({
 			};
 		}
 
+		if (model.constructor === BankAccount) {
+			return {
+				className: 'icon-bank-account',
+				title: model.get('type_name').split(' ')[0],
+				resource: model,
+			};
+		}
+
 		if (parentModel.routeName === 'settlement') {
 			var title = "";
 			var className = "";
 
 			if (model.routeName === 'account') {
 				title = "From";
+				className = "icon-payable-account";
 			} else if (model.route_name === 'bank_accounts') {
 				title = "To";
 				className = "icon-bank-account";
@@ -166,10 +175,10 @@ var SummarySectionView = Ember.View.extend({
 			};
 		}
 
-		if (model.constructor === BankAccount) {
+		if (model.routeName === 'account') {
 			return {
-				className: 'icon-bank-account',
-				title: model.get('type_name').split(' ')[0],
+				className: 'icon-payable-account',
+				title: model.get('type_name'),
 				resource: model,
 			};
 		}
