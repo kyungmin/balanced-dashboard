@@ -17,11 +17,6 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 		return this.get("primaryLabelText");
 	}.property("primaryLabelText"),
 
-	bankAccount: function() {
-		var BankAccount = this.container.lookupFactory("model:bank-account");
-		return BankAccount.find(this.get("item.destination_uri"));
-	}.property("item.destination_uri"),
-
 	primaryLabelText: function() {
 		if (_.contains(this.get("classNames"), "current")) {
 			return '%@ (currently viewing)'.fmt(this.get('item.type_name'));
@@ -47,23 +42,20 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 		return Utils.humanReadableDateTime(this.get('item.created_at'));
 	}.property('item.created_at'),
 
+	bankAccount: function() {
+		var BankAccount = this.container.lookupFactory("model:bank-account");
+		return BankAccount.find(this.get("item.destination_uri"));
+	}.property("item.destination_uri"),
+
+	customer: Ember.computed.reads("bankAccount.customer"),
+
 	customerText: function() {
 		if (this.get('item.type_name') === "Settlement") {
-			console.log(this.get("settlementCustomerText"))
 			return this.get("settlementCustomerText");
 		} else {
 			return this.get("item.customer.display_me");
 		}
 	}.property("item.customer.display_me", "settlementCustomerText"),
-
-	// customer: function() {
-	// 	var self = this;
-	// 	this.get("bankAccount").then(function(bankAccount) {
-	// 		var customer = self.container.lookupFactory("model:customer").find(bankAccount.get("customer_uri"));
-	// 		return customer;
-	// 	});
-	// }.property("bankAccount", "bankAccount.customer_uri"),
-	customer: Ember.computed.reads("bankAccount.customer"),
 
 	settlementCustomerText: function() {
 		var label = '<span class="primary">%@</span><span class="secondary">%@</span>';

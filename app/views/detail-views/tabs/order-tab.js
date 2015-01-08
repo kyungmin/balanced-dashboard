@@ -8,24 +8,6 @@ var OrderTabView = TabView.extend({
 			defineFilter("Logs & Events", "logsEvents"),
 		];
 	}.property(),
-
-	actions: {
-		setTab: function(tabLink) {
-			if (tabLink.value === "activity") {
-				this.get("parentView").setProperties({
-					"isActivityTabSelected": true,
-					"isLogsEventsTabSelected": false
-				});
-			} else if (tabLink.value === "logsEvents") {
-				this.get("parentView").setProperties({
-					"isActivityTabSelected": false,
-					"isLogsEventsTabSelected": true
-				});
-			}
-
-			this.toggleSelected(tabLink);
-		}
-	}
 });
 
 export default OrderTabView;
