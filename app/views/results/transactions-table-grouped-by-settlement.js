@@ -17,17 +17,15 @@ var TransactionsTableGroupedBySettlement = ResultsTableView.extend({
 		settlements.forEach(function(settlement) {
 			var promise = SearchModelArray.newArrayLoadedFromUri(settlement.get("credits_uri"), "credit");
 			promise.then(function(credits) {
-				// credits = self.groupCreditsByOrder(credits);
-
 				var settlementGroup = Ember.Object.create({
 					settlement_uri: settlement.get('uri'),
 					settlement: settlement,
-					transactions: credits
+					orderGroups: self.groupCreditsByOrder(credits)
 				});
 				groupedTransactions.pushObject(settlementGroup);
 			});
 		});
-
+		console.log(groupedTransactions)
 		return groupedTransactions;
 	}.property("loader.results.length"),
 

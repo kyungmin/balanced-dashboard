@@ -150,21 +150,22 @@ header.results-label h3 {
       padding-right: 0;
 
       &.nested {
-        table.grouped-transactions {
-          tr:first-of-type {
-            td.status:first-of-type {
+        table.grouped-transactions:first-of-type {
+          border-bottom: none;
+
+          td.status {
+            &:first-of-type {
               padding-left: 25px;
             }
           }
+        }
+
+        table.grouped-transactions {
+          border-bottom: none;
+
           td.status {
             &:first-of-type {
               padding-left: 50px;
-            }
-
-            a > span:after {
-              position: absolute;
-              content: '';
-              border-left: 0;
             }
           }
         }

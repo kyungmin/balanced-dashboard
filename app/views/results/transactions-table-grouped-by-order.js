@@ -29,7 +29,7 @@ var TransactionsTableGroupedByOrderView = TransactionsTableView.extend({
 		});
 
 		return groupedTransactions;
-	}.property("loader.results.length", "view.parentView.controller.settlementsResultsLoader.results"),
+	}.property("loader.results.length"),
 });
 
 export default TransactionsTableGroupedByOrderView;

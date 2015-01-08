@@ -13,22 +13,27 @@
 {{/if}}
 
 <tbody>
-	{{#each settlement_group in view.groupedResults}}
+	{{#each settlementGroup in view.groupedResults}}
 		<tr>
 			<td class="grouped-transactions-container nested" {{bind-attr colspan="view.colspan"}}>
 				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
-					{{view "results/grouped-transaction-row" item=settlement_group.settlement embedded=view.embedded}}
-
-					{{#each transaction in settlement_group.transactions}}
-						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
-
-						{{#if transaction.reversals}}
-							{{#each reversal in transaction.reversals}}
-								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
-							{{/each}}
-						{{/if}}
-					{{/each}}
+					{{view "results/grouped-transaction-row" item=settlementGroup.settlement embedded=view.embedded}}
 				{{/view}}
+				{{#each orderGroup in settlementGroup.orderGroups}}
+					{{#view "results/grouped-transactions-table" embedded=view.embedded}}
+						{{view "results/grouped-transaction-row" item=orderGroup.order embedded=view.embedded}}
+
+						{{#each transaction in orderGroup.transactions}}
+							{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
+
+							{{#if transaction.reversals}}
+								{{#each reversal in transaction.reversals}}
+									{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
+								{{/each}}
+							{{/if}}
+						{{/each}}
+					{{/view}}
+				{{/each}}
 			</td>
 	{{else}}
 		<tr>
