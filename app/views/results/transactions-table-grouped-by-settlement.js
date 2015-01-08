@@ -25,7 +25,7 @@ var TransactionsTableGroupedBySettlement = ResultsTableView.extend({
 				groupedTransactions.pushObject(settlementGroup);
 			});
 		});
-		console.log(groupedTransactions)
+
 		return groupedTransactions;
 	}.property("loader.results.length"),
 
