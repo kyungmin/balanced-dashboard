@@ -85,19 +85,6 @@ var Marketplace = UserMarketplace.extend({
 		});
 	},
 
-	search: function(query, resultsType, params) {
-		var baseUri = this.get("uri") + "/search";
-		var searchParams = _.extend({
-			sortField: "created_at",
-			sortOrder: "desc",
-			limit: 10,
-			query: query
-		}, params);
-
-		var resultsUri = Utils.applyUriFilters(baseUri, searchParams);
-		return SearchModelArray.newArrayLoadedFromUri(resultsUri, resultsType);
-	},
-
 	has_debitable_bank_account: Ember.computed.readOnly('owner_customer.has_debitable_bank_account'),
 	has_bank_account: Ember.computed.readOnly('owner_customer.has_bank_account'),
 
