@@ -101,8 +101,12 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 	}.property('item.destination.funding_instrument_type'),
 
 	amountText: function() {
-		return Utils.formatCurrency(this.get("item.amount"));
-	}.property("item.amount")
+		var amount = this.get("item.amount");
+		if (this.get("item.type_name") === "Order") {
+			amount = this.get("item.amount_escrowed");
+		}
+		return Utils.formatCurrency(amount);
+	}.property("item.amount", "item.type_name")
 });
 
 export default GroupedTransactionRowView;

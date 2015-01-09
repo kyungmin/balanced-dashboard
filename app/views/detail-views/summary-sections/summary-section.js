@@ -61,7 +61,9 @@ var SummarySectionView = Ember.View.extend({
 		var Refund = this.get("container").lookupFactory("model:refund");
 		var Reversal = this.get("container").lookupFactory("model:reversal");
 
-		var title;
+		var title = "";
+		var className = "";
+
 		if (Ember.isBlank(model) || parentModel.uri === model.uri) {
 			return;
 		}
@@ -148,18 +150,8 @@ var SummarySectionView = Ember.View.extend({
 			};
 		}
 
-		if (model.constructor === BankAccount) {
-			return {
-				className: 'icon-bank-account',
-				title: model.get('type_name').split(' ')[0],
-				resource: model,
-			};
-		}
 
 		if (parentModel.routeName === 'settlement') {
-			var title = "";
-			var className = "";
-
 			if (model.routeName === 'account') {
 				title = "From";
 				className = "icon-payable-account";
@@ -179,6 +171,14 @@ var SummarySectionView = Ember.View.extend({
 			return {
 				className: 'icon-payable-account',
 				title: model.get('type_name'),
+				resource: model,
+			};
+		}
+
+		if (model.constructor === BankAccount) {
+			return {
+				className: 'icon-bank-account',
+				title: model.get('type_name').split(' ')[0],
 				resource: model,
 			};
 		}

@@ -16,12 +16,15 @@ ResourceSummaryBase = Ember.View.extend(
 		else if @isType("customer")
 			model.get("display_me")
 		else if @isType("card")
-			console.log(model)
 			"#{model.get('last_four')} #{model.get('brand')}"
 		else if @isType("bank-account")
 			"#{model.get('last_four')} #{model.get('formatted_bank_name')}"
 		else if @isType("bk/account")
-			"Payable account: #{model.get('balance')}"
+			currentRoute = @container.lookup("controller:application").get('currentRouteName')
+			if currentRoute == "settlement"
+				"Payable account"
+			else
+				"Balance: $%@".fmt(Utils.centsToDollars(model.get('balance')))
 		else
 			null
 	).property("model.amount_escrowed", "model.amount", "model.display_me", "model.last_four", "model.brand", "model.formatted_bank_name")
