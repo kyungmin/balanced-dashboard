@@ -19,12 +19,12 @@
 		{{#if view.isActivityTabSelected}}
 			<h3>Charges</h3>
 			<div class="results table-responsive">
-				{{view "results/transactions-table-grouped-by-customer" loader=debitsResultsLoader customers=model.buyers}}
+				{{view "results/transactions-table-grouped-by-customer" loader=debitsResultsLoader customers=model.buyers embedded=true}}
 			</div>
 
 			<h3>Payouts</h3>
 			<div class="results table-responsive">
-				{{view "results/transactions-table-grouped-by-customer" loader=creditsResultsLoader customers=model.seller}}
+				{{view "results/transactions-table-grouped-by-customer" loader=creditsResultsLoader customers=model.seller embedded=true}}
 			</div>
 		{{/if}}
 

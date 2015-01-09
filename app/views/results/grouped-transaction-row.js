@@ -85,20 +85,22 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 	paymentMethodPrimaryLabelText: function() {
 		if (this.get("item.destination.type") === "payable") {
 			return this.get("item.destination.id");
+		} else if (this.get("item.source")) {
+			return "%@ %@".fmt(this.get("item.source.last_four"), this.get("item.source.brand"));
 		} else {
 			return "%@ %@".fmt(this.get("item.destination.last_four"), this.get("item.destination.brand"));
 		}
-
-	}.property("item.destination.id", "item.destination.last_four", "item.destination.brand"),
+	}.property("item.source.id", "item.source.last_four", "item.source.brand", "item.destination.id", "item.destination.last_four", "item.destination.brand"),
 
 	paymentMethodSecondaryLabelText: function() {
 		if (this.get("item.destination.type") === "payable") {
 			return "Payable account";
+		} else if (this.get("item.source")) {
+			return this.get('item.source.funding_instrument_type');
 		} else {
 			return this.get('item.destination.funding_instrument_type');
 		}
-
-	}.property('item.destination.funding_instrument_type'),
+	}.property('item.source.funding_instrument_type', 'item.destination.funding_instrument_type'),
 
 	amountText: function() {
 		var amount = this.get("item.amount");

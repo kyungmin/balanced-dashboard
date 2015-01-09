@@ -25,28 +25,28 @@
 				title=customer_group.customer.display_me_with_email
 				class="customer-group two-lines"
 			}}
-			<td class="grouped-transactions-container" colspan="3">
+			<td class="grouped-transactions-container divided" colspan="3">
 				{{#each transaction in customer_group.transactions}}
-					{{#view "results/grouped-transactions-table"}}
+					{{#view "results/grouped-transactions-table" embedded=view.embedded}}
 						{{#if transaction.dispute}}
-							{{view "results/grouped-transaction-row" item=transaction.dispute}}
+							{{view "results/grouped-transaction-row" item=transaction.dispute embedded=view.embedded}}
 						{{/if}}
 
-						{{view "results/grouped-transaction-row" item=transaction}}
+						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
 
 						{{#if transaction.hold}}
-							{{view "results/grouped-transaction-row" item=transaction.hold}}
+							{{view "results/grouped-transaction-row" item=transaction.hold embedded=view.embedded}}
 						{{/if}}
 
 						{{#if transaction.refunds}}
 							{{#each refund in transaction.refunds}}
-								{{view "results/grouped-transaction-row" item=refund}}
+								{{view "results/grouped-transaction-row" item=refund embedded=view.embedded}}
 							{{/each}}
 						{{/if}}
 
 						{{#if transaction.reversals}}
 							{{#each reversal in transaction.reversals}}
-								{{view "results/grouped-transaction-row" item=reversal}}
+								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
 							{{/each}}
 						{{/if}}
 					{{/view}}
