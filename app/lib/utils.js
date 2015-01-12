@@ -421,6 +421,10 @@ var Utils = Ember.Namespace.create({
 			bytes = '0 byte';
 		}
 		return bytes;
+	},
+
+	getCurrentYear: function() {
+		return moment().get("year");
 	}
 });
 
