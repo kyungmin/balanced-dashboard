@@ -18,39 +18,69 @@
 <tbody>
 	{{#each transaction in view.filteredResults}}
 		<tr>
-			<td class="grouped-transactions-container" colspan="3">
-				{{#view "results/grouped-transactions-table" embedded=true}}
-					{{#if transaction.order}}
+			{{#if transaction.order}}
+				<td class="grouped-transactions-container nested" colspan="3">
+					{{#view "results/grouped-transactions-table" embedded=true}}
 						{{view "results/grouped-order-row" item=transaction.order embedded=true}}
-					{{/if}}
+					{{/view}}
+					{{#view "results/grouped-transactions-table" embedded=view.embedded}}
+						{{#if transaction.dispute}}
+							{{view "results/grouped-transaction-row" item=transaction.dispute embedded=true}}
+						{{/if}}
 
-					{{#if transaction.dispute}}
-						{{view "results/grouped-transaction-row" item=transaction.dispute embedded=true}}
-					{{/if}}
+						{{#if transaction.refunds}}
+							{{#each refund in transaction.refunds}}
+								{{view "results/grouped-transaction-row" item=refund embedded=true}}
+							{{/each}}
+						{{/if}}
 
-					{{#if transaction.refunds}}
-						{{#each refund in transaction.refunds}}
-							{{view "results/grouped-transaction-row" item=refund embedded=true}}
-						{{/each}}
-					{{/if}}
+						{{#if transaction.reversals}}
+							{{#each reversal in transaction.reversals}}
+								{{view "results/grouped-transaction-row" item=reversal embedded=true}}
+							{{/each}}
+						{{/if}}
 
-					{{#if transaction.reversals}}
-						{{#each reversal in transaction.reversals}}
-							{{view "results/grouped-transaction-row" item=reversal embedded=true}}
-						{{/each}}
-					{{/if}}
+						{{view "results/grouped-transaction-row" item=transaction embedded=true}}
 
-					{{view "results/grouped-transaction-row" item=transaction embedded=true}}
+						{{#if transaction.transaction}}
+							{{view "results/grouped-transaction-row" item=transaction.transaction}}
+						{{/if}}
 
-					{{#if transaction.transaction}}
-						{{view "results/grouped-transaction-row" item=transaction.transaction}}
-					{{/if}}
+						{{#if transaction.hold}}
+							{{view "results/grouped-transaction-row" item=transaction.hold embedded=true}}
+						{{/if}}
+					{{/view}}
+			{{else}}
+				<td class="ungrouped-transactions-container" colspan="3">
+					{{#view "results/grouped-transactions-table" embedded=view.embedded}}
+						{{#if transaction.dispute}}
+							{{view "results/grouped-transaction-row" item=transaction.dispute embedded=true}}
+						{{/if}}
 
-					{{#if transaction.hold}}
-						{{view "results/grouped-transaction-row" item=transaction.hold embedded=true}}
-					{{/if}}
-				{{/view}}
-			</td>
+						{{#if transaction.refunds}}
+							{{#each refund in transaction.refunds}}
+								{{view "results/grouped-transaction-row" item=refund embedded=true}}
+							{{/each}}
+						{{/if}}
+
+						{{#if transaction.reversals}}
+							{{#each reversal in transaction.reversals}}
+								{{view "results/grouped-transaction-row" item=reversal embedded=true}}
+							{{/each}}
+						{{/if}}
+
+						{{view "results/grouped-transaction-row" item=transaction embedded=true}}
+
+						{{#if transaction.transaction}}
+							{{view "results/grouped-transaction-row" item=transaction.transaction}}
+						{{/if}}
+
+						{{#if transaction.hold}}
+							{{view "results/grouped-transaction-row" item=transaction.hold embedded=true}}
+						{{/if}}
+					{{/view}}
+				</td>
+			{{/if}}
 		</tr>
 	{{else}}
 		<tr>

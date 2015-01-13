@@ -13,24 +13,41 @@
 {{/if}}
 
 <tbody>
-	{{#each order_group in view.groupedResults}}
+	{{#each orderGroup in view.groupedResults}}
 		<tr>
-			<td class="grouped-transactions-container nested" {{bind-attr colspan="view.colspan"}}>
-				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
-					{{view "results/grouped-transaction-row" item=order_group.order embedded=view.embedded}}
-				{{/view}}
-				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
-					{{#each transaction in order_group.transactions}}
-						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
+			{{#if orderGroup.order}}
+				<td class="grouped-transactions-container nested" {{bind-attr colspan="view.colspan"}}>
+					{{#view "results/grouped-transactions-table" embedded=view.embedded}}
+						{{view "results/grouped-transaction-row" item=orderGroup.order embedded=view.embedded}}
+					{{/view}}
+					{{#view "results/grouped-transactions-table" embedded=view.embedded}}
+						{{#each transaction in orderGroup.transactions}}
+							{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
 
-						{{#if transaction.reversals}}
-							{{#each reversal in transaction.reversals}}
-								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
-							{{/each}}
-						{{/if}}
-					{{/each}}
-				{{/view}}
-			</td>
+							{{#if transaction.reversals}}
+								{{#each reversal in transaction.reversals}}
+									{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
+								{{/each}}
+							{{/if}}
+						{{/each}}
+					{{/view}}
+				</td>
+			{{else}}
+				<td class="ungrouped-transactions-container" {{bind-attr colspan="view.colspan"}}>
+					{{#view "results/grouped-transactions-table" embedded=view.embedded}}
+						{{#each transaction in orderGroup.transactions}}
+							{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
+
+							{{#if transaction.reversals}}
+								{{#each reversal in transaction.reversals}}
+									{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
+								{{/each}}
+							{{/if}}
+						{{/each}}
+					{{/view}}
+				</td>
+			{{/if}}
+		</tr>
 	{{else}}
 		<tr>
 			<td {{bind-attr colspan="view.colspan"}} class="no-results">

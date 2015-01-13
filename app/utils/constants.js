@@ -22,7 +22,7 @@ Constants.BANK_ACCOUNT_TYPES = [{
 
 Constants.SEARCH = {
 	CATEGORIES: ['order', 'transaction', 'search', 'customer', 'funding_instrument', 'dispute'],
-	SEARCH_TYPES: ['debit', 'credit', 'card_hold', 'refund', "reversal", 'settlement'],
+	SEARCH_TYPES: ['debit', 'credit', 'card_hold', 'refund', "reversal", 'settlement', 'account'],
 	TRANSACTION_TYPES: ['debit', 'credit', 'hold', 'refund'],
 	FUNDING_INSTRUMENT_TYPES: ['bank_account', 'card'],
 	DISPUTE_TYPES: ['pending', 'won', 'lost', 'arbitration'],

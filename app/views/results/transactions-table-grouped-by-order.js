@@ -14,12 +14,13 @@ var TransactionsTableGroupedByOrderView = TransactionsTableView.extend({
 		var Order = this.container.lookupFactory("model:order");
 
 		results.forEach(function(transaction) {
-			var order = Order.find(transaction.get('order_uri'));
+			var orderUri = transaction.get('order_uri');
+			var order = orderUri ? Order.find(orderUri) : null;
 			var orderGroup = groupedTransactions.findBy('order_uri', transaction.get('order_uri'));
 
 			if (!orderGroup) {
 				orderGroup = Ember.Object.create({
-					order_uri: transaction.get('order_uri'),
+					order_uri: orderUri,
 					order: order,
 					transactions: []
 				});

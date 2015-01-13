@@ -145,6 +145,30 @@ header.results-label h3 {
       }
     }
 
+    td.ungrouped-transactions-container {
+      padding-left: 0;
+      padding-right: 0;
+
+      table.grouped-transactions {
+        border-bottom: none;
+
+        thead {
+          border: none;
+          margin-top: -1px;
+        }
+
+        tr {
+          &:last-of-type {
+            border-bottom: none;
+          }
+
+          &:hover {
+            background-color: @persianBlue10;
+          }
+        }
+      }
+    }
+
     td.grouped-transactions-container {
       padding-left: 0;
       padding-right: 0;
