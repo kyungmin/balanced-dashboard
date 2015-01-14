@@ -26,12 +26,12 @@ var UnsettledTransactionsResultsLoader = TransactionsResultsLoader.extend({
 	results: function() {
 		var self = this;
 
-		var r = this.get("unfilteredResults").filter(function(credit) {
+		var results = this.get("unfilteredResults").filter(function(credit) {
 			return !self.get("settledTransactionIds").contains(credit.get("id"));
 		});
 		return ModelArray.create({
 			isLoaded: true,
-			content: r
+			content: results
 		});
 	}.property("unfilteredResults.@each.id", "settledTransactionIds"),
 

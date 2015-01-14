@@ -4,6 +4,7 @@
 
 Settlement = Model.extend(
 	routeName: "settlement",
+	route_name: "settlement",
 	type_name: "Settlement",
 	amountInDollars: (->
 		"$%@".fmt(Utils.centsToDollars(@get("amount")))

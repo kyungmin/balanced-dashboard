@@ -19,6 +19,7 @@ var Customer = Model.extend({
 	refunds: Model.hasMany('refunds', 'refund'),
 	orders: Model.hasMany('orders', 'order'),
 	disputes: Model.hasMany('disputes', 'dispute'),
+	accounts: Model.hasMany('accounts', 'account'),
 
 	uri: '/customers',
 	route_name: 'customer',
@@ -54,7 +55,7 @@ var Customer = Model.extend({
 
 	funding_instruments: Ember.computed.union('bank_accounts', 'cards'),
 	debitable_funding_instruments: Ember.computed.union('debitable_bank_accounts', 'cards'),
-	creditable_funding_instruments: Ember.computed.union('bank_accounts', 'creditable_cards'),
+	creditable_funding_instruments: Ember.computed.union('bank_accounts', 'creditable_cards', 'accounts'),
 
 	getFundingInstrumentsLoader: function(attributes) {
 		attributes = _.extend({

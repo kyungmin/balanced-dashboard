@@ -19,7 +19,7 @@ ResourceSummaryBase = Ember.View.extend(
 			"#{model.get('last_four')} #{model.get('brand')}"
 		else if @isType("bank-account")
 			"#{model.get('last_four')} #{model.get('formatted_bank_name')}"
-		else if @isType("bk/account")
+		else if @isType("bk/account") || @isType("account")
 			currentRoute = @container.lookup("controller:application").get('currentRouteName')
 			if currentRoute == "settlement"
 				"Payable account"
@@ -27,7 +27,7 @@ ResourceSummaryBase = Ember.View.extend(
 				"Balance: $%@".fmt(Utils.centsToDollars(model.get('balance')))
 		else
 			null
-	).property("model.amount_escrowed", "model.amount", "model.display_me", "model.last_four", "model.brand", "model.formatted_bank_name")
+	).property("model.amount_escrowed", "model.amount", "model.display_me", "model.last_four", "model.brand", "model.formatted_bank_name", "model.balance")
 
 	hoverValue: (->
 		model = @get("model")
