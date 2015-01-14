@@ -1,5 +1,5 @@
 import BaseResultsLoader from "./base";
-import Account from "../bk/account";
+import Account from "../account";
 
 var AccountsResultsLoader = BaseResultsLoader.extend({
 	resultsType: Account,

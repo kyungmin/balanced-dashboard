@@ -10,6 +10,16 @@ var MarketplaceSettingsController = Ember.ObjectController.extend(actionsMixin, 
 
 	ownerCustomer: Ember.computed.oneWay("marketplace.owner_customer"),
 
+	accountsResultsLoader: function() {
+		if (this.get("owner_customer")) {
+			return this.get("owner_customer").getAccountsLoader({
+				limit: 10
+			});
+		} else {
+			return this.get("container").lookup("results-loader:base");
+		}
+	}.property("owner_customer"),
+
 	fundingInstrumentsResultsLoader: function() {
 		if (this.get("owner_customer")) {
 			return this.get("owner_customer").getFundingInstrumentsLoader({

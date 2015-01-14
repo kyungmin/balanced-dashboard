@@ -1,5 +1,4 @@
 `import ModelRoute from "./model"`
-`import LegacyResultsLoaderWrapper from "balanced-dashboard/utils/legacy-results-loader-wrapper";`
 
 AccountRoute = ModelRoute.extend(
 	model: (params) ->

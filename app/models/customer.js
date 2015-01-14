@@ -76,6 +76,13 @@ var Customer = Model.extend({
 		}, attributes);
 		return TransactionsResultsLoader.create(attributes);
 	},
+	getAccountsLoader: function(attributes) {
+		var AccountsResultsLoader = require("balanced-dashboard/models/results-loaders/accounts")["default"];
+		attributes = _.extend({
+			path: this.get("accounts_uri"),
+		}, attributes);
+		return AccountsResultsLoader.create(attributes);
+	},
 
 	type: function() {
 		return (this.get('ein') || this.get('business_name')) ? CUSTOMER_TYPES.BUSINESS : CUSTOMER_TYPES.PERSON;
