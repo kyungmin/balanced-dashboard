@@ -22,12 +22,14 @@ Constants.BANK_ACCOUNT_TYPES = [{
 
 Constants.SEARCH = {
 	CATEGORIES: ['order', 'transaction', 'search', 'customer', 'funding_instrument', 'dispute'],
-	SEARCH_TYPES: ['debit', 'credit', 'card_hold', 'refund', "reversal", 'settlement', 'account'],
+	SEARCH_TYPES: ['debit', 'credit', 'card_hold', 'refund', "reversal"],
 	TRANSACTION_TYPES: ['debit', 'credit', 'hold', 'refund'],
 	FUNDING_INSTRUMENT_TYPES: ['bank_account', 'card'],
 	DISPUTE_TYPES: ['pending', 'won', 'lost', 'arbitration'],
 	CUSTOMER_TYPES: ["customer"],
-	ORDER_TYPES: ["order"]
+	ORDER_TYPES: ["order"],
+	SETTLEMENT_TYPES: ['settlement'],
+	ACCOUNT_TYPES: ['account'],
 };
 
 //  time in ms to throttle between key presses for search

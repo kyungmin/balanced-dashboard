@@ -15,7 +15,8 @@ var UnsettledTransactionsResultsLoader = TransactionsResultsLoader.extend({
 			var searchArray = SearchModelArray.newArrayLoadedFromUri(uri, type);
 			searchArray.setProperties({
 				sortProperties: [this.get('sortField') || 'created_at'],
-				sortAscending: this.get('sortDirection') === 'asc'
+				sortAscending: this.get('sortDirection') === 'asc',
+				isLoaded: true
 			});
 
 			return searchArray;
@@ -25,8 +26,12 @@ var UnsettledTransactionsResultsLoader = TransactionsResultsLoader.extend({
 	results: function() {
 		var self = this;
 
-		return this.get("unfilteredResults").filter(function(credit) {
+		var r = this.get("unfilteredResults").filter(function(credit) {
 			return !self.get("settledTransactionIds").contains(credit.get("id"));
+		});
+		return ModelArray.create({
+			isLoaded: true,
+			content: r
 		});
 	}.property("unfilteredResults.@each.id", "settledTransactionIds"),
 

@@ -17,7 +17,7 @@
 		</li>
 
 		<li {{bind-attr class=":accounts :filter view.totalAccounts::disabled view.isAccountsTabSelected:selected"}} >
-			<a href="#" {{action "changeSearchTab" "account" target="view"}}>{{format-number view.totalAccounts}} Accounts</a>
+			<a href="#" {{action "changeSearchTab" "account" target="view"}}>{{format-number view.totalAccounts}} Internal accounts</a>
 		</li>
 
 		<li {{bind-attr class=":settlements :filter view.totalSettlements::disabled view.isSettlementsTabSelected:selected"}} >

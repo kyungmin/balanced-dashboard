@@ -19,7 +19,7 @@ var SearchModelArray = ModelArray.extend(Ember.SortableMixin, {
 	total_transactions: Computed.sumAll('total_credits', 'total_debits', 'total_card_holds', 'total_refunds'),
 	total_funding_instruments: Computed.sumAll('total_bank_accounts', 'total_cards'),
 	total_settlements: readOnly('settlement'),
-	total_results: Computed.sumAll('total_orders', 'total_transactions', 'total_funding_instruments', 'total_customers')
+	total_results: Computed.sumAll('total_orders', 'total_transactions', 'total_funding_instruments', 'total_customers', 'total_settlements')
 });
 
 export default SearchModelArray;

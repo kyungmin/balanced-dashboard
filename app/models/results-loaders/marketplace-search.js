@@ -4,6 +4,8 @@ import Transaction from "../transaction";
 import FundingInstrument from "../funding-instrument";
 import Customer from "../customer";
 import Order from "../order";
+import Account from "../account";
+import Settlement from "../settlement";
 import SearchModelArray from "../core/search-model-array";
 import Constants from "balanced-dashboard/utils/constants";
 
@@ -15,7 +17,9 @@ var MarketplaceSearchResultsLoader = BaseResultsLoader.extend({
 		var mapping = {
 			"funding_instrument": Constants.SEARCH.FUNDING_INSTRUMENT_TYPES,
 			"customer": Constants.SEARCH.CUSTOMER_TYPES,
-			"order": Constants.SEARCH.ORDER_TYPES
+			"order": Constants.SEARCH.ORDER_TYPES,
+			"account": Constants.SEARCH.ACCOUNT_TYPES,
+			"settlement": Constants.SEARCH.SETTLEMENT_TYPES,
 		};
 
 		return mapping[this.get("searchType")] || Constants.SEARCH.SEARCH_TYPES;
@@ -25,7 +29,9 @@ var MarketplaceSearchResultsLoader = BaseResultsLoader.extend({
 		var mapping = {
 			"funding_instrument": FundingInstrument,
 			"customer": Customer,
-			"order": Order
+			"order": Order,
+			"account": Account,
+			"settlement": Settlement
 		};
 		return mapping[this.get("searchType")] || Transaction;
 	}.property("searchType"),

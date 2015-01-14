@@ -9,6 +9,7 @@ TypeMappingsInitializer =
 			TypeMappings.addTypeMapping(key, klass)
 
 		registerMapping "api_key", "api-key"
+		registerMapping "account"
 		registerMapping "bank_account", "bank-account"
 		registerMapping "bank-account", "bank-account"
 		registerMapping "bank_account_verification", "verification"
