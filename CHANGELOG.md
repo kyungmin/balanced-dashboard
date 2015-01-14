@@ -1,5 +1,12 @@
 # Balanced Dashboard Changelog
 
+### 1.1.10
+
+* Fixes #1614: Display correct succeeded bank account credit count
+* Fix reversals not showing sometimes on search results.
+* Fix incorrect status showing up for holds
+* Fixes #1611: Display debits associated to disputes in the customer page
+
 ### 1.1.9
 
 * Fixing filtering on search results.
