@@ -8,6 +8,7 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 	templateName: 'results/grouped-transaction-row',
 	routeName: Computed.orProperties("item.route_name", "item.routeName"),
 	spanClassNames: Ember.computed.reads("item.status"),
+	typeName: Ember.computed.reads("item.type_name"),
 
 	title: function() {
 		if (_.contains(this.get("classNames"), "current")) {
@@ -19,16 +20,16 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 
 	primaryLabelText: function() {
 		if (_.contains(this.get("classNames"), "current")) {
-			return '%@ (currently viewing)'.fmt(this.get('item.type_name'));
+			return '%@ (currently viewing)'.fmt(this.get('typeName'));
 		}
 		var transactionText;
 		var description = this.get('item.description');
 		var status = Utils.capitalize(this.get('item.status'));
 
 		if (description) {
-			transactionText = '%@ (%@)'.fmt(this.get('item.type_name'), description);
+			transactionText = '%@ (%@)'.fmt(this.get('typeName'), description);
 		} else {
-			transactionText = this.get('item.type_name');
+			transactionText = this.get('typeName');
 		}
 
 		if (status) {
@@ -50,12 +51,19 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 	customer: Ember.computed.reads("bankAccount.customer"),
 
 	customerText: function() {
-		if (this.get('item.type_name') === "Settlement") {
+		var typeName = this.get('typeName');
+
+		if (typeName === "Order") {
+			var label = '<span class="primary">%@</span><span class="secondary">Merchant</span>';
+			var primaryLabel = this.get("item.seller.display_me");
+
+			return Utils.safeFormat(label, primaryLabel).htmlSafe();
+		} else if (typeName === "Settlement") {
 			return this.get("settlementCustomerText");
 		} else {
 			return this.get("item.customer.display_me");
 		}
-	}.property("item.customer.display_me", "settlementCustomerText"),
+	}.property("item.seller.display_me", "item.customer.display_me", "settlementCustomerText"),
 
 	settlementCustomerText: function() {
 		var label = '<span class="primary">%@</span><span class="secondary">%@</span>';
@@ -66,13 +74,12 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 	}.property("customer.display_me", "customer.email_address"),
 
 	paymentMethodText: function() {
-		if (this.get('item.type_name') === "Settlement") {
+		if (this.get('typeName') === "Settlement") {
 			return this.get("settlementPaymentMethodText");
 		}
 		var label = '<span class="primary">%@</span><span class="secondary">%@</span>';
-		var secondaryLabel = this.get('paymentMethodSecondaryLabelText') || '';
-		return Utils.safeFormat(label, this.get('paymentMethodPrimaryLabelText'), secondaryLabel).htmlSafe();
-	}.property('paymentMethodPrimaryLabelText', 'paymentMethodSecondaryLabelText', "settlementPaymentMethodText", "item.type_name"),
+		return Utils.safeFormat(label, this.get('paymentMethodPrimaryLabelText')).htmlSafe();
+	}.property('paymentMethodPrimaryLabelText', "settlementPaymentMethodText", "typeName"),
 
 	settlementPaymentMethodText: function() {
 		var bankAccount = this.get('bankAccount');
@@ -82,35 +89,31 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 		return Utils.safeFormat(label, primaryLabel, secondaryLabel).htmlSafe();
 	}.property("bankAccount.last_four", "bankAccount.brand", "bankAccount.funding_instrument_type"),
 
-	paymentMethodPrimaryLabelText: function() {
-		if (this.get("item.destination.type") === "payable") {
-			return this.get("item.destination.id");
-		} else if (this.get("item.source")) {
-			return "%@ %@".fmt(this.get("item.source.last_four"), this.get("item.source.brand"));
-		} else {
-			return "%@ %@".fmt(this.get("item.destination.last_four"), this.get("item.destination.brand"));
-		}
-	}.property("item.source.id", "item.source.last_four", "item.source.brand", "item.destination.id", "item.destination.last_four", "item.destination.brand"),
+	dasherizedPaymentMethodType: Ember.computed.reads("item.dasherized_funding_instrument_type"),
 
-	paymentMethodSecondaryLabelText: function() {
+	paymentMethodPrimaryLabelText: function() {
+		var label = "";
+		var dasherizedPaymentMethodType = this.get("dasherizedPaymentMethodType");
+
 		if (this.get("item.destination.type") === "payable") {
-			return "Payable account";
+			label = "Payable account";
 		} else if (this.get("item.source")) {
-			return this.get('item.source.funding_instrument_type');
+			label = this.get("item.source.last_four");
 		} else {
-			return this.get('item.destination.funding_instrument_type');
+			label = this.get("item.destination.last_four");
 		}
-	}.property('item.source.funding_instrument_type', 'item.destination.funding_instrument_type'),
+		return Utils.safeFormat('<i class="icon-%@ non-interactive"></i>%@', dasherizedPaymentMethodType, label).htmlSafe();
+	}.property("item.source.last_four", "item.destination.last_four", "dasherizedPaymentMethodType"),
 
 	amountText: function() {
-		if (this.get("item.type_name") === "Order") {
+		if (this.get("typeName") === "Order") {
 			var label = '<span class="primary">%@</span><span class="secondary">Order balance</span>';
 			var primaryLabel = Utils.formatCurrency(this.get("item.amount_escrowed"));
 			return Utils.safeFormat(label, primaryLabel).htmlSafe();
 		} else {
 			return Utils.formatCurrency(this.get("item.amount"));
 		}
-	}.property("item.amount", "item.type_name")
+	}.property("item.amount", "typeName")
 });
 
 export default GroupedTransactionRowView;
