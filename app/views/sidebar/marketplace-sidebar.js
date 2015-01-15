@@ -1,10 +1,10 @@
 import SidebarView from "./sidebar";
 
 var SIDEBAR_ITEMS = [{
-	linkText: "Payments",
-	linkIcon: "icon-payments",
+	linkText: "Orders",
+	linkIcon: "icon-orders",
 	routeName: "marketplace.orders",
-	isSelectedBinding: "controller.controllers.marketplace.paymentSelected",
+	isSelectedBinding: "controller.controllers.marketplace.orderSelected",
 }, {
 	linkText: "Settlements",
 	linkIcon: "icon-settlements",

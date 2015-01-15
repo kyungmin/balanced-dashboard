@@ -10,7 +10,8 @@ LegacyRoutesInitializer =
 		defineRoute("bank-account.index", 'activity.funding_instruments')
 		defineRoute("cards.index", "activity.funding_instruments")
 
-		defineRoute("marketplace-redirect-activity-transactions", "marketplace.transactions")
+		defineRoute("marketplace-redirect-activity-transactions", "marketplace.orders")
+		defineRoute("marketplace-redirect-transactions", "marketplace.orders")
 		defineRoute("marketplace-redirect-activity-orders", "activity.orders")
 		defineRoute("marketplace-redirect-activity-customers", "marketplace.customers")
 		defineRoute("marketplace-redirect-activity-funding-instruments", "marketplace.funding-instruments")

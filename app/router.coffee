@@ -49,6 +49,7 @@ Router.map ->
 
 			# exists to handle old URIs
 			this.route("redirect_activity_transactions", path: '/activity/transactions')
+			this.route("redirect_transactions", path: '/transactions')
 			this.route("redirect_activity_orders", path: '/activity/orders')
 			this.route("redirect_activity_customers", path: 'activity/customers')
 			this.route("redirect_activity_funding_instruments", path: 'activity/funding_instruments')
@@ -59,6 +60,12 @@ Router.map ->
 
 			this.route("orders")
 			this.resource('orders', path: '/orders/:item_id')
+			this.resource('credits', path: '/credits/:item_id')
+			this.resource('reversals', path: '/reversals/:item_id')
+			this.resource('debits', path: '/debits/:item_id')
+			this.resource('holds', path: '/holds/:item_id')
+			this.resource('refunds', path: '/refunds/:item_id')
+			this.resource('events', path: '/events/:item_id')
 
 			this.route("customers")
 			this.resource('customer', path: '/customers/:item_id')
@@ -72,14 +79,6 @@ Router.map ->
 			this.route('funding_instruments', path: '/payment_methods')
 			this.resource('bank_accounts', path: '/bank_accounts/:item_id')
 			this.resource('cards', path: '/cards/:item_id')
-
-			this.route("transactions")
-			this.resource('credits', path: '/credits/:item_id')
-			this.resource('reversals', path: '/reversals/:item_id')
-			this.resource('debits', path: '/debits/:item_id')
-			this.resource('holds', path: '/holds/:item_id')
-			this.resource('refunds', path: '/refunds/:item_id')
-			this.resource('events', path: '/events/:item_id')
 
 			this.route("logs")
 			this.resource("log", path: "/logs/:item_id")

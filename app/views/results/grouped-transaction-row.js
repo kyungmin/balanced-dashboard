@@ -103,11 +103,13 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 	}.property('item.source.funding_instrument_type', 'item.destination.funding_instrument_type'),
 
 	amountText: function() {
-		var amount = this.get("item.amount");
 		if (this.get("item.type_name") === "Order") {
-			amount = this.get("item.amount_escrowed");
+			var label = '<span class="primary">%@</span><span class="secondary">Order balance</span>';
+			var primaryLabel = Utils.formatCurrency(this.get("item.amount_escrowed"));
+			return Utils.safeFormat(label, primaryLabel).htmlSafe();
+		} else {
+			return Utils.formatCurrency(this.get("item.amount"));
 		}
-		return Utils.formatCurrency(amount);
 	}.property("item.amount", "item.type_name")
 });
 

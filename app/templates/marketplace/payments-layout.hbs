@@ -1,43 +1,23 @@
-{{#view "page-navigations/page-navigation" title="Payments"}}
-	{{#if view.parentView.showActionButtons}}
-		<div class="buttons page-actions">
-			<a class="btn" {{action "openModal" "modals/card-debit-create-modal"}}>Debit a card</a>
-			<a class="btn" {{action "openModal" "modals/bank-account-credit-create-modal"}}>Credit a bank account</a>
-		</div>
-	{{/if}}
+{{#view "page-navigations/page-navigation" title="Orders"}}
+	<div class="buttons page-actions">
+		<a class="btn" {{action "openModal" "modals/card-debit-create-modal"}}>Debit a card</a>
+		<a class="btn" {{action "openModal" "modals/bank-account-credit-create-modal"}}>Credit a bank account</a>
+	</div>
 {{/view}}
 
 <nav class="payments-navbar clearfix">
-	<ul class="nav nav-pills">
-		<li>
-			{{#link-to 'marketplace.orders' active=controller.controllers.marketplace.orderSelected data-track-event="Clicked orders tab"}}
-				<i class="icon-orders"></i>
-				<span>Orders</span>
-			{{/link-to}}
-		</li>
-		<li>
-			{{#link-to 'marketplace.transactions' active=controller.controllers.marketplace.transactionSelected data-track-event="Clicked transactions tab"}}
-				<i class="icon-transactions"></i>
-				<span>Transactions</span>
-			{{/link-to}}
-		</li>
-	</ul>
-
 	<div class="actions pull-right">
-		{{#if view.showActionButtons}}
-			{{#unless auth.isGuest}}
-				{{#link-to "marketplace.import_payouts" class="btn-link sm"}}
-					<i class="icon icon-document-upload import-payout"></i>
-					Import payouts
-				{{/link-to}}
-			{{/unless}}
-			<a {{action "openModal" "modals/export-csv-modal" resultsLoader}} class="btn-link sm">
-				<i class="icon icon-export"></i>
-				Export
-			</a>
-		{{else}}
-			{{view "menus/order-sort-menu" resultsLoader=resultsLoader}}
-		{{/if}}
+		{{view "menus/order-sort-menu" resultsLoader=resultsLoader}}
+		{{#unless auth.isGuest}}
+			{{#link-to "marketplace.import_payouts" class="btn-link sm"}}
+				<i class="icon icon-document-upload import-payout"></i>
+				Import payouts
+			{{/link-to}}
+		{{/unless}}
+		<a {{action "openModal" "modals/export-csv-modal" resultsLoader}} class="btn-link sm">
+			<i class="icon icon-export"></i>
+			Export
+		</a>
 	</div>
 </nav>
 
