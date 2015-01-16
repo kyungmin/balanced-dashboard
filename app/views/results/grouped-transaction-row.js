@@ -66,16 +66,16 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 			}
 		}
 		if (typeName === "Settlement") {
-			if (this.get("settlementSource")) {
+			if (this.get("settlementSource.last_four")) {
 				label = this.get("settlementSource.last_four");
 				type = Ember.String.dasherize(this.get("settlementSource.type_name"));
-			} else if (this.get("settlementDestination.type") === "payable") {
+			} else if (this.get("settlementSource.type") === "payable") {
 				label = "Payable account";
 				type = "payable-account";
 			}
 		}
 		return Utils.safeFormat('<i class="icon-%@ non-interactive"></i>%@', type, label).htmlSafe();
-	}.property("typeName", "item.source.last_four", "item.source.type_name", "dasherizedPaymentMethodType", "item.credit.destination.last_four", "item.credit.destination.type_name", "settlementSource.last_four", "settlementSource.type_name"),
+	}.property("typeName", "item.source.last_four", "item.source.type_name", "dasherizedPaymentMethodType", "item.credit.destination.last_four", "item.credit.destination.type_name", "settlementSource.last_four", "settlementSource.type_name", "settlementSource.type"),
 
 	paymentMethodToText: function() {
 		var label = "";
@@ -103,7 +103,6 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 			type = "orders";
 		}
 		if (typeName === "Settlement") {
-			console.log(this.get("settlementDestination"))
 			if (this.get("settlementDestination.last_four")) {
 				label = this.get("settlementDestination.last_four");
 				type = Ember.String.dasherize(this.get("settlementDestination.type_name"));
@@ -113,19 +112,22 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 			}
 		}
 		return Utils.safeFormat('<i class="icon-%@ non-interactive"></i>%@', type, label).htmlSafe();
-	}.property("typeName", "item.destination.last_four", "item.destination.type_name", "dasherizedPaymentMethodType", "item.debit.source.last_four", "item.debit.source.type_name", "settlementDestination.last_four", "settlementDestination.type_name"),
+	}.property("typeName", "item.destination.last_four", "item.destination.type_name", "dasherizedPaymentMethodType", "item.debit.source.last_four", "item.debit.source.type_name", "settlementDestination.last_four", "settlementDestination.type_name", "settlementDestination.type"),
 
-	settlementSource: function() {
+	settlementSource: function(attr) {
+		var self = this;
 		var store = this.container.lookup("controller:marketplace").get("store");
 		store.fetchItem("account", this.get("item.source_uri")).then(function(source) {
-			return source.toLegacyModel();
+			self.set(attr, source.toLegacyModel());
 		});
+		return null;
 	}.property("item.source_uri"),
 
-	settlementDestination: function() {
+	settlementDestination: function(attr) {
+		var self = this;
 		var store = this.container.lookup("controller:marketplace").get("store");
 		store.fetchItem("account", this.get("item.destination_uri")).then(function(destination) {
-			return destination.toLegacyModel();
+			self.set(attr, destination.toLegacyModel());
 		});
 	}.property("item.destination_uri"),
 
