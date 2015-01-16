@@ -43,9 +43,90 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 		return Utils.humanReadableDateTime(this.get('item.created_at'));
 	}.property('item.created_at'),
 
-	bankAccount: function() {
-		var BankAccount = this.container.lookupFactory("model:bank-account");
-		return BankAccount.find(this.get("item.destination_uri"));
+	paymentMethodFromText: function() {
+		var label = "";
+		var type = "";
+		var typeName = this.get('typeName');
+
+		if (typeName === "Debit" || typeName === "Hold") {
+			label = this.get("item.source.last_four");
+			type = this.get("dasherizedPaymentMethodType");
+		}
+		if (typeName === "Credit" || typeName === "Refund") {
+			label = "Order balance";
+			type = "orders";
+		}
+		if (typeName === "Reversal") {
+			if (this.get("item.credit.destination.last_four")) {
+				label = this.get("item.credit.destination.last_four");
+				type = Ember.String.dasherize(this.get("item.credit.destination.type_name"));
+			} else {
+				label = "Payable account";
+				type = "payable-account";
+			}
+		}
+		if (typeName === "Settlement") {
+			if (this.get("settlementSource")) {
+				label = this.get("settlementSource.last_four");
+				type = Ember.String.dasherize(this.get("settlementSource.type_name"));
+			} else if (this.get("settlementDestination.type") === "payable") {
+				label = "Payable account";
+				type = "payable-account";
+			}
+		}
+		return Utils.safeFormat('<i class="icon-%@ non-interactive"></i>%@', type, label).htmlSafe();
+	}.property("typeName", "item.source.last_four", "item.source.type_name", "dasherizedPaymentMethodType", "item.credit.destination.last_four", "item.credit.destination.type_name", "settlementSource.last_four", "settlementSource.type_name"),
+
+	paymentMethodToText: function() {
+		var label = "";
+		var type = "";
+		var typeName = this.get('typeName');
+		if (typeName === "Debit" || typeName === "Hold") {
+			label = "Order balance";
+			type = "orders";
+		}
+		if (typeName === "Credit") {
+			if (this.get("item.destination.last_four")) {
+				label = this.get("item.destination.last_four");
+				type = this.get("dasherizedPaymentMethodType");
+			} else {
+				label = "Payable account";
+				type = "payable-account";
+			}
+		}
+		if (typeName === "Refund") {
+			label = this.get("item.debit.source.last_four");
+			type = Ember.String.dasherize(this.get("item.debit.source.type_name"));
+		}
+		if (typeName === "Reversal") {
+			label = "Order balance";
+			type = "orders";
+		}
+		if (typeName === "Settlement") {
+			console.log(this.get("settlementDestination"))
+			if (this.get("settlementDestination.last_four")) {
+				label = this.get("settlementDestination.last_four");
+				type = Ember.String.dasherize(this.get("settlementDestination.type_name"));
+			} else if (this.get("settlementDestination.type") === "payable") {
+				label = "Payable account";
+				type = "payable-account";
+			}
+		}
+		return Utils.safeFormat('<i class="icon-%@ non-interactive"></i>%@', type, label).htmlSafe();
+	}.property("typeName", "item.destination.last_four", "item.destination.type_name", "dasherizedPaymentMethodType", "item.debit.source.last_four", "item.debit.source.type_name", "settlementDestination.last_four", "settlementDestination.type_name"),
+
+	settlementSource: function() {
+		var store = this.container.lookup("controller:marketplace").get("store");
+		store.fetchItem("account", this.get("item.source_uri")).then(function(source) {
+			return source.toLegacyModel();
+		});
+	}.property("item.source_uri"),
+
+	settlementDestination: function() {
+		var store = this.container.lookup("controller:marketplace").get("store");
+		store.fetchItem("account", this.get("item.destination_uri")).then(function(destination) {
+			return destination.toLegacyModel();
+		});
 	}.property("item.destination_uri"),
 
 	customer: Ember.computed.reads("bankAccount.customer"),
@@ -65,45 +146,7 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 		}
 	}.property("item.seller.display_me", "item.customer.display_me", "settlementCustomerText"),
 
-	settlementCustomerText: function() {
-		var label = '<span class="primary">%@</span><span class="secondary">%@</span>';
-		var primaryLabel = this.get("customer.display_me");
-		var secondaryLabel = this.get("customer.email_address");
-
-		return Utils.safeFormat(label, primaryLabel, secondaryLabel).htmlSafe();
-	}.property("customer.display_me", "customer.email_address"),
-
-	paymentMethodText: function() {
-		if (this.get('typeName') === "Settlement") {
-			return this.get("settlementPaymentMethodText");
-		}
-		var label = '<span class="primary">%@</span><span class="secondary">%@</span>';
-		return Utils.safeFormat(label, this.get('paymentMethodPrimaryLabelText')).htmlSafe();
-	}.property('paymentMethodPrimaryLabelText', "settlementPaymentMethodText", "typeName"),
-
-	settlementPaymentMethodText: function() {
-		var bankAccount = this.get('bankAccount');
-		var label = '<span class="primary">%@</span><span class="secondary">%@</span>';
-		var primaryLabel = "%@ %@".fmt(bankAccount.get("last_four"), bankAccount.get("brand"));
-		var secondaryLabel = bankAccount.get("funding_instrument_type");
-		return Utils.safeFormat(label, primaryLabel, secondaryLabel).htmlSafe();
-	}.property("bankAccount.last_four", "bankAccount.brand", "bankAccount.funding_instrument_type"),
-
 	dasherizedPaymentMethodType: Ember.computed.reads("item.dasherized_funding_instrument_type"),
-
-	paymentMethodPrimaryLabelText: function() {
-		var label = "";
-		var dasherizedPaymentMethodType = this.get("dasherizedPaymentMethodType");
-
-		if (this.get("item.destination.type") === "payable") {
-			label = "Payable account";
-		} else if (this.get("item.source")) {
-			label = this.get("item.source.last_four");
-		} else {
-			label = this.get("item.destination.last_four");
-		}
-		return Utils.safeFormat('<i class="icon-%@ non-interactive"></i>%@', dasherizedPaymentMethodType, label).htmlSafe();
-	}.property("item.source.last_four", "item.destination.last_four", "dasherizedPaymentMethodType"),
 
 	amountText: function() {
 		if (this.get("typeName") === "Order") {

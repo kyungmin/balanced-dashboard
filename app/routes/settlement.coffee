@@ -11,10 +11,10 @@ SettlementRoute = ModelRoute.extend(
 
 		store = @getStore()
 		store.fetchItem("account", model.get("source_uri")).then (source) ->
-			model.set("source", source)
+			model.set("source", source.toLegacyModel())
 
-		this.get("container").lookupFactory("model:bank_account").find(model.get("destination_uri")).then (destination) ->
-			model.set("destination", destination)
+		store.fetchItem("account", model.get("destination_uri")).then (destination) ->
+			model.set("destination", destination.toLegacyModel())
 
 		creditsResultsLoader = this.get("container").lookupFactory("results-loader:transactions").create({
 			path: model.get("credits_uri")

@@ -3,6 +3,9 @@ import TransactionsTableView from "./transactions-table";
 var EmbeddedTransactionsTableView = TransactionsTableView.extend({
 	templateName: "results/embedded-transactions-table",
 	classNames: ["non-interactive"],
+	embedded: true,
+	colspan: 4,
+
 	filteredResults: function() {
 		var results = this.get("loader.results");
 		var filteredResults = [];

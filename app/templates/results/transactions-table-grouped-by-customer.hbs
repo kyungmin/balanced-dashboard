@@ -1,9 +1,9 @@
 <thead>
 	<tr>
 		<th class="col-md-3 customer"><span>Customer</span></th>
-		<th class="col-md-4 transaction"><span>Transaction</span></th>
+		<th class="col-md-5 transaction"><span>Transaction</span></th>
 		<th class="col-md-2 payment-method">
-			<span>Payment method</span>
+			<span>{{view.paymentMethodText}}</span>
 		</th>
 		<th class="col-md-2 amount num">
 			<span>Amount</span>
@@ -11,7 +11,7 @@
 	</tr>
 </thead>
 {{#if view.loader.results.hasNextPage}}
-	{{view "results/results-load-more" results=view.loader.results columns=4}}
+	{{view "results/results-load-more" results=view.loader.results columns=view.colspan}}
 {{/if}}
 
 <tbody>
@@ -25,28 +25,28 @@
 				title=customer_group.customer.display_me_with_email
 				class="customer-group two-lines"
 			}}
-			<td class="grouped-transactions-container divided" colspan="3">
+			<td class="grouped-transactions-container divided" {{bind-attr colspan="view.colspan"}}>
 				{{#each transaction in customer_group.transactions}}
-					{{#view "results/grouped-transactions-table" embedded=view.embedded}}
+					{{#view "results/grouped-transactions-table" embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 						{{#if transaction.dispute}}
-							{{view "results/grouped-transaction-row" item=transaction.dispute embedded=view.embedded}}
+							{{view "results/grouped-transaction-row" item=transaction.dispute embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 						{{/if}}
 
-						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
+						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 
 						{{#if transaction.hold}}
-							{{view "results/grouped-transaction-row" item=transaction.hold embedded=view.embedded}}
+							{{view "results/grouped-transaction-row" item=transaction.hold embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 						{{/if}}
 
 						{{#if transaction.refunds}}
 							{{#each refund in transaction.refunds}}
-								{{view "results/grouped-transaction-row" item=refund embedded=view.embedded}}
+								{{view "results/grouped-transaction-row" item=refund embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 							{{/each}}
 						{{/if}}
 
 						{{#if transaction.reversals}}
 							{{#each reversal in transaction.reversals}}
-								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
+								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 							{{/each}}
 						{{/if}}
 					{{/view}}
@@ -54,7 +54,7 @@
 			</td>
 	{{else}}
 		<tr>
-			<td colspan="4" class="no-results">
+			<td {{bind-attr colspan="view.colspan"}} class="no-results">
 				{{#if view.loader.results.isLoaded}}
 					No transactions
 				{{else}}

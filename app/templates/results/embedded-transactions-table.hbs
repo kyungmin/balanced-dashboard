@@ -1,25 +1,28 @@
 <thead>
 	<tr>
-		<th class="col-md-6 transaction">
-			<span>Transaction</span>
+		<th class="col-md-5 transaction">
+			<span>Order</span>
 		</th>
-		<th class="col-md-3 payment-method">
-			<span>Payment method</span>
+		<th class="col-md-2 payment-method">
+			<span>From</span>
 		</th>
-		<th class="col-md-3 amount num">
+		<th class="col-md-2 payment-method">
+			<span>To</span>
+		</th>
+		<th class="col-md-2 amount num">
 			<span>Amount</span>
 		</th>
 	</tr>
 </thead>
 {{#if view.loader.results.hasNextPage}}
-	{{view "results/results-load-more" results=view.loader.results columns=3}}
+	{{view "results/results-load-more" results=view.loader.results columns=view.colspan}}
 {{/if}}
 
 <tbody>
 	{{#each transaction in view.filteredResults}}
 		<tr>
 			{{#if transaction.order}}
-				<td class="grouped-transactions-container nested" colspan="3">
+				<td class="grouped-transactions-container nested" {{bind-attr colspan="view.colspan"}}>
 					{{#view "results/grouped-transactions-table" embedded=true}}
 						{{view "results/grouped-order-row" item=transaction.order embedded=true}}
 					{{/view}}
@@ -51,7 +54,7 @@
 						{{/if}}
 					{{/view}}
 			{{else}}
-				<td class="ungrouped-transactions-container" colspan="3">
+				<td class="ungrouped-transactions-container" {{bind-attr colspan="view.colspan"}}>
 					{{#view "results/grouped-transactions-table" embedded=view.embedded}}
 						{{#if transaction.dispute}}
 							{{view "results/grouped-transaction-row" item=transaction.dispute embedded=true}}
@@ -84,7 +87,7 @@
 		</tr>
 	{{else}}
 		<tr>
-			<td colspan="3" class="no-results">
+			<td {{bind-attr colspan="view.colspan"}} class="no-results">
 				{{#if view.loader.results.isLoaded}}
 					No transactions
 				{{else}}

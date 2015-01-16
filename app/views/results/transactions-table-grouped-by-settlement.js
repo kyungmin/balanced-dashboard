@@ -6,7 +6,7 @@ var TransactionsTableGroupedBySettlement = ResultsTableView.extend({
 	classNames: ['settlements', 'non-interactive'],
 
 	colspan: function() {
-		return (this.get("embedded")) ? "3": "4";
+		return (this.get("embedded")) ? "4": "5";
 	}.property("embedded"),
 
 	groupedResults: function() {

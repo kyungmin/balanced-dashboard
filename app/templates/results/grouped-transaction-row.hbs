@@ -14,13 +14,24 @@
 		{{/link-to}}
 	</td>
 {{/unless}}
-<td class="payment-method two-lines">
-	{{#link-to view.routeName view.item}}
-		<span {{bind-attr class="view.spanClassNames"}}>
-			{{view.paymentMethodText}}
-		</span>
-	{{/link-to}}
-</td>
+{{#unless view.hideFromColumn}}
+	<td class="payment-method">
+		{{#link-to view.routeName view.item}}
+			<span {{bind-attr class="view.spanClassNames"}}>
+				{{view.paymentMethodFromText}}
+			</span>
+		{{/link-to}}
+	</td>
+{{/unless}}
+{{#unless view.hideToColumn}}
+	<td class="payment-method">
+		{{#link-to view.routeName view.item}}
+			<span {{bind-attr class="view.spanClassNames"}}>
+				{{view.paymentMethodToText}}
+			</span>
+		{{/link-to}}
+	</td>
+{{/unless}}
 <td class="amount num two-lines">
 	{{#link-to view.routeName view.item}}
 		<span {{bind-attr class="view.spanClassNames"}}>

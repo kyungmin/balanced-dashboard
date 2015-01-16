@@ -4,6 +4,10 @@ var TransactionsTableGroupedByCustomerView = TransactionsTableView.extend({
 	templateName: 'results/transactions-table-grouped-by-customer',
 	classNames: 'non-interactive',
 
+	colspan: 3,
+	hideFromColumn: Ember.computed.equal("paymentMethodText", "To"),
+	hideToColumn: Ember.computed.equal("paymentMethodText", "From"),
+
 	customersArray: function() {
 		var customers = this.get("customers");
 		if (!Ember.isArray(customers)) {

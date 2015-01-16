@@ -17,7 +17,7 @@ ResourceSummaryBase = Ember.View.extend(
 			model.get("display_me")
 		else if @isType("card")
 			"#{model.get('last_four')} #{model.get('brand')}"
-		else if @isType("bank-account")
+		else if @isType("bank-account") || @isType("bk/bank-account")
 			"#{model.get('last_four')} #{model.get('formatted_bank_name')}"
 		else if @isType("bk/account") || @isType("account")
 			currentRoute = @container.lookup("controller:application").get('currentRouteName')

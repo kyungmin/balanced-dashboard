@@ -1,11 +1,16 @@
 <thead>
 	<tr>
-		<td class="col-md-5"></td>
+		<th class="col-md-5"></th>
 		{{#unless view.embedded}}
-			<td class="col-md-2"></td>
+			<th class="col-md-2"></th>
 		{{/unless}}
-		<td class="col-md-3"></td>
-		<td class="col-md-2"></td>
+		{{#unless view.hideFromColumn}}
+			<th class="col-md-2"></th>
+		{{/unless}}
+		{{#unless view.hideToColumn}}
+			<th class="col-md-2"></th>
+		{{/unless}}
+		<th class="col-md-2"></th>
 	</tr>
 </thead>
 <tbody>

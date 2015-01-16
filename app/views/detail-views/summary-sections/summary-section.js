@@ -150,23 +150,6 @@ var SummarySectionView = Ember.View.extend({
 			};
 		}
 
-
-		if (parentModel.routeName === 'settlement') {
-			if (model.routeName === 'account') {
-				title = "From";
-				className = "icon-payable-account";
-			} else if (model.route_name === 'bank_accounts') {
-				title = "To";
-				className = "icon-bank-account";
-			}
-
-			return {
-				className: className,
-				title: title,
-				resource: model,
-			};
-		}
-
 		if (model.routeName === 'account') {
 			return {
 				className: 'icon-payable-account',
