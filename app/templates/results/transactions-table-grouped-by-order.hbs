@@ -1,63 +1,44 @@
-<thead>
+{{#each orderGroup in view.groupedResults}}
 	<tr>
-		<th class="col-md-5"><span>Transaction</span></th>
-		{{#unless view.embedded}}
-			<th class="col-md-2"><span>Customer</span></th>
-		{{/unless}}
-		<th class="col-md-2"><span>From</span></th>
-		<th class="col-md-2"><span>To</span></th>
-		<th class="col-md-2 num"><span>Amount</span></th>
-	</tr>
-</thead>
-{{#if view.loader.results.hasNextPage}}
-	{{view "results/results-load-more" results=view.loader.results columns=view.colspan}}
-{{/if}}
-
-<tbody>
-	{{#each orderGroup in view.groupedResults}}
-		<tr>
-			{{#if orderGroup.order}}
-				<td class="grouped-transactions-container nested" {{bind-attr colspan="view.colspan"}}>
-					{{#view "results/grouped-transactions-table" embedded=view.embedded}}
-						{{view "results/grouped-transaction-row" item=orderGroup.order embedded=view.embedded}}
-					{{/view}}
-					{{#view "results/grouped-transactions-table" embedded=view.embedded}}
-						{{#each transaction in orderGroup.transactions}}
-							{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
-
-							{{#if transaction.reversals}}
-								{{#each reversal in transaction.reversals}}
-									{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
-								{{/each}}
-							{{/if}}
-						{{/each}}
-					{{/view}}
-				</td>
-			{{else}}
-				<td class="ungrouped-transactions-container" {{bind-attr colspan="view.colspan"}}>
-					{{#view "results/grouped-transactions-table" embedded=view.embedded}}
-						{{#each transaction in orderGroup.transactions}}
-							{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
-
-							{{#if transaction.reversals}}
-								{{#each reversal in transaction.reversals}}
-									{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
-								{{/each}}
-							{{/if}}
-						{{/each}}
-					{{/view}}
-				</td>
-			{{/if}}
-		</tr>
-	{{else}}
-		<tr>
-			<td {{bind-attr colspan="view.colspan"}} class="no-results">
-				{{#if view.loader.results.isLoaded}}
-					No transactions
-				{{else}}
-					Loading...
-				{{/if}}
+		{{#if orderGroup.order}}
+			<td class="grouped-transactions-container nested" {{bind-attr colspan="view.colspan"}}>
+				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
+					{{view "results/grouped-transaction-row" item=orderGroup.order embedded=view.embedded}}
+				{{/view}}
+				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
+					{{#each transaction in orderGroup.transactions}}
+						{{#if transaction.reversals}}
+							{{#each reversal in transaction.reversals}}
+								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
+							{{/each}}
+						{{/if}}
+						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
+					{{/each}}
+				{{/view}}
 			</td>
-		</tr>
-	{{/each}}
-</tbody>
+		{{else}}
+			<td class="ungrouped-transactions-container" {{bind-attr colspan="view.colspan"}}>
+				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
+					{{#each transaction in orderGroup.transactions}}
+						{{#if transaction.reversals}}
+							{{#each reversal in transaction.reversals}}
+								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
+							{{/each}}
+						{{/if}}
+						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
+					{{/each}}
+				{{/view}}
+			</td>
+		{{/if}}
+	</tr>
+{{else}}
+	<tr>
+		<td {{bind-attr colspan="view.colspan"}} class="no-results">
+			{{#if view.loader.results.isLoaded}}
+				No transactions
+			{{else}}
+				Loading...
+			{{/if}}
+		</td>
+	</tr>
+{{/each}}

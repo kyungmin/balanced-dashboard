@@ -1,18 +1,18 @@
 <thead>
 	<tr>
-		<th class="col-md-5"></th>
+		<th class="col-md-5"><span>Transaction</span></th>
 		{{#unless view.embedded}}
-			<th class="col-md-2"></th>
+			<th class="col-md-2"><span>Customer</span></th>
 		{{/unless}}
-		{{#unless view.hideFromColumn}}
-			<th class="col-md-2"></th>
-		{{/unless}}
-		{{#unless view.hideToColumn}}
-			<th class="col-md-2"></th>
-		{{/unless}}
-		<th class="col-md-2"></th>
+		<th class="col-md-2"><span>From</span></th>
+		<th class="col-md-2"><span>To</span></th>
+		<th class="col-md-2 num"><span>Amount</span></th>
 	</tr>
 </thead>
+{{#if view.loader.results.hasNextPage}}
+	{{view "results/results-load-more" results=view.loader.results columns="view.colspan"}}
+{{/if}}
+
 <tbody>
 	{{yield}}
 </tbody>

@@ -25,19 +25,9 @@
 				title=customer_group.customer.display_me_with_email
 				class="customer-group two-lines"
 			}}
-			<td class="grouped-transactions-container divided" {{bind-attr colspan="view.colspan"}}>
+			<td class="grouped-transactions-container divided" colspan="3">
 				{{#each transaction in customer_group.transactions}}
 					{{#view "results/grouped-transactions-table" embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
-						{{#if transaction.dispute}}
-							{{view "results/grouped-transaction-row" item=transaction.dispute embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
-						{{/if}}
-
-						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
-
-						{{#if transaction.hold}}
-							{{view "results/grouped-transaction-row" item=transaction.hold embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
-						{{/if}}
-
 						{{#if transaction.refunds}}
 							{{#each refund in transaction.refunds}}
 								{{view "results/grouped-transaction-row" item=refund embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
@@ -48,6 +38,16 @@
 							{{#each reversal in transaction.reversals}}
 								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 							{{/each}}
+						{{/if}}
+
+						{{#if transaction.dispute}}
+							{{view "results/grouped-transaction-row" item=transaction.dispute embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
+						{{/if}}
+
+						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
+
+						{{#if transaction.hold}}
+							{{view "results/grouped-transaction-row" item=transaction.hold embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 						{{/if}}
 					{{/view}}
 				{{/each}}

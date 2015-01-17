@@ -12,7 +12,7 @@ var App, Adapter,
 	ADD_FUNDS_SELECTOR = "#marketplace-escrow-menu a:contains(Add funds)",
 	WITHDRAW_FUNDS_SELECTOR = "#marketplace-escrow-menu a:contains(Withdraw funds)";
 
-module('Integration - Transactions', {
+module('Integration - Marketplace', {
 	setup: function() {
 		App = startApp();
 		Adapter = App.__container__.lookup("adapter:main");
@@ -38,40 +38,12 @@ var setupMarketplaceController = function(bankAccounts) {
 		}));
 	});
 };
-var assertQueryString = function(string, expected) {
-	var qsParameters = Utils.queryStringToObject(string);
-	_.each(expected, function(value, key) {
-		deepEqual(qsParameters[key], value, "Query string parameter %@".fmt(key));
-	});
-};
-
-var getResultsUri = function() {
-	var controller = BalancedApp.__container__.lookup("controller:marketplace/transactions");
-	return controller.get("resultsLoader.resultsUri");
-};
-
-test('can visit page', function() {
-	visit(Testing.TRANSACTIONS_ROUTE)
-		.click(".nav-pills a:contains(Transactions)")
-		.checkPageTitle("Payments")
-		.checkElements({
-			'.payments-navbar a:contains(Export)': 1
-		})
-		.then(function() {
-			var resultsUri = getResultsUri();
-			deepEqual(resultsUri.split("?")[0], '/transactions', 'Transactions URI is correct');
-			assertQueryString(resultsUri, {
-				limit: "50",
-				sort: "created_at,desc"
-			});
-		});
-});
 
 test('add funds', function() {
 	var spy = sinon.spy(Adapter, "create");
 	var bankAccounts = Models.BankAccount.findAll();
 
-	visit(Testing.TRANSACTIONS_ROUTE)
+	visit(Testing.MARKETPLACE_ROUTE)
 		.then(function() {
 			setupMarketplaceController(bankAccounts);
 		})
@@ -107,7 +79,7 @@ test('add funds only adds once despite multiple clicks', function() {
 	var stub = sinon.stub(Adapter, "create");
 	var bankAccounts = Models.BankAccount.findAll();
 
-	visit(Testing.TRANSACTIONS_ROUTE)
+	visit(Testing.MARKETPLACE_ROUTE)
 		.then(function() {
 			setupMarketplaceController(bankAccounts);
 		})
@@ -127,7 +99,7 @@ test('withdraw funds', function() {
 	var spy = sinon.spy(Adapter, "create");
 	var bankAccounts = Models.BankAccount.findAll();
 
-	visit(Testing.TRANSACTIONS_ROUTE)
+	visit(Testing.MARKETPLACE_ROUTE)
 		.then(function() {
 			setupMarketplaceController(bankAccounts);
 		})
@@ -167,7 +139,7 @@ test('withdraw funds only withdraws once despite multiple clicks', function() {
 	var stub = sinon.stub(Adapter, "create");
 	var bankAccounts = Models.BankAccount.findAll();
 
-	visit(Testing.TRANSACTIONS_ROUTE)
+	visit(Testing.MARKETPLACE_ROUTE)
 		.then(function() {
 			setupMarketplaceController(bankAccounts);
 		})
@@ -182,10 +154,10 @@ test('withdraw funds only withdraws once despite multiple clicks', function() {
 		});
 });
 
-test('download activity', function() {
+test('download transactions', function() {
 	var stub;
 
-	visit(Testing.TRANSACTIONS_ROUTE)
+	visit(Testing.MARKETPLACE_ROUTE)
 		.then(function() {
 			var controller = BalancedApp.__container__.lookup("controller:marketplace/transactions");
 			var loader = controller.get("resultsLoader");
@@ -209,45 +181,5 @@ test('download activity', function() {
 		})
 		.checkElements({
 			"#header .notification-center-message:last": "We're processing your request. We will email you once the exported data is ready to view."
-		});
-});
-
-test('transactions date sort has different states', function() {
-	var objectPath = ".results th.date .sortable";
-	var states = [];
-	var count = 0;
-	var testAmount = 5;
-
-	visit(Testing.TRANSACTIONS_ROUTE)
-		.then(function() {
-			ok($(objectPath).is(".descending"), "Search defaults to descending");
-		})
-		.click(objectPath)
-		.then(function() {
-			ok($(objectPath).is(".ascending"), "Search is set to ascending");
-		});
-});
-
-test('Filter Activity transactions table by type & status', function() {
-	visit(Testing.TRANSACTIONS_ROUTE)
-		.click('#content .results table.transactions th.type .type-filter li a:contains(Holds)')
-		.then(function() {
-			var resultsUri = getResultsUri();
-			deepEqual(resultsUri.split("?")[0], '/transactions', 'Activity Transactions URI is correct');
-			assertQueryString(resultsUri, {
-				type: "hold",
-				'status[in]': 'failed,succeeded,pending',
-				limit: "50",
-				sort: "created_at,desc"
-			});
-		})
-		.click('#content table.transactions th.type a:contains(All)')
-		.click("#content table.transactions th.status a:contains(Succeeded)")
-		.then(function() {
-			assertQueryString(getResultsUri(), {
-				status: "succeeded",
-				limit: "50",
-				sort: "created_at,desc"
-			});
 		});
 });

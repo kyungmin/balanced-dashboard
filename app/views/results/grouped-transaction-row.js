@@ -9,6 +9,7 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 	routeName: Computed.orProperties("item.route_name", "item.routeName"),
 	spanClassNames: Ember.computed.reads("item.status"),
 	typeName: Ember.computed.reads("item.type_name"),
+	connected: true,
 
 	title: function() {
 		if (_.contains(this.get("classNames"), "current")) {
@@ -152,6 +153,10 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 
 	amountText: function() {
 		if (this.get("typeName") === "Order") {
+			if (["account", "settlement"].contains(this.container.lookup("controller:application").get('currentRouteName'))) {
+				return null;
+			}
+
 			var label = '<span class="primary">%@</span><span class="secondary">Order balance</span>';
 			var primaryLabel = Utils.formatCurrency(this.get("item.amount_escrowed"));
 			return Utils.safeFormat(label, primaryLabel).htmlSafe();

@@ -10,7 +10,7 @@
 	{{#view "detail-views/main-panel"}}
 		<h3>Related activity</h3>
 		<div class="results">
-			{{view "results/transactions-table-grouped-by-order" loader=creditsResultsLoader embedded=true}}
+			{{view "results/transactions-table-grouped-by-order" isCredit=true loader=creditsResultsLoader embedded=true}}
 		</div>
 		<h3>Logs</h3>
 		<div class="results">

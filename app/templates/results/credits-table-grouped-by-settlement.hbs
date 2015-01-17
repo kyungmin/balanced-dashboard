@@ -1,0 +1,32 @@
+{{#each settlementGroup in view.groupedResults}}
+	<tr>
+		<td class="grouped-transactions-container nested" {{bind-attr colspan="view.colspan"}}>
+			{{#view "results/grouped-transactions-table" embedded=view.embedded}}
+				{{view "results/grouped-transaction-row" item=settlementGroup.settlement embedded=view.embedded}}
+			{{/view}}
+			{{#each orderGroup in settlementGroup.orderGroups}}
+				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
+					{{view "results/grouped-transaction-row" item=orderGroup.order embedded=view.embedded}}
+
+					{{#each transaction in orderGroup.transactions}}
+						{{#if transaction.reversals}}
+							{{#each reversal in transaction.reversals}}
+								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
+							{{/each}}
+						{{/if}}
+						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
+					{{/each}}
+				{{/view}}
+			{{/each}}
+		</td>
+{{else}}
+	<tr>
+		<td {{bind-attr colspan="view.colspan"}} class="no-results">
+			{{#if view.loader.results.isLoaded}}
+				No transactions
+			{{else}}
+				Loading...
+			{{/if}}
+		</td>
+	</tr>
+{{/each}}

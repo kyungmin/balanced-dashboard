@@ -1,6 +1,7 @@
 import TransactionsTableView from "./transactions-table";
 
 var TransactionsTableGroupedByOrderView = TransactionsTableView.extend({
+	layoutName: 'results/grouped-transactions-table-layout',
 	templateName: 'results/transactions-table-grouped-by-order',
 	classNames: 'non-interactive',
 

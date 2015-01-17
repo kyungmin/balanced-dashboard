@@ -112,7 +112,7 @@ test('search date range pick', function() {
 				"created_at[<]": "2013-08-01T23:59:00.000Z",
 				"created_at[>]": "2013-08-01T00:00:00.000Z",
 				sort: "created_at,desc",
-				"type[in]": "credit,debit,card_hold,refund,reversal"
+				"type[in]": "debit,credit,card_hold,refund,reversal"
 			});
 		});
 });

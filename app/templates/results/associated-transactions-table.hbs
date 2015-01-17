@@ -20,6 +20,10 @@
 		<tr>
 			<td class="grouped-transactions-container" {{bind-attr colspan="view.colspan"}}>
 				{{#view "results/grouped-transactions-table" embedded=true}}
+					{{#if view.parentView.transaction.order}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.order embedded=true}}
+					{{/if}}
+
 					{{#if view.parentView.transaction.dispute}}
 						{{view "results/grouped-transaction-row" item=view.parentView.transaction.dispute embedded=true}}
 					{{/if}}
