@@ -5,11 +5,11 @@ var SettlementSummarySectionView = SummarySectionView.extend({
 	linkedResources: function() {
 		return _.flatten([
 			this.generateDescriptionResource(this.get("model")),
+			this.get("customerResource"),
 			this.get("sourceResource"),
 			this.get("destinationResource"),
-			this.generateResourceLink(this.get("model"), this.get("model.customer"))
 		]).compact();
-	}.property("model.description", "model.customer", "sourceResource", "destinationResource"),
+	}.property("model.description", "customerResource", "sourceResource", "destinationResource"),
 
 	sourceResource: function() {
 		return this.getResource("From", this.get("model.source"));
@@ -19,7 +19,18 @@ var SettlementSummarySectionView = SummarySectionView.extend({
 		return this.getResource("To", this.get("model.destination"));
 	}.property("model.destination", "model.destination.isLoaded", "model.destination.type_name"),
 
-	getResource: function(title, resource) {
+	customer: function() {
+		var customerUri = this.get("model.destination.customer_uri");
+		if (customerUri) {
+			return this.container.lookupFactory("model:customer").find(customerUri);
+		}
+	}.property("model.destination.customer_uri"),
+
+	customerResource: function(attr) {
+		return this.getResource("Merchant", this.get("customer"));
+	}.property("customer", "customer.isLoaded"),
+
+	getResource: function(title, resource, className) {
 		if (resource && resource.get("isLoaded")) {
 			return {
 				className: 'icon-%@'.fmt(Ember.String.dasherize(resource.get("type_name"))),
