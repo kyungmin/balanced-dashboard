@@ -9,8 +9,29 @@ var OrderSummarySectionView = SummarySectionView.extend({
 	}.property("model.status"),
 
 	linkedResources: function() {
-		return this.resourceLinks("model.description", "model.seller");
-	}.property("model.description", "model.seller")
+		return _.flatten([
+			this.generateDescriptionResource(this.get("model")),
+			this.generateResourceLink(this.get("model"), this.get("model.seller")),
+			{
+				className: "icon-payable-account",
+				title: "Merchant payable account",
+				resource: this.get("sellerAccount")
+			}
+		]).compact();
+	}.property("model.description", "model.seller", "model.seller.accounts_uri", "sellerAccount"),
+
+	sellerAccount: function(attr) {
+		var self = this;
+		var accountsUri = this.get("model.seller.accounts_uri");
+
+		if (accountsUri) {
+			var store = this.container.lookup("controller:marketplace").get("store");
+			store.fetchItem("account", accountsUri).then(function(account) {
+				self.set(attr, account.toLegacyModel());
+			});
+		}
+		return null;
+	}.property("model.seller.accounts_uri")
 });
 
 export default OrderSummarySectionView;
