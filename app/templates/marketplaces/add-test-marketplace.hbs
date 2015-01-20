@@ -1,6 +1,8 @@
 <div {{bind-attr class=":control-group"}}>
 	{{#if view.isSubmitting}}
-		<span class="loader loading"></span>
+		<span class="loader-container sl-none">
+			Adding...
+		</span>
 	{{else}}
 		<button class="btn" {{action "add" target="view"}}>Add</button>
 	{{/if}}

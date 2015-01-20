@@ -34,7 +34,7 @@ var fonts = pickFiles('bower_components/strapped/static/fonts', {
 
 var images = pickFiles('bower_components/strapped/static/images', {
 	srcDir: '/',
-	files: ['**/*.png', '**/*.gif'],
+	files: ['**/*.png'],
 	destDir: '/images'
 });
 

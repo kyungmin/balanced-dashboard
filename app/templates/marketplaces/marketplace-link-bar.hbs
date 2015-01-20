@@ -1,5 +1,7 @@
 {{#if view.isTest}}
-	<a href="#" class="icon-delete" {{action "openModal" "modals/marketplace-delete-modal" user marketplace}}>&times;</a>
+	<a {{action "openModal" "modals/marketplace-delete-modal" user marketplace}}>
+		<i class="icon-table-x"></i>
+	</a>
 {{/if}}
 <div class="label">
 	<i {{bind-attr class=":icon view.isProduction:icon-productionmp:icon-testmp"}}></i>

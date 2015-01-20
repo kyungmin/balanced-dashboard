@@ -24,11 +24,11 @@
 </div>
 
 {{#if view.loader.results.loadingNextPage}}
-	<div class="loader-container">
-		<span class="loader loading"></span>
+	<div class="loader-container sl-none">
+		Loading...
 	</div>
 {{else}} {{#if view.loader.results.hasNextPage}}
 	<table class="items non-interactive">
-		{{view "results/results-load-more" results=view.loader.results}}
+		{{view "results/results-load-more" results=view.loader.results columns=5}}
 	</table>
 {{/if}} {{/if}}

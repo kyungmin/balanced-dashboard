@@ -23,8 +23,8 @@
 						<td class="size"><span>{{format-file-size doc.file_size}}</span></td>
 						<td>
 							{{#if doc.isUploading}}
-								<div class="loader-container">
-									<span class="loader loading"></span>
+								<div class="loader-container sl-none">
+									Uploading...
 								</div>
 							{{else}}
 								<a href="#" {{action "remove" doc target="view.parentView"}}>
