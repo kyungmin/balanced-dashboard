@@ -5,32 +5,24 @@ var SettlementSummarySectionView = SummarySectionView.extend({
 	linkedResources: function() {
 		return _.flatten([
 			this.generateDescriptionResource(this.get("model")),
-			this.getResource(this.get("model.source")),
-			this.getResource(this.get("model.destination")),
+			this.get("sourceResource"),
+			this.get("destinationResource"),
 			this.generateResourceLink(this.get("model"), this.get("model.customer"))
 		]).compact();
-	}.property("model.description", "model.source", "model.destination", "model.customer"),
+	}.property("model.description", "model.customer", "sourceResource", "destinationResource"),
 
-	isSource: function(resource) {
-		return this.get("model.source_uri").indexOf(resource.get("id")) >= 0;
-	},
+	sourceResource: function() {
+		return this.getResource("From", this.get("model.source"));
+	}.property("model.source", "model.source.isLoaded", "model.source.type_name"),
 
-	isDestination: function(resource) {
-		return this.get("model.destination_uri").indexOf(resource.get("id")) >= 0;
-	},
+	destinationResource: function() {
+		return this.getResource("To", this.get("model.destination"));
+	}.property("model.destination", "model.destination.isLoaded", "model.destination.type_name"),
 
-	getResource: function(resource) {
-		if (resource) {
-			var title = "";
-
-			if (this.isSource(resource)) {
-				title = "From";
-			} else if (this.isDestination(resource)) {
-				title = "To";
-			}
-
+	getResource: function(title, resource) {
+		if (resource && resource.get("isLoaded")) {
 			return {
-				className: 'icon-payable-account',
+				className: 'icon-%@'.fmt(Ember.String.dasherize(resource.get("type_name"))),
 				title: title,
 				resource: resource
 			};
