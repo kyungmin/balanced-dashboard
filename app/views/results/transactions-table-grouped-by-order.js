@@ -30,6 +30,7 @@ var TransactionsTableGroupedByOrderView = TransactionsTableView.extend({
 			orderGroup.get('transactions').pushObject(transaction);
 		});
 
+		this.set("parentView.totalOrders", groupedTransactions.length)
 		return groupedTransactions;
 	}.property("loader.results.length"),
 });

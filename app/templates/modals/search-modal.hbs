@@ -1,11 +1,7 @@
 <div class="search-nav">
 	<ul>
 		<li {{bind-attr class=":orders :filter view.totalOrders::disabled view.isOrdersTabSelected:selected"}} >
-			<a href="#" {{action "changeSearchTab" "order" target="view"}}>{{format-number view.totalOrders}} Orders</a>
-		</li>
-
-		<li {{bind-attr class=":transactions :filter view.totalTransactions::disabled view.isTransactionsTabSelected:selected"}} >
-			<a href="#" {{action "changeSearchTab" "transaction" target="view"}}>{{format-number view.totalTransactions}} Transactions</a>
+			<a href="#" {{action "changeSearchTab" "order_transaction" target="view"}}>{{format-number view.totalOrders}} Orders</a>
 		</li>
 
 		<li {{bind-attr class=":customers :filter view.totalCustomers::disabled view.isCustomersTabSelected:selected"}} >
@@ -36,11 +32,7 @@
 			{{view "form-fields/search-date-picker" viewName="dateTimePicker"}}
 
 			{{#if view.isOrdersTabSelected}}
-				{{view "results/orders-table" loader=view.resultsLoader}}
-			{{/if}}
-
-			{{#if view.isTransactionsTabSelected}}
-				{{view "results/transactions-table" loader=view.resultsLoader isSearch=true}}
+				{{view "results/transactions-table-grouped-by-order" loader=view.resultsLoader isSearch=true}}
 			{{/if}}
 
 			{{#if view.isCustomersTabSelected}}
@@ -71,7 +63,9 @@
 				{{render "results/keyboard-shortcuts"}}
 			{{/if}}
 		{{else}}
-			Loading...
+			<div class="sl-none">
+				Loading...
+			</div>
 		{{/if}}
 	{{/if}}
 </div>

@@ -10,11 +10,12 @@ import SearchModelArray from "../core/search-model-array";
 import Constants from "balanced-dashboard/utils/constants";
 
 var MarketplaceSearchResultsLoader = BaseResultsLoader.extend({
-	searchType: "transaction",
+	searchType: "order_transaction",
 	limit: null,
 
 	type: function() {
 		var mapping = {
+			"order_transaction": Constants.SEARCH.ORDER_TRANSACTION_TYPES,
 			"funding_instrument": Constants.SEARCH.FUNDING_INSTRUMENT_TYPES,
 			"customer": Constants.SEARCH.CUSTOMER_TYPES,
 			"order": Constants.SEARCH.ORDER_TYPES,

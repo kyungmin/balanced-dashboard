@@ -25,7 +25,6 @@
 	{{#each funding_instrument in view.loader.results}}
 		<tr>
 			<td class="two-lines">
-			{{funding_instrument.routeName}}
 				{{#link-to funding_instrument.routeName funding_instrument}}<span>
 					<time {{bind-attr datetime="funding_instrument.created_at"}} {{bind-attr title="funding_instrument.created_at"}}>
 						<span class="primary">{{human-readable-date funding_instrument.created_at}}</span>
