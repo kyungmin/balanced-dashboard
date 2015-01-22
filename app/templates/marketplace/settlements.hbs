@@ -2,8 +2,20 @@
 
 <nav class="results-actions-bar"></nav>
 
-<div class="results">
-	<div class="items-wrapper">
-		{{view "results/credits-table-grouped-by-settlement" loader=resultsLoader}}
+{{#if resultsLoader.results}}
+	<div class="results">
+		<div class="items-wrapper">
+			{{view "results/credits-table-grouped-by-settlement" loader=resultsLoader}}
+		</div>
 	</div>
-</div>
+{{else}}
+	{{#if resultsLoader.results.isLoaded}}
+		{{#view "results/intro-page" iconName="settlements" title="Batch payouts with settlements" description="Each customer has a payable account which can carry a stored balance. Credit the funds from multiple orders into your merchant's payable account. Then issue one settlement to your merchant's bank account."}}
+			<a target="_blank" href="https://www.balancedpayments.com/account-reconciliation">Learn more about settlements</a>
+		{{/view}}
+	{{else}}
+		<div class="loader-container sl-none">
+			Loading...
+		</div>
+	{{/if}}
+{{/if}}
