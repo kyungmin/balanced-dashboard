@@ -1,6 +1,6 @@
 <nav class="results-actions-bar"></nav>
 
-{{#if view.hasResults}}
+{{#if resultsLoader.results}}
 	<div class="results">
 		{{view "results/transactions-table-grouped-by-order" loader=resultsLoader}}
 	</div>
