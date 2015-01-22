@@ -7,7 +7,6 @@
 
 <nav class="payments-navbar clearfix">
 	<div class="actions pull-right">
-		{{view "menus/order-sort-menu" resultsLoader=resultsLoader}}
 		{{#unless auth.isGuest}}
 			{{#link-to "marketplace.import_payouts" class="btn-link sm"}}
 				<i class="icon icon-document-upload import-payout"></i>

@@ -50,18 +50,6 @@ test("can visit orders page", function() {
 		});
 });
 
-test('can sort orders by date', function() {
-	visit(Testing.MARKETPLACE_ROUTE)
-		.click("#order-sort-menu")
-		.click(".dropdown-menu a:contains(Date created: oldest)")
-		.then(function() {
-			var resultsUri = getResultsUri();
-			assertQueryString(resultsUri, {
-				sort: "created_at,asc"
-			});
-		});
-});
-
 test('Filter orders table by type & status', function() {
 	visit(Testing.MARKETPLACE_ROUTE)
 		.click('#content .results table.transactions th:first-of-type li a:contains(Holds)')

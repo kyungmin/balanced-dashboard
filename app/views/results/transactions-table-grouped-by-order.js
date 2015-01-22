@@ -30,9 +30,22 @@ var TransactionsTableGroupedByOrderView = TransactionsTableView.extend({
 			orderGroup.get('transactions').pushObject(transaction);
 		});
 
-		this.set("parentView.totalOrders", groupedTransactions.length)
+		this.set("parentView.totalOrders", groupedTransactions.length);
+
 		return groupedTransactions;
 	}.property("loader.results.length"),
+
+	actions: {
+		changeTypeFilter: function(type) {
+			if (type === "transaction") {
+				type = null;
+			}
+			this.set("loader.type", type);
+		},
+		changeStatusFilter: function(status) {
+			this.get("loader").setStatusFilter(status);
+		},
+	}
 });
 
 export default TransactionsTableGroupedByOrderView;

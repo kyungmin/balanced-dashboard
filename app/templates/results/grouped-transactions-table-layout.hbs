@@ -1,6 +1,8 @@
 <thead>
 	<tr>
-		<th class="col-md-5"><span>Transaction</span></th>
+		<th class="col-md-5 has-filter">
+			{{view "results/orders-results-dropdown-filter" isSearch=view.isSearch}}
+		</th>
 		{{#unless view.embedded}}
 			<th class="col-md-2"><span>Customer</span></th>
 		{{/unless}}
