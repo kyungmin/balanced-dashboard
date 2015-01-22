@@ -23,13 +23,15 @@
 	</div>
 {{/view}}
 
-<nav class="payments-navbar clearfix">
-	<div class="actions pull-right">
-		<a {{action "openModal" "modals/export-csv-modal" resultsLoader}} class="btn-link sm">
-			<i class="icon icon-export"></i>
-			Export
-		</a>
-	</div>
-</nav>
+{{#if resultsLoader.results}}
+	<nav class="payments-navbar clearfix">
+		<div class="actions pull-right">
+			<a {{action "openModal" "modals/export-csv-modal" resultsLoader}} class="btn-link sm">
+				<i class="icon icon-export"></i>
+				Export
+			</a>
+		</div>
+	</nav>
+{{/if}}
 
 {{yield}}
