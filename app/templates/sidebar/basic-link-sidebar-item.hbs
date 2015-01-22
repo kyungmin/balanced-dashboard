@@ -5,7 +5,7 @@
 	<span>{{view.linkText}}</span>
 
 	{{#if view.alertCount}}
-		<div class="alert-count">{{view.alertCount}}</div>
+		<div {{bind-attr class=":alert-count view.alertCount"}}>{{view.alertCount}}</div>
 	{{/if}}
 {{/link-to}}
 

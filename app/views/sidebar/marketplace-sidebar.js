@@ -10,6 +10,7 @@ var SIDEBAR_ITEMS = [{
 	linkIcon: "icon-settlements",
 	routeName: "marketplace.settlements",
 	isSelectedBinding: "controller.controllers.marketplace.settlementSelected",
+	alertCount: "new",
 }, {
 	linkText: "Disputes",
 	linkIcon: "icon-disputes",
