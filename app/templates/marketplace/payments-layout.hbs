@@ -1,18 +1,30 @@
 {{#view "page-navigations/page-navigation" title="Orders"}}
 	<div class="buttons page-actions">
-		<a class="btn" {{action "openModal" "modals/card-debit-create-modal"}}>Debit a card</a>
-		<a class="btn" {{action "openModal" "modals/bank-account-credit-create-modal"}}>Credit a bank account</a>
+		<a class="btn" {{action "openModal" "modals/card-debit-create-modal"}}>Create an order</a>
+		<div class="dropdown right">
+			<a class="btn secondary ellipsis dropdown-toggle" data-toggle="dropdown" href="#">
+				<span>•••</span>
+			</a>
+			<ul class="dropdown-menu right">
+				<li>
+					<a class="credit-bank-account" {{action "openModal" "modals/bank-account-credit-create-modal"}}>
+						Create a one-off credit
+					</a>
+				</li>
+				<li>
+					{{#unless auth.isGuest}}
+						{{#link-to "marketplace.import_payouts" class="import-payout"}}
+							Import one-off credits
+						{{/link-to}}
+					{{/unless}}
+				</li>
+			</ul>
+		</div>
 	</div>
 {{/view}}
 
 <nav class="payments-navbar clearfix">
 	<div class="actions pull-right">
-		{{#unless auth.isGuest}}
-			{{#link-to "marketplace.import_payouts" class="btn-link sm"}}
-				<i class="icon icon-document-upload import-payout"></i>
-				Import payouts
-			{{/link-to}}
-		{{/unless}}
 		<a {{action "openModal" "modals/export-csv-modal" resultsLoader}} class="btn-link sm">
 			<i class="icon icon-export"></i>
 			Export

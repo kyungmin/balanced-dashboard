@@ -17,11 +17,6 @@ var SIDEBAR_ITEMS = [{
 	isSelectedBinding: "controller.controllers.marketplace.disputeSelected",
 	alertCountBinding: "controller.controllers.marketplace.disputeAlertCount",
 }, {
-	linkText: "Logs",
-	linkIcon: "icon-logs",
-	routeName: "marketplace.logs",
-	isSelectedBinding: "controller.controllers.marketplace.logSelected"
-}, {
 	linkText: "Customers",
 	linkIcon: "icon-customers",
 	routeName: "marketplace.customers",
@@ -31,6 +26,11 @@ var SIDEBAR_ITEMS = [{
 	linkIcon: "icon-card",
 	routeName: "marketplace.funding_instruments",
 	isSelectedBinding: "controller.controllers.marketplace.fundingInstrumentSelected"
+}, {
+	linkText: "Logs",
+	linkIcon: "icon-logs",
+	routeName: "marketplace.logs",
+	isSelectedBinding: "controller.controllers.marketplace.logSelected"
 }, {
 	linkText: "Account statements",
 	linkIcon: "icon-invoices",

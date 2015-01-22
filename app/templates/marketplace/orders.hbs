@@ -1,5 +1,20 @@
-<div class="cards-container">
+<nav class="results-actions-bar"></nav>
+
+{{#if view.hasResults}}
 	<div class="results">
 		{{view "results/transactions-table-grouped-by-order" loader=resultsLoader}}
 	</div>
-</div>
+{{else}}
+	{{#if resultsLoader.results.isLoaded}}
+		{{#view "results/intro-page" iconName="orders" title="Create your first order" description="Each transaction within the order is linked together so you can easily reconcile incoming funds from buyers with outgoing funds to merchants."}}
+			<div class="center">
+				<a class="btn" {{action "openModal" "modals/card-debit-create-modal"}}>Create an order</a>
+			</div>
+			<a target="_blank" href="https://www.balancedpayments.com/account-reconciliation">Learn more about orders</a>
+		{{/view}}
+	{{else}}
+		<div class="loader-container sl-none">
+			Loading...
+		</div>
+	{{/if}}
+{{/if}}
