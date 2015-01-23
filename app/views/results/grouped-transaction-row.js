@@ -155,7 +155,7 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 
 	amountText: function() {
 		if (this.get("typeName") === "Order") {
-			if (["account", "settlement"].contains(this.container.lookup("controller:application").get('currentRouteName'))) {
+			if (["account", "settlement", "marketplace.settlements"].contains(this.container.lookup("controller:application").get('currentRouteName'))) {
 				return null;
 			}
 

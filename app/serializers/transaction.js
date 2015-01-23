@@ -11,7 +11,7 @@ var TransactionSerializer = Rev1Serializer.extend({
 
 		return json;
 	}
-})
+});
 
 
 export default TransactionSerializer;

@@ -4,6 +4,7 @@ import Order from "./order";
 import Computed from "balanced-dashboard/utils/computed";
 import FundingInstrumentsResultsLoader from "./results-loaders/funding-instruments";
 import TransactionsResultsLoader from "./results-loaders/transactions";
+import OrdersResultsLoader from "./results-loaders/orders";
 
 var CUSTOMER_TYPES = {
 	BUSINESS: 'Business',
@@ -28,18 +29,6 @@ var Customer = Model.extend({
 	type_name: 'Customer',
 
 	has_bank_account: Ember.computed.and('bank_accounts.isLoaded', 'bank_accounts.length'),
-
-	orders_list: function() {
-		var customer_uri = this.get('href');
-		var orders = this.get('orders') || Ember.A();
-
-		if (customer_uri) {
-			orders = orders.filter(function(order) {
-				return order.get('merchant_uri') === customer_uri;
-			});
-		}
-		return orders;
-	}.property('orders', 'orders.@each.merchant_uri'),
 
 	debitable_bank_accounts: function() {
 		return this.get('bank_accounts').filterBy('can_debit');
@@ -69,6 +58,14 @@ var Customer = Model.extend({
 			path: this.get("disputes_uri"),
 		}, attributes);
 		return DisputesResultsLoader.create(attributes);
+	},
+	getOrdersLoader: function(attributes) {
+		// Note: Replace this back to "order_uri" when the issue balanced-api #739 is fixed
+		attributes = _.extend({
+			path: this.get("uri") + "/search",
+			typeFilters: "order"
+		}, attributes);
+		return OrdersResultsLoader.create(attributes);
 	},
 	getTransactionsLoader: function(attributes) {
 		attributes = _.extend({

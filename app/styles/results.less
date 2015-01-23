@@ -267,45 +267,6 @@ header.results-label h3 {
               }
             }
 
-            &.orders > a > span {
-              &:before {
-                font-family: 'Balanced-Icon';
-                background-color: transparent;
-                &:extend(.icon-orders:before);
-                font-size: 12px;
-                color: @gray4;
-                margin-top: -14px;
-                margin-left: 0;
-              }
-            }
-
-            &.dispute > a > span {
-              &:before {
-                font-family: 'Balanced-Icon';
-                background-color: transparent;
-                &:extend(.icon-disputes:before);
-                font-size: 12px;
-                color: @curryYellow80;
-                margin-top: -12px;
-              }
-
-              &.new:before {
-                color: @curryYellow80;
-              }
-
-              &.under_review:before {
-                color: @byzantiumPurple80;
-              }
-
-              &.won:before {
-                color: @pineGreen80;
-              }
-
-              &.lost:before {
-                color: @imperialRed80;
-              }
-            }
-
             &.connected a > span:after {
               position: absolute;
               content: '';
@@ -342,6 +303,45 @@ header.results-label h3 {
           float: left;
           margin-top: 7px;
           margin-bottom: 10px;
+      }
+    }
+
+    &.orders > a > span {
+      &:before {
+        font-family: 'Balanced-Icon';
+        background-color: transparent;
+        &:extend(.icon-orders:before);
+        font-size: 12px;
+        color: @gray4;
+        margin-top: -14px;
+        margin-left: 0;
+      }
+    }
+
+    &.dispute > a > span {
+      &:before {
+        font-family: 'Balanced-Icon';
+        background-color: transparent;
+        &:extend(.icon-disputes:before);
+        font-size: 12px;
+        color: @curryYellow80;
+        margin-top: -12px;
+      }
+
+      &.new:before {
+        color: @curryYellow80;
+      }
+
+      &.under_review:before {
+        color: @byzantiumPurple80;
+      }
+
+      &.won:before {
+        color: @pineGreen80;
+      }
+
+      &.lost:before {
+        color: @imperialRed80;
       }
     }
 

@@ -22,6 +22,9 @@ var CustomerRoute = ModelRoute.extend({
 			disputesResultsLoader: customer.getDisputesLoader({
 				limit: 10
 			}),
+			ordersResultsLoader: customer.getOrdersLoader({
+				limit: 10
+			}),
 			transactionsResultsLoader: customer.getTransactionsLoader({
 				limit: 10,
 				status: ['pending', 'succeeded', 'failed']

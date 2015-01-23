@@ -15,6 +15,11 @@
 		{{view "detail-views/tabs/customer-tab" model=model}}
 
 		{{#if view.isActivityTabSelected}}
+			<h3>This merchant's orders</h3>
+			<div class="results">
+				{{view "results/orders-table" loader=ordersResultsLoader embedded=true}}
+			</div>
+
 			<h3>Payments</h3>
 			<div class="results">
 				{{view "results/transactions-table-grouped-by-order" loader=transactionsResultsLoader embedded=true}}
