@@ -11,7 +11,7 @@ var GroupedOrderRowView = GroupedTransactionRowView.extend({
 
 	primaryLabelText: function() {
 		var description = this.get('item.description') || this.get('item.id');
-		return '%@: %@'.fmt(this.get('item.type_name'), description);
+		return '%@ (%@)'.fmt(this.get('item.type_name'), description);
 	}.property('item.type_name', 'item.description', 'item.id'),
 
 	secondaryLabelText: function () {
