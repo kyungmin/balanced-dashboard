@@ -3,6 +3,7 @@ import Model from "./core/model";
 import Transaction from "./transaction";
 
 var Refund = Transaction.extend({
+	order: Model.belongsTo('order', 'order'),
 	debit: Model.belongsTo('debit', 'debit'),
 	dispute: Model.belongsTo('dispute', 'dispute'),
 

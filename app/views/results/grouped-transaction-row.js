@@ -97,7 +97,9 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 		}
 		if (typeName === "Refund") {
 			label = this.get("item.debit.source.last_four");
-			type = Ember.String.dasherize(this.get("item.debit.source.type_name"));
+			if (this.get("item.debit.source")) {
+				type = Ember.String.dasherize(this.get("item.debit.source.type_name"));
+			}
 		}
 		if (typeName === "Reversal") {
 			label = "Order balance";

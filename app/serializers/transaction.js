@@ -9,7 +9,6 @@ var TransactionSerializer = Rev1Serializer.extend({
 			delete json.order_uri;
 		}
 
-		console.log(json);
 		return json;
 	}
 })
