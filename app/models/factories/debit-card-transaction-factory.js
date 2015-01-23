@@ -1,5 +1,6 @@
 import Debit from "../debit";
 import Card from "../card";
+import Customer from "../customer";
 import TransactionFactory from "./transaction-factory";
 import ValidationHelpers from "balanced-dashboard/utils/validation-helpers";
 
@@ -13,7 +14,7 @@ var DebitCardTransactionFactory = TransactionFactory.extend({
 	},
 
 	getDebitAttributes: function() {
-		return this.getProperties("amount", "appears_on_statement_as", "description");
+		return this.getProperties("amount", "appears_on_statement_as", "debit_description");
 	},
 
 	validations: {
@@ -32,22 +33,51 @@ var DebitCardTransactionFactory = TransactionFactory.extend({
 		var baseDebitAttributes = this.getDebitAttributes();
 		var self = this;
 		this.validate();
+
 		if (this.get("isValid")) {
-			Card.create(this.getDestinationAttributes())
-				.tokenizeAndCreate()
-				.then(function(card) {
+			var buyer = Customer.create({
+				name: self.get("buyer_name"),
+				email: self.get("buyer_email_address")
+			});
+			var card;
+
+			buyer.save()
+				.then(function() {
+					return Card
+						.create(self.getDestinationAttributes())
+						.tokenizeAndCreate(buyer.get("uri"));
+				})
+				.then(function(c) {
+					card = c;
+					var seller = Customer.create({
+						name: self.get("seller_name"),
+						email: self.get("seller_email_address")
+					});
+					return seller.save();
+				})
+				.then(function(seller) {
+					var description = self.get("order_description");
+					return seller.createOrder(description);
+				})
+				.then(function(order) {
 					var debitAttributes = _.extend({}, baseDebitAttributes, {
+						customer_uri: buyer.get("uri"),
 						uri: card.get('debits_uri'),
-						source_uri: card.get('uri')
+						source_uri: card.get('uri'),
+						order_uri: order.get("uri")
 					});
 					return Debit.create(debitAttributes).save();
 				})
 				.then(function(model) {
 					deferred.resolve(model);
 				}, function(response) {
-					response.errors.forEach(function(error) {
-						self.get("validationErrors").add(undefined, "server", null, error.description);
-					});
+					if (response.message) {
+						self.get("validationErrors").add(undefined, "server", null, response.message);
+					} else if (response.errors) {
+						response.errors.forEach(function(error) {
+							self.get("validationErrors").add(undefined, "server", null, error.description);
+						});
+					}
 					deferred.reject(self);
 				});
 		} else {

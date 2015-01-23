@@ -7,9 +7,9 @@ import Save from "balanced-dashboard/views/modals/mixins/object-action-mixin";
 var CardDebitCreateModalView = ModalBaseView.extend(Save, Full, Form, {
 	templateName: "modals/card-debit-create-modal",
 	elementId: "charge-card",
-	title: "Debit a card",
+	title: "Create an order",
 	cancelButtonText: "Cancel",
-	submitButtonText: "Debit",
+	submitButtonText: "Create",
 
 	model: function() {
 		var DebitCardTransactionFactory = require("balanced-dashboard/models/factories/debit-card-transaction-factory")['default'];

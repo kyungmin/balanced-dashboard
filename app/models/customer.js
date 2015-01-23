@@ -1,5 +1,6 @@
 import { CountryCodesToNames } from "balanced-dashboard/lib/country-codes";
 import Model from "./core/model";
+import Order from "./order";
 import Computed from "balanced-dashboard/utils/computed";
 import FundingInstrumentsResultsLoader from "./results-loaders/funding-instruments";
 import TransactionsResultsLoader from "./results-loaders/transactions";
@@ -81,6 +82,14 @@ var Customer = Model.extend({
 			path: this.get("accounts_uri"),
 		}, attributes);
 		return AccountsResultsLoader.create(attributes);
+	},
+
+	createOrder: function(description) {
+		var order = Order.create({
+			description: description
+		});
+		order.set("uri", this.get("orders_uri"));
+		return order.save();
 	},
 
 	type: function() {

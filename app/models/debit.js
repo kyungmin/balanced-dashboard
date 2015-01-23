@@ -2,6 +2,7 @@ import Computed from "balanced-dashboard/utils/computed";
 import Transaction from "./transaction";
 import Model from "./core/model";
 import Utils from "balanced-dashboard/lib/utils";
+import TransactionSerializer from "../serializers/transaction";
 
 var Debit = Transaction.extend({
 
@@ -57,6 +58,10 @@ var Debit = Transaction.extend({
 	can_refund: function() {
 		return this.get('is_succeeded') && (this.get('refund_amount') > 0) && !this.get('dispute');
 	}.property('amount', 'refund_amount', 'is_succeeded', 'dispute')
+});
+
+Debit.reopenClass({
+	serializer: TransactionSerializer.create()
 });
 
 export default Debit;
