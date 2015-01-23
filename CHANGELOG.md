@@ -1,5 +1,9 @@
 # Balanced Dashboard Changelog
 
+### 1.2.0
+
+* Refactoring marketplace application flow to use balanced-addon-models
+
 ### 1.1.10
 
 * Fixes #1614: Display correct succeeded bank account credit count

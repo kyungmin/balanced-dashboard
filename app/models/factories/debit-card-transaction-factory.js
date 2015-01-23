@@ -4,6 +4,8 @@ import Customer from "../customer";
 import TransactionFactory from "./transaction-factory";
 import ValidationHelpers from "balanced-dashboard/utils/validation-helpers";
 
+var EXPIRATION_DATE_FORMAT = /^(\d\d) [\/-] (\d\d\d\d)$/;
+
 var DebitCardTransactionFactory = TransactionFactory.extend({
 	getDestinationAttributes: function() {
 		var attributes = this.getProperties("name", "number", "cvv", "expiration_month", "expiration_year");
@@ -14,7 +16,9 @@ var DebitCardTransactionFactory = TransactionFactory.extend({
 	},
 
 	getDebitAttributes: function() {
-		return this.getProperties("amount", "appears_on_statement_as", "debit_description");
+		var attributes = this.getProperties("amount", "appears_on_statement_as");
+		attributes.description = this.get("debit_description");
+		return attributes;
 	},
 
 	validations: {
@@ -24,35 +28,106 @@ var DebitCardTransactionFactory = TransactionFactory.extend({
 		name: ValidationHelpers.cardName,
 		number: ValidationHelpers.cardNumber,
 		cvv: ValidationHelpers.cardCvv,
-		expiration_date: ValidationHelpers.cardExpirationDate,
+		expiration_date: {
+			presence: true,
+			format: EXPIRATION_DATE_FORMAT,
+			expired: {
+				validator: function(object, attrName, value) {
+					var date = object.getExpirationDate();
+					if (Ember.isBlank(date)) {
+						object.get("validationErrors").add(attrName, "expired", null, "" + value + " is not a valid card expiration date");
+					}
+					else if (date < new Date()) {
+						object.get("validationErrors").add(attrName, "expired", null, "is expired");
+					}
+				}
+			}
+		}
+	},
+
+	getExpirationDate: function() {
+		var match = this.getExpirationDateMatch();
+		if (match) {
+			var month = parseInt(match[0]);
+			if (0 < month && month <= 12) {
+				return moment(match[0], "MM / YYYY").endOf("month").toDate();
+			}
+		}
+	},
+
+	getExpirationDateMatch: function() {
+		var expirationDate = this.get("expiration_date");
+		if (!Ember.isBlank(expirationDate)) {
+			return expirationDate.match(EXPIRATION_DATE_FORMAT);
+		}
+	},
+
+	expiration_month: function() {
+		var match = this.getExpirationDateMatch();
+		if (match) {
+			return match[1];
+		}
+	}.property("expiration_date"),
+
+	expiration_year: function() {
+		var match = this.getExpirationDateMatch();
+		if (match) {
+			return match[2];
+		}
+	}.property("expiration_date"),
+
+	saveCard: function(buyerUri) {
+		return Card
+			.create(this.getDestinationAttributes())
+			.tokenizeAndCreate(buyerUri);
+	},
+
+	getBuyerCustomerAttributes: function() {
+		var email = this.get("buyer_email_address");
+		if (Ember.isBlank(email)) {
+			email = undefined;
+		}
+		return {
+			name: this.get("buyer_name"),
+			email: email
+		};
+	},
+
+	getSellerCustomerAttributes: function() {
+		var email = this.get("seller_email_address");
+		if (Ember.isBlank(email)) {
+			email = undefined;
+		}
+		return {
+			name: this.get("seller_name"),
+			email: email
+		};
 	},
 
 	save: function() {
 		var deferred = Ember.RSVP.defer();
-
-		var baseDebitAttributes = this.getDebitAttributes();
 		var self = this;
+		var order = undefined;
+		var card = undefined;
 		this.validate();
 
+		var getErrorMessage = function(error) {
+			return Ember.isBlank(error.additional) ?
+				error.description :
+				error.additional;
+		};
+
 		if (this.get("isValid")) {
-			var buyer = Customer.create({
-				name: self.get("buyer_name"),
-				email: self.get("buyer_email_address")
-			});
-			var card;
+			var buyer = Customer.create(self.getBuyerCustomerAttributes());
+
 
 			buyer.save()
 				.then(function() {
-					return Card
-						.create(self.getDestinationAttributes())
-						.tokenizeAndCreate(buyer.get("uri"));
+					return self.saveCard(buyer.get("uri"));
 				})
 				.then(function(c) {
 					card = c;
-					var seller = Customer.create({
-						name: self.get("seller_name"),
-						email: self.get("seller_email_address")
-					});
+					var seller = Customer.create(self.getSellerCustomerAttributes());
 					return seller.save();
 				})
 				.then(function(seller) {
@@ -60,7 +135,7 @@ var DebitCardTransactionFactory = TransactionFactory.extend({
 					return seller.createOrder(description);
 				})
 				.then(function(order) {
-					var debitAttributes = _.extend({}, baseDebitAttributes, {
+					var debitAttributes = _.extend({}, self.getDebitAttributes(), {
 						customer_uri: buyer.get("uri"),
 						uri: card.get('debits_uri'),
 						source_uri: card.get('uri'),
@@ -68,16 +143,18 @@ var DebitCardTransactionFactory = TransactionFactory.extend({
 					});
 					return Debit.create(debitAttributes).save();
 				})
-				.then(function(model) {
-					deferred.resolve(model);
-				}, function(response) {
-					if (response.message) {
-						self.get("validationErrors").add(undefined, "server", null, response.message);
-					} else if (response.errors) {
-						response.errors.forEach(function(error) {
-							self.get("validationErrors").add(undefined, "server", null, error.description);
-						});
-					}
+				.then(function(debit) {
+					deferred.resolve(debit);
+				})
+				.catch(function(response) {
+					response.errors.forEach(function(error) {
+						if (error.extras) {
+							_.each(error.extras, function(value, key) {
+								self.get("validationErrors").add(key, "server", null, value);
+							});
+						}
+						self.get("validationErrors").add(undefined, "server", null, getErrorMessage(error));
+					});
 					deferred.reject(self);
 				});
 		} else {

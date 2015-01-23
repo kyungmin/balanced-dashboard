@@ -201,7 +201,7 @@ module.exports = function(grunt) {
 	/*
 		grunt task commands
 	*/
-	grunt.registerTask('default', ['clean', 'bower', 'copy', 'exec:ember_server']);
+	grunt.registerTask('default', ['clean', 'copy', 'exec:ember_server']);
 	grunt.registerTask('test', ['bower:install', 'exec:ember_test']);
 	grunt.registerTask('build', ['bower:install', 'exec:ember_build_production']);
 	grunt.registerTask('deploy', ['admin:uninstall', 'build', 's3:productionCached', 's3:productionUncached']);

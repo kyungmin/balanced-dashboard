@@ -15,7 +15,9 @@ var CardDebitCreateModalView = ModalBaseView.extend(Save, Full, Form, {
 		var DebitCardTransactionFactory = require("balanced-dashboard/models/factories/debit-card-transaction-factory")['default'];
 		return DebitCardTransactionFactory.create();
 	}.property(),
+
 	appearsOnStatementAsMaxLength: Constants.MAXLENGTH.APPEARS_ON_STATEMENT_CARD,
+
 	appearsOnStatementAsLabelText: function() {
 		var length = this.get("appearsOnStatementAsMaxLength");
 		return "Appears on statement as (%@ characters max)".fmt(length);
@@ -26,6 +28,7 @@ var CardDebitCreateModalView = ModalBaseView.extend(Save, Full, Form, {
 			var controller = this.get("controller");
 			this.save(this.get("model"))
 				.then(function(model) {
+					console.log("This is the model", model);
 					controller.transitionToRoute(model.get("route_name"), model);
 				});
 		},

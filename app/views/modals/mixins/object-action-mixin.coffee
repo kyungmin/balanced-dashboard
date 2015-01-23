@@ -22,7 +22,8 @@ ObjectActionMixin = Ember.Mixin.create(
 				@getNotificationController().alertSuccess successAlertText
 			@onModelSaved(model)
 
-		errorHandler = (model) ->
+		errorHandler = (model) =>
+			@element.scrollTop = 0
 			if !Ember.isBlank(model)
 				getRootErrorMessages(model).forEach (message) ->
 					notificationsController.alertError(message)
