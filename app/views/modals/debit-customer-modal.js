@@ -28,10 +28,8 @@ var DebitCustomerModalView = ModalBaseView.extend(Full, Form, Save, {
 	}.property("isDisplayExistingFundingInstruments"),
 
 	model: function() {
-		var customer = this.get("customer");
-
 		return this.get("transactionFactoryClass").create({
-			customer: customer
+			customer: this.get("customer")
 		});
 	}.property("customer", "transactionFactoryClass"),
 
@@ -52,10 +50,9 @@ var DebitCustomerModalView = ModalBaseView.extend(Full, Form, Save, {
 });
 
 DebitCustomerModalView.reopenClass({
-	open: function(customer, order) {
+	open: function(customer) {
 		return this.create({
-			customer: customer,
-			order: order
+			customer: customer
 		});
 	},
 });
