@@ -1,23 +1,16 @@
-import Debit from "../debit";
-import Card from "../card";
-import Customer from "../customer";
-import TransactionFactory from "./transaction-factory";
+import DebitOrderFactory from "./debit-order-factory";
 import ValidationHelpers from "balanced-dashboard/utils/validation-helpers";
+import Customer from "../customer";
+import Card from "../card";
 
 var EXPIRATION_DATE_FORMAT = /^(\d\d) [\/-] (\d\d\d\d)$/;
 
-var DebitCardTransactionFactory = TransactionFactory.extend({
-	getDestinationAttributes: function() {
+var DebitCardTransactionFactory = DebitOrderFactory.extend({
+	getSourceAttributes: function() {
 		var attributes = this.getProperties("name", "number", "cvv", "expiration_month", "expiration_year");
 		attributes.address = {
 			postal_code: this.get("postal_code")
 		};
-		return attributes;
-	},
-
-	getDebitAttributes: function() {
-		var attributes = this.getProperties("amount", "appears_on_statement_as");
-		attributes.description = this.get("debit_description");
 		return attributes;
 	},
 
@@ -42,6 +35,33 @@ var DebitCardTransactionFactory = TransactionFactory.extend({
 					}
 				}
 			}
+		}
+	},
+
+	getSource: function(buyer) {
+		return Card
+			.create(this.getSourceAttributes())
+			.tokenizeAndCreate(buyer.get("uri"));
+	},
+
+	getBuyerCustomerAttributes: function() {
+		var email = this.get("buyer_email_address");
+		if (Ember.isBlank(email)) {
+			email = undefined;
+		}
+		return {
+			name: this.get("buyer_name"),
+			email: email
+		};
+	},
+
+	getBuyer: function() {
+		var customer = this.get("customer");
+
+		if (customer) {
+			return customer;
+		} else {
+			return Customer.create(this.getBuyerCustomerAttributes()).save();
 		}
 	},
 
@@ -74,95 +94,7 @@ var DebitCardTransactionFactory = TransactionFactory.extend({
 		if (match) {
 			return match[2];
 		}
-	}.property("expiration_date"),
-
-	saveCard: function(buyerUri) {
-		return Card
-			.create(this.getDestinationAttributes())
-			.tokenizeAndCreate(buyerUri);
-	},
-
-	getBuyerCustomerAttributes: function() {
-		var email = this.get("buyer_email_address");
-		if (Ember.isBlank(email)) {
-			email = undefined;
-		}
-		return {
-			name: this.get("buyer_name"),
-			email: email
-		};
-	},
-
-	getSellerCustomerAttributes: function() {
-		var email = this.get("seller_email_address");
-		if (Ember.isBlank(email)) {
-			email = undefined;
-		}
-		return {
-			name: this.get("seller_name"),
-			email: email
-		};
-	},
-
-	save: function() {
-		var deferred = Ember.RSVP.defer();
-		var self = this;
-		var order = undefined;
-		var card = undefined;
-		this.validate();
-
-		var getErrorMessage = function(error) {
-			return Ember.isBlank(error.additional) ?
-				error.description :
-				error.additional;
-		};
-
-		if (this.get("isValid")) {
-			var buyer = Customer.create(self.getBuyerCustomerAttributes());
-
-
-			buyer.save()
-				.then(function() {
-					return self.saveCard(buyer.get("uri"));
-				})
-				.then(function(c) {
-					card = c;
-					var seller = Customer.create(self.getSellerCustomerAttributes());
-					return seller.save();
-				})
-				.then(function(seller) {
-					var description = self.get("order_description");
-					return seller.createOrder(description);
-				})
-				.then(function(order) {
-					var debitAttributes = _.extend({}, self.getDebitAttributes(), {
-						customer_uri: buyer.get("uri"),
-						uri: card.get('debits_uri'),
-						source_uri: card.get('uri'),
-						order_uri: order.get("uri")
-					});
-					return Debit.create(debitAttributes).save();
-				})
-				.then(function(debit) {
-					deferred.resolve(debit);
-				})
-				.catch(function(response) {
-					response.errors.forEach(function(error) {
-						if (error.extras) {
-							_.each(error.extras, function(value, key) {
-								self.get("validationErrors").add(key, "server", null, value);
-							});
-						}
-						self.get("validationErrors").add(undefined, "server", null, getErrorMessage(error));
-					});
-					deferred.reject(self);
-				});
-		} else {
-			deferred.reject();
-		}
-
-		return deferred.promise;
-	}
+	}.property("expiration_date")
 });
 
 export default DebitCardTransactionFactory;

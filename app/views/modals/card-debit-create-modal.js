@@ -28,7 +28,6 @@ var CardDebitCreateModalView = ModalBaseView.extend(Save, Full, Form, {
 			var controller = this.get("controller");
 			this.save(this.get("model"))
 				.then(function(model) {
-					console.log("This is the model", model);
 					controller.transitionToRoute(model.get("route_name"), model);
 				});
 		},
