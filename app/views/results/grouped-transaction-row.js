@@ -165,7 +165,7 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 		} else {
 			return Utils.formatCurrency(this.get("item.amount"));
 		}
-	}.property("item.amount", "typeName")
+	}.property("item.amount", "typeName", "item.amount_escrowed")
 });
 
 export default GroupedTransactionRowView;

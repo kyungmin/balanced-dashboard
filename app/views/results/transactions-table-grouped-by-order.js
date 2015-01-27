@@ -11,24 +11,32 @@ var TransactionsTableGroupedByOrderView = TransactionsTableView.extend({
 
 	groupedResults: function() {
 		var results = this.get("loader.results");
+
 		var groupedTransactions = [];
 		var Order = this.container.lookupFactory("model:order");
 
 		results.forEach(function(transaction) {
-			var orderUri = transaction.get('order_uri');
-			var order = orderUri ? Order.find(orderUri) : null;
-			var orderGroup = groupedTransactions.findBy('order_uri', transaction.get('order_uri'));
+			if (!_.contains(["Hold", "Refund", "Reversal"], transaction.get("type_name"))) {
+				// TODO: Figure out a better way to include manually created holds
+				var orderUri = transaction.get('order_uri');
+				var order = orderUri ? Order.find(orderUri) : null;
+				var orderGroup = groupedTransactions.findBy('order_uri', transaction.get('order_uri'));
 
-			if (!orderGroup) {
-				orderGroup = Ember.Object.create({
-					order_uri: orderUri,
-					order: order,
-					transactions: []
-				});
-				groupedTransactions.pushObject(orderGroup);
+				if (!orderGroup) {
+					orderGroup = Ember.Object.create({
+						order_uri: orderUri,
+						order: order,
+						transactions: []
+					});
+					groupedTransactions.pushObject(orderGroup);
+				}
+				orderGroup.get('transactions').pushObject(transaction);
 			}
-			orderGroup.get('transactions').pushObject(transaction);
 		});
+
+		if (groupedTransactions.length === 0 && results.total > 0) {
+			results.loadNextPage();
+		}
 
 		this.set("parentView.totalOrders", groupedTransactions.length);
 

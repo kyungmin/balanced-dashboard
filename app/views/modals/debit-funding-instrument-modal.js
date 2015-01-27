@@ -19,7 +19,8 @@ var DebitFundingInstrumentModalView = BaseFundingInstrumentModalView.extend({
 DebitFundingInstrumentModalView.reopenClass({
 	open: function(fundingInstrument) {
 		var debit = DebitExistingFundingInstrumentTransactionFactory.create({
-			source: fundingInstrument
+			source: fundingInstrument,
+			customer: fundingInstrument.get("customer")
 		});
 		return this.create({
 			model: debit

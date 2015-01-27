@@ -12,7 +12,8 @@ var HoldCardModalView = BaseFundingInstrumentModalView.extend({
 HoldCardModalView.reopenClass({
 	open: function(card) {
 		var hold = HoldExistingFundingInstrumentTransactionFactory.create({
-			source: card
+			source: card,
+			customer: card.get("customer")
 		});
 		return this.create({
 			model: hold

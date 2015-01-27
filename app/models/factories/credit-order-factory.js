@@ -5,8 +5,6 @@ var CreditOrderFactory = TransactionFactory.extend({
 	save: function() {
 		var self = this;
 		var order = this.get("order");
-		console.log(order);
-		// TODO: check if order.seller == customer
 		var seller = this.get("order.seller");
 
 		var deferred = Ember.RSVP.defer();

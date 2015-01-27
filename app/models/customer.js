@@ -4,6 +4,8 @@ import Order from "./order";
 import Computed from "balanced-dashboard/utils/computed";
 import FundingInstrumentsResultsLoader from "./results-loaders/funding-instruments";
 import TransactionsResultsLoader from "./results-loaders/transactions";
+import BuyerTransactionsResultsLoader from "./results-loaders/buyer-transactions";
+import MerchantTransactionsResultsLoader from "./results-loaders/merchant-transactions";
 import OrdersResultsLoader from "./results-loaders/orders";
 
 var CUSTOMER_TYPES = {
@@ -59,6 +61,13 @@ var Customer = Model.extend({
 		}, attributes);
 		return DisputesResultsLoader.create(attributes);
 	},
+
+	hasCreditableOrders: Ember.computed.gt("creditableOrders.length", 0),
+
+	creditableOrders: function () {
+		return this.getOrdersLoader().get("results");
+	}.property("uri"),
+
 	getOrdersLoader: function(attributes) {
 		// Note: Replace this back to "order_uri" when the issue balanced-api #739 is fixed
 		attributes = _.extend({
@@ -66,6 +75,18 @@ var Customer = Model.extend({
 			typeFilters: "order"
 		}, attributes);
 		return OrdersResultsLoader.create(attributes);
+	},
+	getBuyerTransactionsLoader: function(attributes) {
+		attributes = _.extend({
+			path: this.get("transactions_uri"),
+		}, attributes);
+		return BuyerTransactionsResultsLoader.create(attributes);
+	},
+	getMerchantTransactionsLoader: function(attributes) {
+		attributes = _.extend({
+			path: this.get("transactions_uri"),
+		}, attributes);
+		return MerchantTransactionsResultsLoader.create(attributes);
 	},
 	getTransactionsLoader: function(attributes) {
 		attributes = _.extend({

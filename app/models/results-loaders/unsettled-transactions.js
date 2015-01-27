@@ -1,8 +1,8 @@
-import TransactionsResultsLoader from "./transactions";
+import FilterableTransactionsResultsLoader from "./filterable-transactions";
 import ModelArray from "../core/model-array";
 import SearchModelArray from "../core/search-model-array";
 
-var UnsettledTransactionsResultsLoader = TransactionsResultsLoader.extend({
+var UnsettledTransactionsResultsLoader = FilterableTransactionsResultsLoader.extend({
 	unfilteredResults: function() {
 		var uri = this.get('resultsUri');
 		var type = this.get('resultsType');

@@ -7,12 +7,27 @@
 				{{/view}}
 				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
 					{{#each transaction in orderGroup.transactions}}
+						{{#if transaction.dispute}}
+							{{view "results/grouped-transaction-row" item=transaction.dispute embedded=view.embedded}}
+						{{/if}}
+
+						{{#if transaction.refunds}}
+							{{#each refund in transaction.refunds}}
+								{{view "results/grouped-transaction-row" item=refund embedded=view.embedded}}
+							{{/each}}
+						{{/if}}
+
 						{{#if transaction.reversals}}
 							{{#each reversal in transaction.reversals}}
 								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
 							{{/each}}
 						{{/if}}
+
 						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
+
+						{{#if transaction.hold}}
+							{{view "results/grouped-transaction-row" item=transaction.hold embedded=view.embedded}}
+						{{/if}}
 					{{/each}}
 				{{/view}}
 			</td>
@@ -20,12 +35,27 @@
 			<td class="ungrouped-transactions-container" {{bind-attr colspan="view.colspan"}}>
 				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
 					{{#each transaction in orderGroup.transactions}}
+						{{#if transaction.dispute}}
+							{{view "results/grouped-transaction-row" item=transaction.dispute embedded=view.embedded}}
+						{{/if}}
+
+						{{#if transaction.refunds}}
+							{{#each reversal in transaction.reversals}}
+								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
+							{{/each}}
+						{{/if}}
+
 						{{#if transaction.reversals}}
 							{{#each reversal in transaction.reversals}}
 								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
 							{{/each}}
 						{{/if}}
+
 						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
+
+						{{#if transaction.hold}}
+							{{view "results/grouped-transaction-row" item=transaction.hold embedded=view.embedded}}
+						{{/if}}
 					{{/each}}
 				{{/view}}
 			</td>

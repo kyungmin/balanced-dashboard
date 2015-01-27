@@ -1,6 +1,12 @@
 {{#view "page-navigations/page-navigation" pageType="Customer" title=model.display_me}}
 	<div class="buttons page-actions">
+	{{#if model.hasCreditableOrders}}
 		<a class="btn" {{action "openModal" "modals/credit-customer-modal" model}}>Credit</a>
+	{{else}}
+		{{#view "popover" class="sl-none" data-trigger="hover" data-placement="bottom" data-original-title="Can't credit this customer" data-content="This customer does not have any active orders as a merchant."}}
+			<a class="btn disabled" disabled="disabled">Credit</a>
+		{{/view}}
+	{{/if}}
 		<a class="btn" {{action "openModal" "modals/debit-customer-modal" model}}>Debit</a>
 	</div>
 {{/view}}
@@ -17,12 +23,12 @@
 		{{#if view.isActivityTabSelected}}
 			<h3>Merchant activity</h3>
 			<div class="results">
-				{{view "results/orders-table" loader=ordersResultsLoader embedded=true}}
+				{{view "results/transactions-table-grouped-by-order" loader=merchantTransactionsResultsLoader embedded=true}}
 			</div>
 
 			<h3>Buyer activity</h3>
 			<div class="results">
-				{{view "results/transactions-table-grouped-by-order" loader=transactionsResultsLoader embedded=true}}
+				{{view "results/transactions-table-grouped-by-order" loader=buyerTransactionsResultsLoader embedded=true}}
 			</div>
 		{{/if}}
 		{{#if view.isDisputesTabSelected}}

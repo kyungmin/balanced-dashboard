@@ -5,6 +5,7 @@ import Customer from "../customer";
 var DebitOrderFactory = TransactionFactory.extend({
 	save: function() {
 		var self = this;
+		var order;
 		var deferred = Ember.RSVP.defer();
 		this.validate();
 
@@ -15,8 +16,6 @@ var DebitOrderFactory = TransactionFactory.extend({
 		};
 
 		if (this.get("isValid")) {
-			var order;
-
 			this.createOrderWithSeller()
 				.then(function(o) {
 					order = o;
