@@ -34,7 +34,6 @@ var HoldExistingFundingInstrumentTransactionFactory = TransactionFactory.extend(
 					deferred.resolve(debit);
 				})
 				.catch(function(response) {
-					console.log(response)
 					response.errors.forEach(function(error) {
 						if (error.extras) {
 							_.each(error.extras, function(value, key) {
@@ -69,7 +68,7 @@ var HoldExistingFundingInstrumentTransactionFactory = TransactionFactory.extend(
 		if (customer) {
 			return Ember.RSVP.resolve(source);
 		} else {
-			var customer = Customer.create(this.getBuyerCustomerAttributes()).save();
+			customer = Customer.create(this.getBuyerCustomerAttributes()).save();
 			source.set('links.customer', customer.get("id"));
 			return source.save();
 		}
