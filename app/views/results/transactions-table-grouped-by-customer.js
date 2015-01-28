@@ -5,6 +5,7 @@ var TransactionsTableGroupedByCustomerView = TransactionsTableView.extend({
 	classNames: 'non-interactive',
 
 	colspan: 4,
+	hideCustomerColumn: true,
 	hideFromColumn: Ember.computed.equal("paymentMethodText", "To"),
 	hideToColumn: Ember.computed.equal("paymentMethodText", "From"),
 

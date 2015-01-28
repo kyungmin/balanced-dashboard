@@ -2,62 +2,15 @@
 	<tr>
 		{{#if orderGroup.order}}
 			<td class="grouped-transactions-container nested" {{bind-attr colspan="view.colspan"}}>
-				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
-					{{view "results/grouped-transaction-row" item=orderGroup.order embedded=view.embedded}}
+				{{#view "results/grouped-transactions-table" hideCustomerColumn=view.hideCustomerColumn}}
+					{{view "results/grouped-transaction-row" item=orderGroup.order hideCustomerColumn=view.hideCustomerColumn}}
 				{{/view}}
-				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
-					{{#each transaction in orderGroup.transactions}}
-						{{#if transaction.dispute}}
-							{{view "results/grouped-transaction-row" item=transaction.dispute embedded=view.embedded}}
-						{{/if}}
 
-						{{#if transaction.refunds}}
-							{{#each refund in transaction.refunds}}
-								{{view "results/grouped-transaction-row" item=refund embedded=view.embedded}}
-							{{/each}}
-						{{/if}}
-
-						{{#if transaction.reversals}}
-							{{#each reversal in transaction.reversals}}
-								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
-							{{/each}}
-						{{/if}}
-
-						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
-
-						{{#if transaction.hold}}
-							{{view "results/grouped-transaction-row" item=transaction.hold embedded=view.embedded}}
-						{{/if}}
-					{{/each}}
-				{{/view}}
+				{{view "results/grouped-transactions-table" transactions=orderGroup.transactions hideCustomerColumn=view.hideCustomerColumn}}
 			</td>
 		{{else}}
 			<td class="ungrouped-transactions-container" {{bind-attr colspan="view.colspan"}}>
-				{{#view "results/grouped-transactions-table" embedded=view.embedded}}
-					{{#each transaction in orderGroup.transactions}}
-						{{#if transaction.dispute}}
-							{{view "results/grouped-transaction-row" item=transaction.dispute embedded=view.embedded}}
-						{{/if}}
-
-						{{#if transaction.refunds}}
-							{{#each reversal in transaction.reversals}}
-								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
-							{{/each}}
-						{{/if}}
-
-						{{#if transaction.reversals}}
-							{{#each reversal in transaction.reversals}}
-								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded}}
-							{{/each}}
-						{{/if}}
-
-						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded}}
-
-						{{#if transaction.hold}}
-							{{view "results/grouped-transaction-row" item=transaction.hold embedded=view.embedded}}
-						{{/if}}
-					{{/each}}
-				{{/view}}
+				{{view "results/grouped-transactions-table" transactions=orderGroup.transactions hideCustomerColumn=view.hideCustomerColumn}}
 			</td>
 		{{/if}}
 	</tr>

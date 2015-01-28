@@ -4,7 +4,7 @@ var AssociatedTransactionsTableView = TransactionsTableView.extend({
 	templateName: "results/associated-transactions-table",
 	classNames: ["non-interactive"],
 	colspan: 4,
-	embedded: true
+	hideCustomerColumn: true
 });
 
 export default AssociatedTransactionsTableView;

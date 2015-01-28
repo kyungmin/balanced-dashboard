@@ -19,47 +19,47 @@
 	{{#if view.transaction}}
 		<tr>
 			<td class="grouped-transactions-container" {{bind-attr colspan="view.colspan"}}>
-				{{#view "results/grouped-transactions-table" embedded=true}}
+				{{#view "results/grouped-transactions-table" hideCustomerColumn=true}}
 					{{#if view.parentView.transaction.order}}
-						{{view "results/grouped-transaction-row" item=view.parentView.transaction.order embedded=true}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.order hideCustomerColumn=true}}
 					{{/if}}
 
 					{{#if view.parentView.transaction.dispute}}
-						{{view "results/grouped-transaction-row" item=view.parentView.transaction.dispute embedded=true}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.dispute hideCustomerColumn=true}}
 					{{/if}}
 
 					{{#if view.parentView.transaction.refunds}}
 						{{#each refund in view.parentView.transaction.refunds}}
-							{{view "results/grouped-transaction-row" item=refund embedded=true}}
+							{{view "results/grouped-transaction-row" item=refund hideCustomerColumn=true}}
 						{{/each}}
 					{{/if}}
 
 					{{#if view.parentView.transaction.reversals}}
 						{{#each reversal in view.parentView.transaction.reversals}}
-							{{view "results/grouped-transaction-row" item=reversal embedded=true}}
+							{{view "results/grouped-reversal-row" item=reversal hideCustomerColumn=true}}
 						{{/each}}
 					{{/if}}
 
 					{{#if view.parentView.transaction.debit}}
 						{{#if view.parentView.transaction.debit.dispute}}
-							{{view "results/grouped-transaction-row" item=view.parentView.transaction.debit.dispute embedded=true}}
+							{{view "results/grouped-transaction-row" item=view.parentView.transaction.debit.dispute hideCustomerColumn=true}}
 						{{/if}}
-						{{view "results/grouped-transaction-row" item=view.parentView.transaction.debit embedded=true}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.debit hideCustomerColumn=true}}
 					{{/if}}
 
 					{{#if view.parentView.transaction.credit}}
-						{{view "results/grouped-transaction-row" item=view.parentView.transaction.credit embedded=true}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.credit hideCustomerColumn=true}}
 					{{/if}}
 
-					{{view "results/grouped-transaction-row" item=view.parentView.transaction class="current" embedded=true}}
+					{{view "results/grouped-transaction-row" item=view.parentView.transaction class="current" hideCustomerColumn=true}}
 
 					{{#if view.parentView.transaction.transaction}}
-						{{view "results/grouped-transaction-row" item=view.parentView.transaction.transaction embedded=true}}
-						{{view "results/grouped-transaction-row" item=view.parentView.transaction.transaction.hold embedded=true}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.transaction hideCustomerColumn=true}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.transaction.hold hideCustomerColumn=true}}
 					{{/if}}
 
 					{{#if view.parentView.transaction.hold}}
-						{{view "results/grouped-transaction-row" item=view.parentView.transaction.hold embedded=true}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.hold hideCustomerColumn=true}}
 					{{/if}}
 				{{/view}}
 			</td>

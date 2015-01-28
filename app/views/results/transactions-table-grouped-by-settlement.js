@@ -1,14 +1,14 @@
 import ResultsTableView from "./results-table";
 import SearchModelArray from "balanced-dashboard/models/core/search-model-array";
 
-var CreditsTableGroupedBySettlement = ResultsTableView.extend({
+var TransactionsTableGroupedBySettlement = ResultsTableView.extend({
 	layoutName: 'results/grouped-transactions-table-layout',
-	templateName: 'results/credits-table-grouped-by-settlement',
+	templateName: 'results/transactions-table-grouped-by-settlement',
 	classNames: ['settlements', 'non-interactive'],
 
 	colspan: function() {
-		return (this.get("embedded")) ? "4": "5";
-	}.property("embedded"),
+		return (this.get("hideCustomerColumn")) ? "4": "5";
+	}.property("hideCustomerColumn"),
 
 	groupedResults: function() {
 		var self = this;
@@ -53,4 +53,4 @@ var CreditsTableGroupedBySettlement = ResultsTableView.extend({
 	}
 });
 
-export default CreditsTableGroupedBySettlement;
+export default TransactionsTableGroupedBySettlement;

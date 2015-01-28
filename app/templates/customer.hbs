@@ -23,12 +23,12 @@
 		{{#if view.isActivityTabSelected}}
 			<h3>Merchant activity</h3>
 			<div class="results">
-				{{view "results/transactions-table-grouped-by-order" loader=merchantTransactionsResultsLoader embedded=true}}
+				{{view "results/transactions-table-grouped-by-order" loader=merchantTransactionsResultsLoader hideCustomerColumn=true}}
 			</div>
 
 			<h3>Buyer activity</h3>
 			<div class="results">
-				{{view "results/transactions-table-grouped-by-order" loader=buyerTransactionsResultsLoader embedded=true}}
+				{{view "results/transactions-table-grouped-by-order" loader=buyerTransactionsResultsLoader hideCustomerColumn=true}}
 			</div>
 		{{/if}}
 		{{#if view.isDisputesTabSelected}}

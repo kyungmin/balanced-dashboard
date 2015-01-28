@@ -6,8 +6,8 @@ var TransactionsTableGroupedByOrderView = TransactionsTableView.extend({
 	classNames: 'non-interactive',
 
 	colspan: function() {
-		return (this.get("embedded")) ? "4": "5";
-	}.property("embedded"),
+		return (this.get("hideCustomerColumn")) ? "4": "5";
+	}.property("hideCustomerColumn"),
 
 	groupedResults: function() {
 		var results = this.get("loader.results");
@@ -17,7 +17,7 @@ var TransactionsTableGroupedByOrderView = TransactionsTableView.extend({
 
 		results.forEach(function(transaction) {
 			if (!_.contains(["Hold", "Refund", "Reversal"], transaction.get("type_name"))) {
-				// TODO: Figure out a better way to include manually created holds
+				// TODO: Figure out a way to include manually created holds
 				var orderUri = transaction.get('order_uri');
 				var order = orderUri ? Order.find(orderUri) : null;
 				var orderGroup = groupedTransactions.findBy('order_uri', transaction.get('order_uri'));

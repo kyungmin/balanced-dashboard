@@ -5,7 +5,7 @@
 		</span>
 	{{/link-to}}
 </td>
-{{#unless view.embedded}}
+{{#unless view.hideCustomerColumn}}
 	<td class="customer two-lines">
 		{{#link-to view.routeName view.item}}
 			<span {{bind-attr class="view.spanClassNames"}}>

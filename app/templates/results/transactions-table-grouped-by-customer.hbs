@@ -27,27 +27,27 @@
 			}}
 			<td class="grouped-transactions-container divided" colspan="3">
 				{{#each transaction in customer_group.transactions}}
-					{{#view "results/grouped-transactions-table" embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
+					{{#view "results/grouped-transactions-table" hideCustomerColumn=view.hideCustomerColumn hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 						{{#if transaction.refunds}}
 							{{#each refund in transaction.refunds}}
-								{{view "results/grouped-transaction-row" item=refund embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
+								{{view "results/grouped-transaction-row" item=refund hideCustomerColumn=view.hideCustomerColumn hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 							{{/each}}
 						{{/if}}
 
 						{{#if transaction.reversals}}
 							{{#each reversal in transaction.reversals}}
-								{{view "results/grouped-transaction-row" item=reversal embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
+								{{view "results/grouped-transaction-row" item=reversal hideCustomerColumn=view.hideCustomerColumn hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 							{{/each}}
 						{{/if}}
 
 						{{#if transaction.dispute}}
-							{{view "results/grouped-transaction-row" item=transaction.dispute embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
+							{{view "results/grouped-transaction-row" item=transaction.dispute hideCustomerColumn=view.hideCustomerColumn hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 						{{/if}}
 
-						{{view "results/grouped-transaction-row" item=transaction embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
+						{{view "results/grouped-transaction-row" item=transaction hideCustomerColumn=view.hideCustomerColumn hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 
 						{{#if transaction.hold}}
-							{{view "results/grouped-transaction-row" item=transaction.hold embedded=view.embedded hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
+							{{view "results/grouped-transaction-row" item=transaction.hold hideCustomerColumn=view.hideCustomerColumn hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
 						{{/if}}
 					{{/view}}
 				{{/each}}

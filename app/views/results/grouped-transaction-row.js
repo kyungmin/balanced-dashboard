@@ -54,16 +54,12 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 			type = this.get("dasherizedPaymentMethodType");
 		}
 		if (typeName === "Credit" || typeName === "Refund") {
-			label = "Order balance";
-			type = "orders";
-		}
-		if (typeName === "Reversal") {
-			if (this.get("item.credit.destination.last_four")) {
-				label = this.get("item.credit.destination.last_four");
-				type = Ember.String.dasherize(this.get("item.credit.destination.type_name"));
+			if (this.get("item.order")) {
+				label = "Order balance";
+				type = "orders";
 			} else {
-				label = "Payable account";
-				type = "payable-account";
+				label = "Marketplace balance";
+				type = "escrow";
 			}
 		}
 		if (typeName === "Settlement") {
@@ -76,7 +72,7 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 			}
 		}
 		return Utils.safeFormat('<i class="icon-%@ non-interactive"></i>%@', type, label).htmlSafe();
-	}.property("typeName", "item.source.last_four", "item.source.type_name", "dasherizedPaymentMethodType", "item.credit.destination.last_four", "item.credit.destination.type_name", "settlementSource.last_four", "settlementSource.type_name", "settlementSource.type"),
+	}.property("typeName", "item.source.last_four", "item.source.type_name", "dasherizedPaymentMethodType", "settlementSource.last_four", "settlementSource.type_name", "settlementSource.type", "item.order"),
 
 	paymentMethodToText: function() {
 		var label = "";
@@ -100,10 +96,6 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 			if (this.get("item.debit.source")) {
 				type = Ember.String.dasherize(this.get("item.debit.source.type_name"));
 			}
-		}
-		if (typeName === "Reversal") {
-			label = "Order balance";
-			type = "orders";
 		}
 		if (typeName === "Settlement") {
 			if (this.get("settlementDestination.last_four")) {
