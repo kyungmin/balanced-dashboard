@@ -25,10 +25,7 @@ var CreditBankAccountTransactionFactory = CreditOrderFactory.extend({
 		name: ValidationHelpers.bankAccountName,
 		routing_number: ValidationHelpers.bankAccountRoutingNumber,
 		account_number: ValidationHelpers.bankAccountNumber,
-		account_type: ValidationHelpers.bankAccountType,
-		order: {
-			presence: true
-		}
+		account_type: ValidationHelpers.bankAccountType
 	}
 });
 

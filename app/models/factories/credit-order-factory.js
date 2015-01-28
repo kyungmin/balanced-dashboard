@@ -1,11 +1,11 @@
 import TransactionFactory from "./transaction-factory";
 import Credit from "../credit";
+import Customer from "../customer";
 
 var CreditOrderFactory = TransactionFactory.extend({
 	save: function() {
 		var self = this;
 		var order = this.get("order");
-		var seller = this.get("order.seller");
 
 		var deferred = Ember.RSVP.defer();
 		this.validate();
@@ -17,9 +17,16 @@ var CreditOrderFactory = TransactionFactory.extend({
 		};
 
 		if (this.get("isValid")) {
-			self.getDestination(seller)
+			self.getSeller()
+				.then(function(seller) {
+					return self.getDestination(seller);
+				})
 				.then(function(destination) {
-					return self.createCredit(destination, order);
+					if (order) {
+						return self.createCredit(destination, order);
+					} else {
+						return self.createOneOffCredit(destination);
+					}
 				})
 				.then(function(credit) {
 					deferred.resolve(credit);
@@ -46,11 +53,35 @@ var CreditOrderFactory = TransactionFactory.extend({
 		Ember.assert("Implement #getDestination and make it return a promise with the destination", false);
 	},
 
+	getSeller: function() {
+		var seller = this.get("order.seller");
+
+		if (seller) {
+			return Ember.RSVP.resolve(seller);
+		} else {
+			return Customer.create({
+				name: this.get("name")
+			}).save();
+		}
+	},
+
 	getCreditAttributes: function() {
 		var properties = this.getProperties("amount", "appears_on_statement_as");
 		properties.description = this.get("credit_description");
 
 		return properties;
+	},
+
+	createOneOffCredit: function(destination) {
+		var destinationUri = destination.get("uri");
+		var creditsUri = destination.get("credits_uri");
+
+		var creditAttributes = _.extend({}, this.getCreditAttributes(), {
+			uri: creditsUri,
+			destination_uri: destinationUri,
+		});
+
+		return Credit.create(creditAttributes).save();
 	},
 
 	createCredit: function(destination, order) {
