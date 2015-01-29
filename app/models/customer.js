@@ -24,7 +24,7 @@ var Customer = Model.extend({
 	orders: Model.hasMany('orders', 'order'),
 	disputes: Model.hasMany('disputes', 'dispute'),
 	accounts: Model.hasMany('accounts', 'account'),
-	account: Ember.computed.reads("accountsResultsLoader.results.content.0"),
+	account: Ember.computed.reads("accountsResultsLoader.results.content.firstObject"),
 
 	uri: '/customers',
 	route_name: 'customer',

@@ -191,5 +191,5 @@ test('can add card with address', function() {
 
 test('verification renders properly against rev1', function() {
 	visit(Testing.CUSTOMER_ROUTE)
-		.check(".status.verified span", "Verified");
+		.check(".status.succeeded span", "Verified");
 });

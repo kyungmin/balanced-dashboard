@@ -1,23 +1,19 @@
-import SummarySectionView from "./summary-section";
+import SummarySectionBase from "./summary-section-base";
 
-var CustomerSummarySectionView = SummarySectionView.extend({
-	statusText: function() {
-		if (this.get('model.status') === 'unverified') {
-			return 'You may credit this customer, but we recommend collecting more information from this customer for underwriting purposes.';
-		}
-		return null;
-	}.property('model.status'),
+var CustomerSummarySectionView = SummarySectionBase.extend({
+	generateItems: function() {
+		var model = this.get("model");
+		this.addLabel("Status", "status");
+		this.addSummaryItem("customer-status", {
+			model: model,
+		});
 
-	learnMore: function() {
-		return {
-			className: 'learn-more-unverified',
-			text: "For an individual, you may collect full legal name, email, permanent street address, and last four digits of SSN. For a business, we also recommend collecting the full business name and EIN number."
-		};
-	}.property(),
-
-	linkedResources: function() {
-		return this.resourceLinks("model.account");
-	}.property("model.account")
+		this.addLabel("Payable account", "payable-account");
+		this.addSummaryItem("account", {
+			modelBinding: "summaryView.model.account",
+			summaryView: this
+		});
+	},
 });
 
 export default CustomerSummarySectionView;

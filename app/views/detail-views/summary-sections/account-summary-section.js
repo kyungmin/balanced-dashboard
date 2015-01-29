@@ -1,10 +1,14 @@
-import SummarySectionView from "./summary-section";
-import Utils from "balanced-dashboard/lib/utils";
+import SummarySectionView from "./summary-section-base";
 
 var AccountSummarySectionView = SummarySectionView.extend({
-	linkedResources: function() {
-		return this.resourceLinks("model.customer");
-	}.property('model.customer'),
+	generateItems: function() {
+		var model = this.get("model");
+		this.addLabel("Customer", "customers");
+		this.addSummaryItem("customer", {
+			modelBinding: "fundingInstrument.customer",
+			fundingInstrument: model
+		});
+	},
 });
 
 export default AccountSummarySectionView;
