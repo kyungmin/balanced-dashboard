@@ -19,9 +19,9 @@ var OrderSummarySectionView = SummarySectionBase.extend({
 			modelBinding: "sectionView.merchant"
 		});
 		this.addLabel("Payable account", "payable-account");
-		this.addSummaryItem("account", {
+		this.addSummaryItem("funding-instrument", {
 			summaryView: this,
-			modelBinding: "summaryView.seller.account"
+			modelBinding: "summaryView.merchant.account"
 		});
 	},
 
