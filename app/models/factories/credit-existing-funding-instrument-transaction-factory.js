@@ -14,10 +14,7 @@ var CreditExistingFundingInstrumentTransactionFactory = CreditOrderFactory.exten
 		appears_on_statement_as: ValidationHelpers.bankTransactionAppearsOnStatementAs,
 		destination: {
 			presence: true
-		},
-		order: {
-			presence: true
-		},
+		}
 	}
 });
 
