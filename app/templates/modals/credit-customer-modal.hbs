@@ -12,30 +12,19 @@
 	}}
 {{/view}}
 
-{{#view "form-fields/form-section" fundingInstruments=view.fundingInstruments model=view.model sectionTitle="Payment information"}}
-
-	{{view "form-fields/static-text-form-field" labelText="Customer" value=view.customer.display_me_with_email}}
+{{#view "form-fields/form-section" fundingInstruments=view.fundingInstruments model=view.model sectionTitle="Payment method"}}
 
 	{{#if view.parentView.isDisplayExistingFundingInstruments}}
 		{{view "form-fields/select-form-field"
 			model=view.model
 			content=view.fundingInstruments
 			value=view.model.destination
-			labelText="Payment method"
+			labelText="Select one"
 			optionValuePath="content"
 			optionLabelPath="content.description_with_type"
 			name="destination"
 			field="destination"
-		}}
-
-		{{view "form-fields/static-text-form-field"
-			labelText="Name on account"
-			value=view.model.destination.name
-		}}
-
-		{{view "form-fields/static-text-form-field"
-			labelText="Bank"
-			value=view.model.destination.formatted_bank_name
+			explanationText=view.parentView.nameOnAccountText
 		}}
 	{{else}}
 		{{view "form-fields/text-form-field" model=view.model field="name" labelText="Card holder's name" inputClassNames="full"}}
@@ -52,11 +41,11 @@
 {{/view}}
 
 {{#view "form-fields/form-section" appearsOnStatementAsMaxLength=view.appearsOnStatementAsMaxLength appearsOnStatementAsLabelText=view.appearsOnStatementAsLabelText model=view.model sectionTitle="Credit information"}}
-	{{view "form-fields/amount-form-field" model=view.model field="dollar_amount" labelText="Amount" explanationText=view.parentView.source.escrow_balance}}
+	{{view "form-fields/amount-form-field" model=view.model field="dollar_amount" labelText="Amount" explanationText=view.parentView.orderBalanceText}}
 
 	{{view "form-fields/text-form-field" model=view.model field="appears_on_statement_as" labelText=view.appearsOnStatementAsLabelText maxLength=view.appearsOnStatementAsMaxLength inputClassNames="full" maxlength=view.appearsOnStatementAsMaxLength}}
 
-	{{view "form-fields/text-form-field" model=view.model field="credit_description" labelText="Credit description" maxlength=Constants.MAXLENGTH.DESCRIPTION inputClassNames="full"}}
+	{{view "form-fields/text-form-field" model=view.model field="credit_description" labelText="Internal description" maxlength=Constants.MAXLENGTH.DESCRIPTION inputClassNames="full"}}
 {{/view}}
 
 {{#view "form-fields/form-section" sectionTitle="Note"}}

@@ -1,4 +1,5 @@
 import BaseFundingInstrumentModalView from "./base-funding-instrument-modal";
+import Utils from "balanced-dashboard/lib/utils";
 import CreditExistingFundingInstrumentTransactionFactory from "balanced-dashboard/models/factories/credit-existing-funding-instrument-transaction-factory";
 
 var CreditFundingInstrumentModalView = BaseFundingInstrumentModalView.extend({
@@ -9,6 +10,11 @@ var CreditFundingInstrumentModalView = BaseFundingInstrumentModalView.extend({
 	}.property("model.destination.type_name"),
 	cancelButtonText: "Cancel",
 	submitButtonText: "Credit",
+
+	expectedDateText: function() {
+		var creditDate = this.get("model.destination.expected_credit_date");
+		return "This credit is expected to appear on %@.".fmt(Utils.humanReadableDate(creditDate));
+	}.property("model.destination.expected_credit_date"),
 
 	appearsOnStatementAsLabelText: function() {
 		var length = this.get("model.destination.appears_on_statement_max_length");
