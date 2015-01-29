@@ -1,37 +1,31 @@
-import SummarySectionView from "./summary-section";
+import SummarySectionBase from "./summary-section-base";
 
-var OrderSummarySectionView = SummarySectionView.extend({
-	statusText: function() {
-		if (this.get("model.status") === "overdue") {
-			return "Funds in this order are older than 30 days. Pay out your outstanding balance now.";
-		}
-		return null;
-	}.property("model.status"),
+var OrderSummarySectionView = SummarySectionBase.extend({
+	generateItems: function() {
+		var model = this.get("model");
+		this.addLabel("Status", "status");
+		this.addSummaryItem("order-status", {
+			model: model,
+		});
 
-	linkedResources: function() {
-		return _.flatten([
-			this.generateDescriptionResource(this.get("model")),
-			this.generateResourceLink(this.get("model"), this.get("model.seller")),
-			{
-				className: "icon-payable-account",
-				title: "Merchant payable account",
-				resource: this.get("sellerAccount")
-			}
-		]).compact();
-	}.property("model.description", "model.seller", "model.seller.accounts_uri", "sellerAccount"),
+		this.addInternalDescriptionLabel();
+		this.addSummaryItem("model-description", {
+			model: model
+		});
 
-	sellerAccount: function(attr) {
-		var self = this;
-		var accountsUri = this.get("model.seller.accounts_uri");
+		this.addLabel("Merchant", "customers");
+		this.addSummaryItem("customer", {
+			sectionView: this,
+			modelBinding: "sectionView.merchant"
+		});
+		this.addLabel("Payable account", "payable-account");
+		this.addSummaryItem("funding-instrument", {
+			summaryView: this,
+			modelBinding: "summaryView.merchant.account"
+		});
+	},
 
-		if (accountsUri) {
-			var store = this.container.lookup("controller:marketplace").get("store");
-			store.fetchItem("account", accountsUri).then(function(account) {
-				self.set(attr, account.toLegacyModel());
-			});
-		}
-		return null;
-	}.property("model.seller.accounts_uri")
+	merchant: Ember.computed.reads("model.seller"),
 });
 
 export default OrderSummarySectionView;

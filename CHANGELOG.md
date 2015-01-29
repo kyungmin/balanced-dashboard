@@ -1,5 +1,15 @@
 # Balanced Dashboard Changelog
 
+### master
+
+* Refactoring how model sidebars are displayed
+* Turning off marketplace application process temporarily
+
+### 1.2.1
+
+* Adding formatted input library
+* Toggling marketplace application process
+
 ### 1.2.0
 
 * Refactoring marketplace application flow to use balanced-addon-models
