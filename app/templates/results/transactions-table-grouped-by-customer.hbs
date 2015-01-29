@@ -28,6 +28,10 @@
 			<td class="grouped-transactions-container divided" colspan="3">
 				{{#each transaction in customer_group.transactions}}
 					{{#view "results/grouped-transactions-table" hideCustomerColumn=view.hideCustomerColumn hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
+						{{#if transaction.dispute}}
+							{{view "results/grouped-transaction-row" item=transaction.dispute hideCustomerColumn=view.hideCustomerColumn hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
+						{{/if}}
+
 						{{#if transaction.refunds}}
 							{{#each refund in transaction.refunds}}
 								{{view "results/grouped-transaction-row" item=refund hideCustomerColumn=view.hideCustomerColumn hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
@@ -40,8 +44,13 @@
 							{{/each}}
 						{{/if}}
 
-						{{#if transaction.dispute}}
-							{{view "results/grouped-transaction-row" item=transaction.dispute hideCustomerColumn=view.hideCustomerColumn hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}
+						{{#if transaction.settlement}}
+							{{view "results/grouped-transaction-row"
+								item=transaction.settlement
+								hideCustomerColumn=view.hideCustomerColumn
+								hideFromColumn=view.hideFromColumn
+								hideToColumn=view.hideToColumn
+							}}
 						{{/if}}
 
 						{{view "results/grouped-transaction-row" item=transaction hideCustomerColumn=view.hideCustomerColumn hideFromColumn=view.hideFromColumn hideToColumn=view.hideToColumn}}

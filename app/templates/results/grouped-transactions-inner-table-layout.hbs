@@ -40,7 +40,7 @@
 
 			{{#if transaction.reversals}}
 				{{#each reversal in transaction.reversals}}
-					{{view "results/grouped-reversal-row"
+					{{view "results/grouped-transaction-row"
 						item=reversal
 						hideCustomerColumn=view.hideCustomerColumn
 						hideFromColumn=view.hideFromColumn

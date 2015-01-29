@@ -14,6 +14,7 @@ var Credit = Transaction.extend({
 	destination: Model.belongsTo('destination', 'funding-instrument'),
 	reversals: Model.hasMany('reversals', 'reversal'),
 	order: Model.belongsTo('order', 'order'),
+	settlement: Model.belongsTo('settlement', 'settlement'),
 
 	funding_instrument_description: Ember.computed.alias('destination.description'),
 	last_four: Ember.computed.alias('destination.last_four'),

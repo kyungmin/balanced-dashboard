@@ -36,8 +36,12 @@
 
 					{{#if view.parentView.transaction.reversals}}
 						{{#each reversal in view.parentView.transaction.reversals}}
-							{{view "results/grouped-reversal-row" item=reversal hideCustomerColumn=true}}
+							{{view "results/grouped-transaction-row" item=reversal hideCustomerColumn=true}}
 						{{/each}}
+					{{/if}}
+
+					{{#if view.parentView.transaction.settlement}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.settlement hideCustomerColumn=true}}
 					{{/if}}
 
 					{{#if view.parentView.transaction.debit}}
