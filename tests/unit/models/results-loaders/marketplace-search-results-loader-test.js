@@ -30,7 +30,7 @@ test("#results", function() {
 	subject.set("query", "Kermit");
 	subject.get("results");
 	deepEqual(searchStub.firstCall.args, [
-		"/search?sort=created_at%2Cdesc&type%5Bin%5D=credit%2Cdebit%2Ccard_hold%2Crefund%2Creversal&q=Kermit",
+		"/search?sort=created_at%2Cdesc&type%5Bin%5D=debit%2Ccredit%2Ccard_hold%2Crefund%2Creversal&q=Kermit",
 		Customer
 	]);
 });

@@ -39,8 +39,8 @@
 					<div class="state">{{eventCallback.status}}</div>
 					<div class="callback-replay action">
 						{{#if eventCallback.isSaving}}
-							<div class="loader-container">
-								<span class="loader loading"></span>
+							<div class="loader-container sl-none">
+								Loading...
 							</div>
 						{{else}}
 							<a class="btn replay-button" {{action "replay" eventCallback}}>Replay</a>

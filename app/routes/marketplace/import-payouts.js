@@ -1,7 +1,7 @@
 import AuthRoute from "../auth";
 
 var MarketplaceImportPayoutsRoute = AuthRoute.extend({
-	pageTitle: 'Import payouts',
+	pageTitle: 'Import one-off credits',
 
 	setupController: function(controller, model) {
 		controller.refresh();

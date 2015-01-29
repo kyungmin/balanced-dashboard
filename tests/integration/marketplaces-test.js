@@ -100,7 +100,7 @@ test('delete marketplace', function() {
 	var uri;
 
 	visit(Testing.MARKETPLACES_ROUTE)
-		.click(".marketplace-list.test li:first-of-type .icon-delete")
+		.click(".marketplace-list.test li:first-of-type .icon-table-x")
 		.then(function() {
 			stub = sinon.stub(jQuery, "ajax").returns(Ember.RSVP.resolve());
 			var mp = BalancedApp.__container__.lookup("controller:modals-container").get("currentModal.marketplace");

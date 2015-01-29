@@ -11,7 +11,8 @@ var BankAccountSummarySectionView = BaseSummarySection.extend({
 
 		this.addLabel("Customer", "customers");
 		this.addSummaryItem("customer", {
-			modelBinding: "fundingInstrument.customer", fundingInstrument: model
+			modelBinding: "fundingInstrument.customer",
+			fundingInstrument: model
 		});
 	},
 });

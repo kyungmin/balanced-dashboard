@@ -26,7 +26,7 @@ module('Integration - Charge Card', {
 });
 
 test('form validation', 2, function() {
-	visit(Testing.TRANSACTIONS_ROUTE)
+	visit(Testing.MARKETPLACE_ROUTE)
 		.click('.page-navigation a:contains(Debit a card)')
 		.checkElements({
 			"#charge-card button:contains(Debit)": 1
@@ -44,7 +44,7 @@ test('can charge a card', function() {
 			href: '/cards/' + Testing.CARD_ID
 		}]
 	});
-	visit(Testing.TRANSACTIONS_ROUTE)
+	visit(Testing.MARKETPLACE_ROUTE)
 		.click('.page-navigation a:contains(Debit a card)')
 		.fillForm('#charge-card', {
 			name: 'Tarun Chaudhry',

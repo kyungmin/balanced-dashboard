@@ -29,17 +29,14 @@ var MarketplaceController = Ember.ObjectController.extend({
 		return this.get("auth.signedIn") && this.get("model");
 	}.property("auth.signedIn", "model"),
 
-	transactionSelected: isSelected('marketplace.transactions', 'credits', 'debits', 'holds', 'refunds', 'reversals'),
-	orderSelected: isSelected('marketplace.orders', 'orders'),
-	customerSelected: isSelected('marketplace.customers', 'customer'),
-	fundingInstrumentSelected: isSelected('marketplace.funding_instruments', 'bank_accounts', 'cards'),
+	orderSelected: isSelected('marketplace.orders', 'orders', 'credits', 'debits', 'holds', 'refunds', 'reversals'),
+	settlementSelected: isSelected('marketplace.settlements', 'settlement'),
 	disputeSelected: isSelected('marketplace.disputes', 'dispute'),
+	customerSelected: isSelected('marketplace.customers', 'customer'),
+	fundingInstrumentSelected: isSelected('marketplace.funding_instruments', 'bank_accounts', 'cards', 'account'),
 	logSelected: isSelected('marketplace.logs', 'log'),
 	invoiceSelected: isSelected('marketplace.invoices', 'invoice'),
 	settingSelected: isSelected('marketplace.settings'),
-
-	// Note: need this since bind-attr only works for a single property
-	paymentSelected: Ember.computed.or('transactionSelected', 'orderSelected'),
 
 	disputesResultsLoader: function() {
 		if (this.get("model")) {

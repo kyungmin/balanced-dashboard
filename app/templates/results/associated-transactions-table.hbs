@@ -1,12 +1,15 @@
 <thead>
 	<tr>
-		<th class="col-md-6 transaction">
+		<th class="col-md-5 transaction">
 			<span>Transaction</span>
 		</th>
-		<th class="col-md-3 payment-method">
-			<span>Payment method</span>
+		<th class="col-md-2 payment-method">
+			<span>From</span>
 		</th>
-		<th class="col-md-3 amount num">
+		<th class="col-md-2 payment-method">
+			<span>To</span>
+		</th>
+		<th class="col-md-2 amount num">
 			<span>Amount</span>
 		</th>
 	</tr>
@@ -15,51 +18,59 @@
 <tbody>
 	{{#if view.transaction}}
 		<tr>
-			<td class="grouped-transactions-container" colspan="3">
-				{{#view "results/grouped-transactions-table"}}
+			<td class="grouped-transactions-container" {{bind-attr colspan="view.colspan"}}>
+				{{#view "results/grouped-transactions-table" hideCustomerColumn=true}}
+					{{#if view.parentView.transaction.order}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.order hideCustomerColumn=true}}
+					{{/if}}
+
 					{{#if view.parentView.transaction.dispute}}
-						{{view "results/grouped-transaction-row" item=view.parentView.transaction.dispute}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.dispute hideCustomerColumn=true}}
 					{{/if}}
 
 					{{#if view.parentView.transaction.refunds}}
 						{{#each refund in view.parentView.transaction.refunds}}
-							{{view "results/grouped-transaction-row" item=refund}}
+							{{view "results/grouped-transaction-row" item=refund hideCustomerColumn=true}}
 						{{/each}}
 					{{/if}}
 
 					{{#if view.parentView.transaction.reversals}}
 						{{#each reversal in view.parentView.transaction.reversals}}
-							{{view "results/grouped-transaction-row" item=reversal}}
+							{{view "results/grouped-transaction-row" item=reversal hideCustomerColumn=true}}
 						{{/each}}
+					{{/if}}
+
+					{{#if view.parentView.transaction.settlement}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.settlement hideCustomerColumn=true}}
 					{{/if}}
 
 					{{#if view.parentView.transaction.debit}}
 						{{#if view.parentView.transaction.debit.dispute}}
-							{{view "results/grouped-transaction-row" item=view.parentView.transaction.debit.dispute}}
+							{{view "results/grouped-transaction-row" item=view.parentView.transaction.debit.dispute hideCustomerColumn=true}}
 						{{/if}}
-						{{view "results/grouped-transaction-row" item=view.parentView.transaction.debit}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.debit hideCustomerColumn=true}}
 					{{/if}}
 
 					{{#if view.parentView.transaction.credit}}
-						{{view "results/grouped-transaction-row" item=view.parentView.transaction.credit}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.credit hideCustomerColumn=true}}
 					{{/if}}
 
-					{{view "results/grouped-transaction-row" item=view.parentView.transaction class="current"}}
+					{{view "results/grouped-transaction-row" item=view.parentView.transaction class="current" hideCustomerColumn=true}}
 
 					{{#if view.parentView.transaction.transaction}}
-						{{view "results/grouped-transaction-row" item=view.parentView.transaction.transaction}}
-						{{view "results/grouped-transaction-row" item=view.parentView.transaction.transaction.hold}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.transaction hideCustomerColumn=true}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.transaction.hold hideCustomerColumn=true}}
 					{{/if}}
 
 					{{#if view.parentView.transaction.hold}}
-						{{view "results/grouped-transaction-row" item=view.parentView.transaction.hold}}
+						{{view "results/grouped-transaction-row" item=view.parentView.transaction.hold hideCustomerColumn=true}}
 					{{/if}}
 				{{/view}}
 			</td>
 		</tr>
 	{{else}}
 		<tr>
-			<td colspan="3" class="no-results">
+			<td {{bind-attr colspan="view.colspan"}} class="no-results">
 				{{#if view.transaction.isLoaded}}
 					No transactions
 				{{else}}

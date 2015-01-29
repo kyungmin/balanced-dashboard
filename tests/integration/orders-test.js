@@ -39,9 +39,7 @@ var assertQueryString = function(string, expected) {
 
 test("can visit orders page", function() {
 	visit(Testing.MARKETPLACE_ROUTE)
-		.click(".sidebar a:contains(Payments)")
-		.click(".nav-pills a:contains(Orders)")
-		.checkPageTitle("Payments")
+		.checkPageTitle("Orders")
 		.then(function() {
 			var resultsUri = BalancedApp.__container__.lookup('controller:marketplace/orders').get("resultsLoader.resultsUri");
 			deepEqual(resultsUri.split("?")[0], "/orders");
@@ -52,14 +50,26 @@ test("can visit orders page", function() {
 		});
 });
 
-test('can sort orders by date', function() {
+test('Filter orders table by type & status', function() {
 	visit(Testing.MARKETPLACE_ROUTE)
-		.click("#order-sort-menu")
-		.click(".dropdown-menu a:contains(Date created: oldest)")
+		.click('#content .results table.transactions th:first-of-type li a:contains(Holds)')
 		.then(function() {
 			var resultsUri = getResultsUri();
+			deepEqual(resultsUri.split("?")[0], '/transactions', 'Activity Transactions URI is correct');
 			assertQueryString(resultsUri, {
-				sort: "created_at,asc"
+				type: "hold",
+				'status[in]': 'failed,succeeded,pending',
+				limit: "50",
+				sort: "created_at,desc"
+			});
+		})
+		.click('#content table.transactions th:first-of-type a:contains(All)')
+		.click("#content table.transactions th.status a:contains(Succeeded)")
+		.then(function() {
+			assertQueryString(getResultsUri(), {
+				status: "succeeded",
+				limit: "50",
+				sort: "created_at,desc"
 			});
 		});
 });
@@ -84,6 +94,6 @@ test('displays correct number of charges and payouts per customer', function() {
 			".customer-group": 2,
 			".grouped-transactions-container": 2,
 			".grouped-transactions-container .grouped-transactions": 3,
-			".grouped-transactions-container .grouped-transactions tr": 5
+			".grouped-transactions-container .grouped-transactions tr": 8
 		});
 });

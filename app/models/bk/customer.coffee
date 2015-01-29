@@ -2,7 +2,7 @@
 `import BkCustomer from "balanced-addon-models/models/customer";`
 
 Customer = BkCustomer.extend(
-	routeName: "customer"
+	routeName: "customer",
 )
 
 `export default Customer;`

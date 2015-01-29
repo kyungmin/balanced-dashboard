@@ -2,11 +2,13 @@ import Ember from "ember";
 import Model from "./core/model";
 import Computed from "balanced-dashboard/utils/computed";
 import Transaction from "./transaction";
+import TransactionSerializer from "../serializers/transaction";
 
 var Hold = Transaction.extend({
 	card: Model.belongsTo('card', 'funding-instrument'),
 	source: Ember.computed.alias('card'),
 	debit: Model.belongsTo('debit', 'debit'),
+	order: Model.belongsTo('order', 'order'),
 
 	status: function() {
 		var apiStatus = this.get("__json.status");
@@ -43,6 +45,10 @@ var Hold = Transaction.extend({
 	last_four: Ember.computed.readOnly('card.last_four'),
 	funding_instrument_name: Ember.computed.readOnly('card.brand'),
 	funding_instrument_type: Ember.computed.alias('card.type_name')
+});
+
+Hold.reopenClass({
+	serializer: TransactionSerializer.create()
 });
 
 export default Hold;

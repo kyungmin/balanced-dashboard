@@ -1,38 +1,23 @@
-import TransactionFactory from "./transaction-factory";
+import DebitOrderFactory from "./debit-order-factory";
 import ValidationHelpers from "balanced-dashboard/utils/validation-helpers";
 
-var DebitExistingFundingInstrumentTransactionFactory = TransactionFactory.extend({
+var DebitExistingFundingInstrumentTransactionFactory = DebitOrderFactory.extend({
 	appears_on_statement_max_length: Ember.computed.oneWay("source.appears_on_statement_max_length"),
-	source_uri: Ember.computed.readOnly("source.uri"),
-	getDebitAttributes: function() {
-		var properties = this.getProperties("amount", "appears_on_statement_as", "description", "source_uri");
-		properties.uri = this.get("source.debits_uri");
-		return properties;
+
+	getBuyer: function() {
+		return Ember.RSVP.resolve(this.get("source.customer"));
+	},
+
+	getSource: function() {
+		return Ember.RSVP.resolve(this.get("source"));
 	},
 
 	validations: {
 		dollar_amount: ValidationHelpers.positiveDollarAmount,
 		appears_on_statement_as: ValidationHelpers.cardTransactionAppearsOnStatementAs,
-	},
-
-	save: function() {
-		var Debit = BalancedApp.__container__.lookupFactory("model:debit");
-		var deferred = Ember.RSVP.defer();
-
-		this.validate();
-		if (this.get("isValid")) {
-			Debit.create(this.getDebitAttributes())
-				.save()
-				.then(function(model) {
-					deferred.resolve(model);
-				}, function() {
-					deferred.reject();
-				});
-		} else {
-			deferred.reject();
+		source: {
+			presence: true
 		}
-
-		return deferred.promise;
 	}
 });
 

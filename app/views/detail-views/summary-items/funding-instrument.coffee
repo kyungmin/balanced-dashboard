@@ -1,14 +1,30 @@
 `import Base from "./base";`
 
 FundingInstrument = Base.extend(
+	isCard: Ember.computed.reads("model.isCard")
+	isBankAccount: Ember.computed.reads("model.isBankAccount")
+	isPayableAccount: Ember.computed.reads("model.isPayableAccount")
+
+	fundingInstrumentType: Ember.computed "isCard", "isBankAccount", "isPayableAccount", ->
+		if @get("isCard")
+			"card"
+		else if @get("isBankAccount")
+			"bank-account"
+		else if @get("isPayableAccount")
+			"payable-account"
+
 	isLoading: Ember.computed.reads("model.isLoading")
 	isLink: true
-
 	isBlank: Ember.computed.empty("model")
-	isCard: Ember.computed.equal("routeName", "cards")
 
-	text: Ember.computed.reads("model.description")
-	hoverValue: Ember.computed("text", "model.type_name", ->
+	text: Ember.computed "fundingInstrumentType", "model.description", "model.id", ->
+		switch @get("fundingInstrumentType")
+			when "payable-account"
+				@get("model.id")
+			else
+				@get("model.description")
+
+	hoverValue: Ember.computed("text", "fundingInstrumentType", ->
 		"#{@get("text")} (#{@get("model.type_name")})"
 	)
 

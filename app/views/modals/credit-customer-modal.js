@@ -24,7 +24,12 @@ var CreditCustomerModalView = ModalBaseView.extend(Full, Form, Save, {
 		return "Appears on statement as (%@ characters max)".fmt(length);
 	}.property("appearsOnStatementAsMaxLength"),
 
+	creditableOrders: function() {
+		return this.get("customer").getOrdersLoader().get("results");
+	}.property("customer"),
+
 	fundingInstruments: Ember.computed.oneWay('customer.creditable_funding_instruments'),
+	isDisplayExistingFundingInstruments: Ember.computed.gt("fundingInstruments.length", 0),
 
 	actions: {
 		save: function() {
@@ -39,10 +44,9 @@ var CreditCustomerModalView = ModalBaseView.extend(Full, Form, Save, {
 });
 
 CreditCustomerModalView.reopenClass({
-	open: function(customer, order) {
+	open: function(customer) {
 		return this.create({
-			customer: customer,
-			order: order
+			customer: customer
 		});
 	},
 });

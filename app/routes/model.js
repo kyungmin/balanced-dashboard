@@ -2,6 +2,10 @@ import TitleRoute from "./title";
 import Utils from "balanced-dashboard/lib/utils";
 
 var ModelRoute = TitleRoute.extend({
+	getStore: function() {
+		return this.get("container").lookup("controller:marketplace").get("store");
+	},
+
 	model: function(params) {
 		var marketplace = this.modelFor('marketplace');
 		var modelObject = this.get('modelObject');

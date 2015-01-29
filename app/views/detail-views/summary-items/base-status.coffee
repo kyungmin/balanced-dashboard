@@ -7,6 +7,7 @@ computedContains = (arrayName, valueName) ->
 	)
 
 BaseStatus = Base.extend(
+	isLink: false
 	classNameBindings: [":status", "isSuccess:succeeded", "isError:failed", "isOverdue:overdue", "isWarning:pending", "isUnderReview:under_review"]
 
 	isDescription: Ember.computed("description", ->

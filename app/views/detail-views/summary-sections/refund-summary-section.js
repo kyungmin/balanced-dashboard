@@ -18,19 +18,13 @@ var RefundSummarySectionView = SummarySectionBase.extend({
 			sectionView: this,
 			modelBinding: "sectionView.debit.customer"
 		});
-		this.addLabel("Funding instrument", {
-			textBinding: "summaryView.fundingInstrumentLabelText",
-			iconBinding: "summaryView.fundingInstrumentLabelIcon",
-			summaryView: this
-		});
+
+		this.addFundingInstrumentLabel("Source", "model.debit.source")
 		this.addSummaryItem("funding-instrument", {
 			summaryView: this,
-			modelBinding: "summaryView.fundingInstrument"
+			modelBinding: "summaryView.model.debit.source"
 		});
 	},
-
-	isSource: true,
-	fundingInstrument: Ember.computed.reads("model.debit.source"),
 });
 
 export default RefundSummarySectionView;

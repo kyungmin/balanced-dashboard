@@ -10,19 +10,20 @@ SearchModalView = ModalBaseView.extend(Search,
 	templateName: 'modals/search-modal'
 	elementId: 'search-modal'
 
-	selectedTabType: "transaction"
+	selectedTabType: "order_transaction"
 
-	isOrdersTabSelected: isTabSelected("order")
-	isTransactionsTabSelected: isTabSelected("transaction")
+	isOrdersTabSelected: isTabSelected("order_transaction")
 	isCustomersTabSelected: isTabSelected("customer")
 	isFundingInstrumentsTabSelected: isTabSelected("funding_instrument")
+	isAccountsTabSelected: isTabSelected("account")
+	isSettlementsTabSelected: isTabSelected("settlement")
 	isLogsTabSelected: isTabSelected("log")
 
 	totalResults: Computed.sumAll("resultsLoader.results.total_results", "totalLogs")
-	totalOrders: Ember.computed.oneWay("resultsLoader.results.total_orders")
-	totalTransactions: Ember.computed.oneWay("resultsLoader.results.total_transactions")
 	totalCustomers: Ember.computed.oneWay("resultsLoader.results.counts.customer")
+	totalAccounts: Ember.computed.oneWay("totalCustomers")
 	totalFundingInstruments: Ember.computed.oneWay("resultsLoader.results.total_funding_instruments")
+	totalSettlements: Ember.computed.oneWay("resultsLoader.results.total_settlements")
 	totalLogs: Ember.computed.oneWay("logsResultsLoader.results.length")
 
 	isLoaded: Ember.computed.oneWay("resultsLoader.results.isLoaded")

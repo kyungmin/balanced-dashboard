@@ -9,11 +9,13 @@ BaseSummaryItemView = Ember.View.extend(
 		!Ember.isBlank(@get("buttonModal"))
 	)
 
-	isLink: false
-	isLoading: true
+	isLoading: Ember.computed.reads("model.isLoading")
 	isBlank: Ember.computed("text", ->
 		Ember.isBlank @get("text")
 	)
+
+	isLink: Ember.computed "routeName", ->
+		!Ember.isBlank(@get("routeName"))
 
 	routeName: Ember.computed.reads("model.route_name")
 	hoverValue: null

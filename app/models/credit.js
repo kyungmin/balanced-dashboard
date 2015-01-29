@@ -1,7 +1,7 @@
 import Ember from "ember";
 import Computed from "balanced-dashboard/utils/computed";
 import Transaction from "./transaction";
-import Rev1Serializer from "../serializers/rev1";
+import TransactionSerializer from "../serializers/transaction";
 import Model from "./core/model";
 import Utils from "balanced-dashboard/lib/utils";
 
@@ -14,6 +14,7 @@ var Credit = Transaction.extend({
 	destination: Model.belongsTo('destination', 'funding-instrument'),
 	reversals: Model.hasMany('reversals', 'reversal'),
 	order: Model.belongsTo('order', 'order'),
+	settlement: Model.belongsTo('settlement', 'settlement'),
 
 	funding_instrument_description: Ember.computed.alias('destination.description'),
 	last_four: Ember.computed.alias('destination.last_four'),
@@ -70,7 +71,7 @@ var Credit = Transaction.extend({
 });
 
 Credit.reopenClass({
-	serializer: Rev1Serializer.extend({
+	serializer: TransactionSerializer.extend({
 		serialize: function(record) {
 			var json = this._super(record);
 
@@ -81,11 +82,6 @@ Credit.reopenClass({
 				} else {
 					json.destination = fundingInstrument;
 				}
-			}
-
-			if (!Ember.isBlank(json.order_uri)) {
-				json.order = json.order_uri;
-				delete json.order_uri;
 			}
 
 			return json;

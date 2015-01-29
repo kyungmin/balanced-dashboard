@@ -3,6 +3,7 @@ import Transaction from "./transaction";
 import Model from "./core/model";
 
 var Reversal = Transaction.extend({
+	order: Model.belongsTo('order', 'order'),
 	credit: Model.belongsTo('credit', 'credit'),
 
 	type_name: 'Reversal',

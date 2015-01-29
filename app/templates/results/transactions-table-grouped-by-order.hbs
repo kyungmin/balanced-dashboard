@@ -1,0 +1,27 @@
+{{#each orderGroup in view.groupedResults}}
+	<tr>
+		{{#if orderGroup.order}}
+			<td class="grouped-transactions-container nested" {{bind-attr colspan="view.colspan"}}>
+				{{#view "results/grouped-transactions-table" hideCustomerColumn=view.hideCustomerColumn}}
+					{{view "results/grouped-transaction-row" item=orderGroup.order hideCustomerColumn=view.hideCustomerColumn}}
+				{{/view}}
+
+				{{view "results/grouped-transactions-table" transactions=orderGroup.transactions hideCustomerColumn=view.hideCustomerColumn}}
+			</td>
+		{{else}}
+			<td class="ungrouped-transactions-container" {{bind-attr colspan="view.colspan"}}>
+				{{view "results/grouped-transactions-table" transactions=orderGroup.transactions hideCustomerColumn=view.hideCustomerColumn}}
+			</td>
+		{{/if}}
+	</tr>
+{{else}}
+	<tr>
+		<td {{bind-attr colspan="view.colspan"}} class="no-results">
+			{{#if view.loader.results.isLoaded}}
+				No transactions
+			{{else}}
+				Loading...
+			{{/if}}
+		</td>
+	</tr>
+{{/each}}

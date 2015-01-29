@@ -23,6 +23,8 @@ SummarySectionBase = Ember.View.extend(
 			modalEditClass: @container.lookupFactory("view:modals/edit-description-modal")
 		)
 
+	addFundingInstrumentLabel: (prefix, modelBinding) ->
+		@get("resourcesList").addFundingInstrumentLabel(prefix, modelBinding, @)
 )
 
 `export default SummarySectionBase;`

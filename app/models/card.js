@@ -89,20 +89,14 @@ var Card = FundingInstrument.extend(Ember.Validations, {
 
 	tokenizeAndCreate: function(customerId) {
 		var self = this;
-		var promise = this.resolveOn('didCreate');
 
-		function errorCreatingCard(err) {
-			Ember.run.next(function() {
-				self.setProperties({
-					displayErrorDescription: true,
-					isSaving: false,
-					errorDescription: 'There was an error processing your card. ' + (Ember.get(err, 'errorDescription') || ''),
-					validationErrors: Ember.get(err, 'validationErrors') || {}
-				});
-			});
+		var deferred = Ember.RSVP.defer();
 
-			promise.reject();
-		}
+		var getErrorMessage = function(error) {
+			return Ember.isBlank(error.additional) ?
+				error.description :
+				error.additional;
+		};
 
 		this.set('isSaving', true);
 		var cardData = {
@@ -118,46 +112,51 @@ var Card = FundingInstrument.extend(Ember.Validations, {
 			cardData.customer = customerId;
 		}
 
-		// Tokenize the card using the balanced.js library
 		balanced.card.create(cardData, function(response) {
 			if (response.errors) {
-				var validationErrors = Utils.extractValidationErrorHash(response);
-				self.setProperties({
-					validationErrors: validationErrors,
-					isSaving: false
+				response.errors.forEach(function(error) {
+					if (Ember.isBlank(error.extras)) {
+						self.get("validationErrors").add(undefined, "server", null, getErrorMessage(error));
+					}
+					else {
+						_.each(error.extras, function(value, key) {
+							self.get("validationErrors").add(key, "server", null, value);
+						});
+					}
 				});
-
-				if (!validationErrors) {
-					self.set('displayErrorDescription', true);
-					var errorSuffix = (response.errors && response.errors.length > 0 && response.errors[0].description) ? (': ' + response.errors[0].description) : '.';
-					self.setProperties({
-						displayErrorDescription: true,
-						errorDescription: 'Sorry, there was an error tokenizing this card' + errorSuffix
-					});
-				}
-
-				promise.reject(validationErrors);
+				self.set("isSaving", false);
+				deferred.reject(response);
 			} else {
-				Card.find(response.cards[0].href)
-
-				// Now that it's been tokenized, we just need to associate it with the customer's account
-				.then(function(card) {
-					card.set('links.customer', customerId);
-
-					card.save().then(function() {
+				Card.findCreatedCard(response.cards[0].href)
+					.then(function(card) {
+						card.set('links.customer', customerId);
+						return card.save();
+					})
+					.then(function(card) {
 						self.setProperties({
 							isSaving: false,
 							isNew: false,
 							isLoaded: true
 						});
-
-						self.trigger('didCreate', card);
-					}, errorCreatingCard);
-				}, errorCreatingCard);
+						deferred.resolve(card);
+					}, function (response) {
+						response.errors.forEach(function(error) {
+							if (Ember.isBlank(error.extras)) {
+								self.get("validationErrors").add(undefined, "server", null, getErrorMessage(error));
+							}
+							else {
+								_.each(error.extras, function(value, key) {
+									self.get("validationErrors").add(key, "server", null, value);
+								});
+							}
+						});
+						self.set("isSaving", false);
+						deferred.reject(response);
+					});
 			}
 		});
 
-		return promise;
+		return deferred.promise;
 	}
 });
 

@@ -7,6 +7,12 @@ var CustomerSummarySectionView = SummarySectionBase.extend({
 		this.addSummaryItem("customer-status", {
 			model: model,
 		});
+
+		this.addLabel("Payable account", "payable-account");
+		this.addSummaryItem("account", {
+			modelBinding: "summaryView.model.account",
+			summaryView: this
+		});
 	},
 });
 

@@ -1,3 +1,20 @@
+<thead>
+	<tr>
+		<th class="col-md-5 has-filter">
+			{{view "results/orders-results-dropdown-filter" isSearch=view.isSearch}}
+		</th>
+		{{#unless view.hideCustomerColumn}}
+			<th class="col-md-2"><span>Customer</span></th>
+		{{/unless}}
+		<th class="col-md-2"><span>From</span></th>
+		<th class="col-md-2"><span>To</span></th>
+		<th class="col-md-2 num"><span>Amount</span></th>
+	</tr>
+</thead>
+{{#if view.loader.results.hasNextPage}}
+	{{view "results/results-load-more" results=view.loader.results columns=view.colspan}}
+{{/if}}
+
 <tbody>
 	{{yield}}
 </tbody>

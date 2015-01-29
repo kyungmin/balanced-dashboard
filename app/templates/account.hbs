@@ -1,0 +1,23 @@
+{{view "page-navigations/page-navigation" pageType=model.type_name title=model.id}}
+
+{{#view "detail-views/body-panel"}}
+	{{#view "detail-views/api-model-panel" model=model}}
+		<ul class="nav-tabs balance">
+			<li><a>Balance: {{format-currency balance}}</a></li>
+		</ul>
+		{{view detail-views/summary-sections/account-summary-section model=model}}
+		{{view detail-views/description-lists/account-titled-key-values-section model=model}}
+		{{view "meta-list" type=model}}
+	{{/view}}
+
+	{{#view "detail-views/main-panel"}}
+		<h3>Unsettled transactions</h3>
+		<div class="results">
+			{{view "results/transactions-table-grouped-by-order" loader=creditsResultsLoader hideCustomerColumn=true}}
+		</div>
+		<h3>Settled transactions</h3>
+		<div class="results">
+			{{view "results/transactions-table-grouped-by-settlement" loader=settlementsResultsLoader hideCustomerColumn=true}}
+		</div>
+	{{/view}}
+{{/view}}

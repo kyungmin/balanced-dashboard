@@ -1,10 +1,22 @@
 import SidebarView from "./sidebar";
 
 var SIDEBAR_ITEMS = [{
-	linkText: "Payments",
-	linkIcon: "icon-payments",
+	linkText: "Orders",
+	linkIcon: "icon-orders",
 	routeName: "marketplace.orders",
-	isSelectedBinding: "controller.controllers.marketplace.paymentSelected",
+	isSelectedBinding: "controller.controllers.marketplace.orderSelected",
+}, {
+	linkText: "Settlements",
+	linkIcon: "icon-settlements",
+	routeName: "marketplace.settlements",
+	isSelectedBinding: "controller.controllers.marketplace.settlementSelected",
+	alertCount: "new",
+}, {
+	linkText: "Disputes",
+	linkIcon: "icon-disputes",
+	routeName: "marketplace.disputes",
+	isSelectedBinding: "controller.controllers.marketplace.disputeSelected",
+	alertCountBinding: "controller.controllers.marketplace.disputeAlertCount",
 }, {
 	linkText: "Customers",
 	linkIcon: "icon-customers",
@@ -15,12 +27,6 @@ var SIDEBAR_ITEMS = [{
 	linkIcon: "icon-card",
 	routeName: "marketplace.funding_instruments",
 	isSelectedBinding: "controller.controllers.marketplace.fundingInstrumentSelected"
-}, {
-	linkText: "Disputes",
-	linkIcon: "icon-disputes",
-	routeName: "marketplace.disputes",
-	isSelectedBinding: "controller.controllers.marketplace.disputeSelected",
-	alertCountBinding: "controller.controllers.marketplace.disputeAlertCount",
 }, {
 	linkText: "Logs",
 	linkIcon: "icon-logs",

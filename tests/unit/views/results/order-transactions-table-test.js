@@ -1,4 +1,4 @@
-import OrderTransactionsTable from "balanced-dashboard/views/results/order-transactions-table";
+import OrderTransactionsTable from "balanced-dashboard/views/results/transactions-table-grouped-by-customer";
 import Testing from "balanced-dashboard/tests/helpers/testing";
 
 module("View - OrderTransactionsTable", {

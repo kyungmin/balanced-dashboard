@@ -1,0 +1,42 @@
+<thead>
+	<tr>
+		<th class="col-md-9 funding-instruments has-filter">
+			{{view "results/payment-methods-results-dropdown-filter" model=view.loader}}
+		</th>
+		<th class="col-md-3 balance num"><span>Balance</span></th>
+	</tr>
+</thead>
+
+{{#if view.loader.results.hasNextPage}}
+	{{view "results/results-load-more" results=view.loader.results columns=5}}
+{{/if}}
+
+<tbody>
+	{{#each account in view.loader.results}}
+		<tr {{bind-attr class="account.isPayableAccount:payable"}}>
+			<td>
+				{{#link-to account.routeName account}}
+				<span>
+					<i {{bind-attr class="account.isPayableAccount:icon-payable-account :non-interactive"}}></i>
+					{{sentence-case account.type}} account
+				</span>
+				{{/link-to}}
+			</td>
+			<td class="num">
+				{{#link-to account.routeName account}}
+					<span>{{format-currency account.balance}}</span>
+				{{/link-to}}
+			</td>
+		</tr>
+	{{else}}
+		<tr>
+			<td colspan="2" class="no-results">
+				{{#if view.loader.results.isLoaded}}
+					No internal accounts
+				{{else}}
+					Loading...
+				{{/if}}
+			</td>
+		</tr>
+	{{/each}}
+</tbody>

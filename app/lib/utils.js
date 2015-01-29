@@ -239,53 +239,6 @@ var Utils = Ember.Namespace.create({
 		}
 	},
 
-	applyUriFilters: function(uri, params) {
-		if (!uri) {
-			return uri;
-		}
-
-		var transformedParams = ['limit', 'offset', 'sortField', 'sortOrder', 'minDate', 'maxDate', 'type', 'query'];
-
-		var filteringParams = {
-			limit: params.limit || 10,
-			offset: params.offset || 0
-		};
-
-		if (params.sortField && params.sortOrder && params.sortOrder !== 'none') {
-			filteringParams.sort = params.sortField + ',' + params.sortOrder;
-		}
-
-		if (params.minDate) {
-			filteringParams['created_at[>]'] = params.minDate.toISOString();
-		}
-		if (params.maxDate) {
-			filteringParams['created_at[<]'] = params.maxDate.toISOString();
-		}
-		if (params.type) {
-			switch (params.type) {
-				case 'search':
-					filteringParams['type[in]'] = Constants.SEARCH.SEARCH_TYPES.join(',');
-					break;
-				case 'transaction':
-					filteringParams['type[in]'] = Constants.SEARCH.TRANSACTION_TYPES.join(',');
-					break;
-				case 'funding_instrument':
-					filteringParams['type[in]'] = Constants.SEARCH.FUNDING_INSTRUMENT_TYPES.join(',');
-					break;
-				default:
-					filteringParams.type = params.type;
-			}
-		}
-		filteringParams.q = '';
-		if (params.query && params.query !== '%') {
-			filteringParams.q = params.query;
-		}
-
-		filteringParams = _.extend(filteringParams, _.omit(params, transformedParams));
-		filteringParams = Utils.sortDict(filteringParams);
-		return this.buildUri(uri, filteringParams);
-	},
-
 	buildUri: function(path, queryStringObject) {
 		var queryString = _.isString(queryStringObject) ?
 			queryStringObject :

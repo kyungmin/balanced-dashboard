@@ -4,32 +4,35 @@ import Transaction from "../transaction";
 import FundingInstrument from "../funding-instrument";
 import Customer from "../customer";
 import Order from "../order";
+import Account from "../account";
+import Settlement from "../settlement";
 import SearchModelArray from "../core/search-model-array";
-
-var TRANSACTION_TYPES = ["credit", "debit", "card_hold", "refund", "reversal"];
-var FUNDING_INSTRUMENT_TYPES = ["card", "bank_account"];
-var CUSTOMER_TYPES = ["customer"];
-var ORDER_TYPES = ["order"];
+import Constants from "balanced-dashboard/utils/constants";
 
 var MarketplaceSearchResultsLoader = BaseResultsLoader.extend({
-	searchType: "transaction",
+	searchType: "order_transaction",
 	limit: null,
 
 	type: function() {
 		var mapping = {
-			"funding_instrument": FUNDING_INSTRUMENT_TYPES,
-			"customer": CUSTOMER_TYPES,
-			"order": ORDER_TYPES
+			"order_transaction": Constants.SEARCH.ORDER_TRANSACTION_TYPES,
+			"funding_instrument": Constants.SEARCH.FUNDING_INSTRUMENT_TYPES,
+			"customer": Constants.SEARCH.CUSTOMER_TYPES,
+			"order": Constants.SEARCH.ORDER_TYPES,
+			"account": Constants.SEARCH.ACCOUNT_TYPES,
+			"settlement": Constants.SEARCH.SETTLEMENT_TYPES,
 		};
 
-		return mapping[this.get("searchType")] || TRANSACTION_TYPES;
+		return mapping[this.get("searchType")] || Constants.SEARCH.SEARCH_TYPES;
 	}.property("searchType"),
 
 	resultsType: function() {
 		var mapping = {
 			"funding_instrument": FundingInstrument,
 			"customer": Customer,
-			"order": Order
+			"order": Order,
+			"account": Account,
+			"settlement": Settlement
 		};
 		return mapping[this.get("searchType")] || Transaction;
 	}.property("searchType"),

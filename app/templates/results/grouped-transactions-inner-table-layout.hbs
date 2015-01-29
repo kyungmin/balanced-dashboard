@@ -1,0 +1,69 @@
+<thead>
+	<tr>
+		<th class="col-md-5"></th>
+		{{#unless view.hideCustomerColumn}}
+			<th class="col-md-2"></th>
+		{{/unless}}
+		{{#unless view.hideFromColumn}}
+			<th class="col-md-2"></th>
+		{{/unless}}
+		{{#unless view.hideToColumn}}
+			<th class="col-md-2"></th>
+		{{/unless}}
+		<th class="col-md-2"></th>
+	</tr>
+</thead>
+<tbody>
+	{{yield}}
+
+	{{#if view.transactions}}
+		{{#each transaction in view.transactions}}
+			{{#if transaction.dispute}}
+				{{view "results/grouped-transaction-row"
+					item=transaction.dispute
+					hideCustomerColumn=view.hideCustomerColumn
+					hideFromColumn=view.hideFromColumn
+					hideToColumn=view.hideToColumn
+				}}
+			{{/if}}
+
+			{{#if transaction.refunds}}
+				{{#each refund in transaction.refunds}}
+					{{view "results/grouped-transaction-row"
+						item=refund
+						hideCustomerColumn=view.hideCustomerColumn
+						hideFromColumn=view.hideFromColumn
+						hideToColumn=view.hideToColumn
+					}}
+				{{/each}}
+			{{/if}}
+
+			{{#if transaction.reversals}}
+				{{#each reversal in transaction.reversals}}
+					{{view "results/grouped-transaction-row"
+						item=reversal
+						hideCustomerColumn=view.hideCustomerColumn
+						hideFromColumn=view.hideFromColumn
+						hideToColumn=view.hideToColumn
+					}}
+				{{/each}}
+			{{/if}}
+
+			{{view "results/grouped-transaction-row"
+				item=transaction
+				hideCustomerColumn=view.hideCustomerColumn
+				hideFromColumn=view.hideFromColumn
+				hideToColumn=view.hideToColumn
+			}}
+
+			{{#if transaction.hold}}
+				{{view "results/grouped-transaction-row"
+					item=transaction.hold
+					hideCustomerColumn=view.hideCustomerColumn
+					hideFromColumn=view.hideFromColumn
+					hideToColumn=view.hideToColumn
+				}}
+			{{/if}}
+		{{/each}}
+	{{/if}}
+</tbody>

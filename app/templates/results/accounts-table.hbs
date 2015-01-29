@@ -1,0 +1,70 @@
+<thead>
+	<tr>
+		<th class="col-md-2 date has-filter">
+			{{#if view.isSearch}}
+				{{#view "results/search-results-loader-sort-column-header" resultsLoader=view.loader field="created_at" actionName="changeSortOrder"}}
+					<span>Date</span>
+				{{/view}}
+			{{else}}
+				{{#view "results/results-loader-sort-column-header" resultsLoader=view.loader field="created_at" actionName="changeSortOrder"}}
+					<span>Date</span>
+				{{/view}}
+			{{/if}}
+		</th>
+		<th class="col-md-6"><span>Payment method</span></th>
+		<th class="col-md-2"><span>Customer</span></th>
+		<th class="col-md-2"><span>Balance</span></th>
+	</tr>
+</thead>
+
+{{#if view.loader.results.hasNextPage}}
+	{{view "results/results-load-more" results=view.loader.results columns=6}}
+{{/if}}
+
+<tbody>
+	{{#each funding_instrument in view.loader.results}}
+		<tr>
+			<td class="two-lines">
+				{{#link-to funding_instrument.routeName funding_instrument}}<span>
+					<time {{bind-attr datetime="funding_instrument.created_at"}} {{bind-attr title="funding_instrument.created_at"}}>
+						<span class="primary">{{human-readable-date funding_instrument.created_at}}</span>
+						<span class="secondary">{{human-readable-time funding_instrument.created_at}}</span>
+					</time>
+				</span>{{/link-to}}
+			</td>
+			<td class="two-lines">
+				{{#link-to funding_instrument.routeName funding_instrument}}<span {{bind-attr title="funding_instrument.description"}}>
+					<span class="primary">{{funding_instrument.id}}</span>
+					<span class="secondary">{{sentence-case funding_instrument.type}} account</span>
+				</span>{{/link-to}}
+			</td>
+			<td class="two-lines">
+				{{#link-to funding_instrument.routeName funding_instrument}}<span>
+					{{#if funding_instrument.customer.display_me}}
+						<span class="primary">{{funding_instrument.customer.display_me}}</span>
+						{{#if funding_instrument.customer.email}}
+							<span class="secondary">{{funding_instrument.customer.email}}</span>
+						{{/if}}
+					{{else}}
+						<span class="sl-none">none</span>
+					{{/if}}
+				</span>{{/link-to}}
+			</td>
+			<td>
+				{{#link-to funding_instrument.routeName funding_instrument}}<span>
+					{{format-currency funding_instrument.balance}}
+				</span>{{/link-to}}
+			</td>
+		</tr>
+	{{else}}
+		<tr>
+			<td colspan="6" class="no-results">
+				{{#if view.loader.results.isLoaded}}
+					No internal accounts
+				{{else}}
+					Loading...
+				{{/if}}
+			</td>
+		</tr>
+	{{/each}}
+</tbody>

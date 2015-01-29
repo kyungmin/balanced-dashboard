@@ -37,8 +37,6 @@ test "#is_expired", ->
 	s.set("expires_at_date", date)
 	deepEqual(s.get("is_expired"), true)
 
-
-
 test "#can_void_or_capture", ->
 	s = Hold.create()
 	t = (expected) ->

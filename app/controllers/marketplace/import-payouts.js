@@ -51,7 +51,7 @@ var MarketplaceImportPayoutsController = Ember.Controller.extend(Ember.Evented, 
 				callback();
 			}
 			var count = collection.filterBy('isSaved').get('length');
-			self.transitionToRoute('marketplace.transactions');
+			self.transitionToRoute('marketplace.orders');
 
 			self.refresh('');
 			var message = '%@ payouts were successfully submitted. Payouts might take a couple seconds to appear in the transactions list.'.fmt(count);
