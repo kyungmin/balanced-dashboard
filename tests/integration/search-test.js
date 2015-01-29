@@ -112,26 +112,7 @@ test('search date range pick', function() {
 				"created_at[<]": "2013-08-01T23:59:00.000Z",
 				"created_at[>]": "2013-08-01T00:00:00.000Z",
 				sort: "created_at,desc",
-				"type[in]": "debit,credit,card_hold,refund,reversal"
+				"type[in]": "debit,credit,card_hold,refund,reversal,order"
 			});
-		});
-});
-
-test('search date sort has two states', function() {
-	var objectPath = "#search-modal .results th.date .sortable";
-
-	visit(Testing.MARKETPLACE_ROUTE)
-		.then(function() {
-			Testing.runSearch('');
-			stubResults();
-		})
-		.checkElements({
-			"#search-modal .results th.date .sortable.descending": 1
-		})
-		.then(function() {
-			$(objectPath).click();
-		})
-		.checkElements({
-			"#search-modal .results th.date .sortable.ascending": 1
 		});
 });

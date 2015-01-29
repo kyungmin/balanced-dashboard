@@ -9,7 +9,7 @@ import Models from "../helpers/models";
 
 var App, Adapter;
 
-module('Integration - Charge Card', {
+module('Integration - Create Order', {
 	setup: function() {
 		App = startApp();
 		Adapter = App.__container__.lookup("adapter:main");
@@ -27,11 +27,11 @@ module('Integration - Charge Card', {
 
 test('form validation', 2, function() {
 	visit(Testing.MARKETPLACE_ROUTE)
-		.click('.page-navigation a:contains(Debit a card)')
+		.click('.page-navigation a:contains(Create an order)')
 		.checkElements({
-			"#charge-card button:contains(Debit)": 1
+			"#charge-card button:contains(Create)": 1
 		})
-		.click('button:contains(Debit)')
+		.click('button:contains(Create)')
 		.check("#charge-card .form-group.has-error", 6);
 });
 
@@ -45,7 +45,7 @@ test('can charge a card', function() {
 		}]
 	});
 	visit(Testing.MARKETPLACE_ROUTE)
-		.click('.page-navigation a:contains(Debit a card)')
+		.click('.page-navigation a:contains(Create an order)')
 		.fillForm('#charge-card', {
 			name: 'Tarun Chaudhry',
 			number: '4111111111111111',
@@ -62,7 +62,7 @@ test('can charge a card', function() {
 				return App.__container__.lookupFactory("model:card").find("/cards/" + Testing.CARD_ID);
 			};
 		})
-		.click('button:contains(Debit)')
+		.click('button:contains(Create)')
 		.then(function() {
 			var args = spy.firstCall.args;
 			ok(spy.calledOnce);

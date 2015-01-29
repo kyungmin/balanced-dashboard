@@ -10,10 +10,11 @@ test "selected tab", ->
 		subject.set "selectedTabType", tabValue
 		deepEqual subject.get(selectionTest), true, "#{selectionTest} is true when value is '#{tabValue}'"
 
-	t("order", "isOrdersTabSelected")
-	t("transaction", "isTransactionsTabSelected")
+	t("order_transaction", "isOrdersTabSelected")
 	t("customer", "isCustomersTabSelected")
 	t("funding_instrument", "isFundingInstrumentsTabSelected")
+	t("account", "isAccountTabSelected")
+	t("settlement", "isSettlementTabSelected")
 	t("log", "isLogsTabSelected")
 
 test "#totalResults", ->

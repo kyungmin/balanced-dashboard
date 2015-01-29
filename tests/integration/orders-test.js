@@ -42,7 +42,7 @@ test("can visit orders page", function() {
 		.checkPageTitle("Orders")
 		.then(function() {
 			var resultsUri = BalancedApp.__container__.lookup('controller:marketplace/orders').get("resultsLoader.resultsUri");
-			deepEqual(resultsUri.split("?")[0], "/orders");
+			deepEqual(resultsUri.split("?")[0], "/transactions");
 
 			assertQueryString(resultsUri, {
 				limit: "20",

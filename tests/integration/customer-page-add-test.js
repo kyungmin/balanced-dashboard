@@ -31,6 +31,7 @@ test('can add bank account', function() {
 	var tokenizingSpy = sinon.stub(balanced.bankAccount, "create");
 
 	visit(Testing.CUSTOMER_ROUTE)
+		.click('.main-panel .nav-tabs li a:contains(Payment methods)')
 		.click('.main-panel a:contains(Add a bank account)')
 		.fillForm('#add-bank-account', {
 			name: "TEST",
@@ -65,6 +66,7 @@ test('can add card', function() {
 	});
 
 	visit(Testing.CUSTOMER_ROUTE)
+		.click('.main-panel .nav-tabs li a:contains(Payment methods)')
 		.click('.main-panel a:contains(Add a card)')
 		.fillForm('#add-card', {
 			number: '1234123412341234',
@@ -107,6 +109,7 @@ test('can add card with postal code', function() {
 	});
 
 	visit(Testing.CUSTOMER_ROUTE)
+		.click('.main-panel .nav-tabs li a:contains(Payment methods)')
 		.click('.main-panel a:contains(Add a card)')
 		.fillForm('#add-card', {
 			number: '1234123412341234',
@@ -149,6 +152,7 @@ test('can add card with address', function() {
 	});
 
 	visit(Testing.CUSTOMER_ROUTE)
+		.click('.main-panel .nav-tabs li a:contains(Payment methods)')
 		.click('.main-panel a:contains(Add a card)')
 		.fillForm('#add-card', {
 			number: '1234123412341234',

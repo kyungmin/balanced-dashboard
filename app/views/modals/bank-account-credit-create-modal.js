@@ -8,9 +8,9 @@ import CreditBankAccountTransactionFactory from "balanced-dashboard/models/facto
 var BankAccountCreditCreateModalView = ModalBaseView.extend(Save, Full, Form, {
 	templateName: "modals/bank-account-credit-create-modal",
 	elementId: "pay-seller",
-	title: "Credit a bank account",
+	title: "Create a one-off credit",
 	cancelButtonText: "Cancel",
-	submitButtonText: "Credit",
+	submitButtonText: "Create",
 
 	model: function() {
 		return this.container.lookup("model:factories/credit-bank-account-transaction-factory");

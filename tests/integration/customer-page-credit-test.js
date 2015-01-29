@@ -71,7 +71,7 @@ test('can credit to a debit card', function() {
 					"can_debit": false,
 					"id": "BAxxxxxxxxxxxxxxxxxxxxxxx"
 				}]);
-
+				m.set("hasCreditableOrders", true);
 				m.set("cards", cards);
 				m.set("bank_accounts", bankAccounts);
 			});
@@ -105,6 +105,12 @@ test('can credit to a debit card', function() {
 
 test('when crediting customer triggers an error, the error is displayed to the user', function() {
 	visit(Testing.CUSTOMER_ROUTE)
+		.then(function() {
+			var m = BalancedApp.__container__.lookup("controller:customer").get("model");
+			Ember.run(function() {
+				m.set("hasCreditableOrders", true);
+			});
+		})
 		.click(".page-navigation a:contains(Credit)")
 		.fillForm('#credit-customer', {
 			dollar_amount: '10',
@@ -121,6 +127,12 @@ test("can't credit customer multiple times using the same modal", function() {
 	var stub = sinon.stub(Adapter, "create");
 
 	visit(Testing.CUSTOMER_ROUTE)
+		.then(function() {
+			var m = BalancedApp.__container__.lookup("controller:customer").get("model");
+			Ember.run(function() {
+				m.set("hasCreditableOrders", true);
+			});
+		})
 		.click(".page-navigation a:contains(Credit)")
 		.fillForm('#credit-customer', {
 			dollar_amount: '1000',
