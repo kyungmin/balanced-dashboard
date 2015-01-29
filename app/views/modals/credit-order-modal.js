@@ -5,7 +5,7 @@ import CreditCustomerModalView from "./credit-customer-modal";
 var CreditOrderModalView = CreditCustomerModalView.extend({
 	templateName: "modals/credit-order-modal",
 	elementId: "credit-order",
-	title: "Credit this order",
+	title: "Credit from this order",
 
 	model: function() {
 		return CreditExistingFundingInstrumentTransactionFactory.create({

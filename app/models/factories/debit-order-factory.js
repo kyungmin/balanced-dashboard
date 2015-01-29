@@ -16,7 +16,7 @@ var DebitOrderFactory = TransactionFactory.extend({
 		};
 
 		if (this.get("isValid")) {
-			this.createOrderWithSeller()
+			this.getOrder()
 				.then(function(o) {
 					order = o;
 					return self.getBuyer();
@@ -89,15 +89,21 @@ var DebitOrderFactory = TransactionFactory.extend({
 		};
 	},
 
-	createOrderWithSeller: function() {
-		var orderDescription = this.get("order_description");
-		var seller = Customer.create(this.getSellerCustomerAttributes());
+	getOrder: function() {
+		var order = this.get("order");
 
-		return seller.save()
-			.then(function(seller) {
-				var description = orderDescription;
-				return seller.createOrder(description);
-			});
+		if (order) {
+			return Ember.RSVP.resolve(order);
+		} else {
+			var orderDescription = this.get("order_description");
+			var seller = Customer.create(this.getSellerCustomerAttributes());
+
+			return seller.save()
+				.then(function(seller) {
+					var description = orderDescription;
+					return seller.createOrder(description);
+				});
+		}
 	},
 });
 

@@ -3,6 +3,10 @@
 		<div class="buttons page-actions">
 			{{#if can_debit}}
 				<a class="btn debit-button" {{action "openModal" "modals/debit-funding-instrument-modal" model}}>Debit</a>
+			{{else}}
+				{{#view "popover" class="sl-none" data-trigger="hover" data-placement="bottom" data-original-title="Can't debit this bank account" data-content="You must verify this bank account to debit from it."}}
+					<a class="btn disabled" disabled="disabled">Debit</a>
+				{{/view}}
 			{{/if}}
 			{{#if can_credit}}
 				<a class="btn credit-button" {{action "openModal" "modals/credit-funding-instrument-modal" model}}>Credit</a>
