@@ -21,11 +21,12 @@ var OrderSummarySectionView = SummarySectionBase.extend({
 		this.addLabel("Payable account", "payable-account");
 		this.addSummaryItem("funding-instrument", {
 			summaryView: this,
-			modelBinding: "summaryView.merchant.account"
+			modelBinding: "summaryView.account"
 		});
 	},
 
 	merchant: Ember.computed.reads("model.seller"),
+	account: Ember.computed.reads("merchant.account")
 });
 
 export default OrderSummarySectionView;

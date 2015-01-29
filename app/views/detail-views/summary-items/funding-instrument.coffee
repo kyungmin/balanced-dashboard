@@ -1,4 +1,5 @@
 `import Base from "./base";`
+`import Util from "balanced-dashboard/lib/utils";`
 
 FundingInstrument = Base.extend(
 	isCard: Ember.computed.reads("model.isCard")
@@ -17,15 +18,15 @@ FundingInstrument = Base.extend(
 	isLink: true
 	isBlank: Ember.computed.empty("model")
 
-	text: Ember.computed "fundingInstrumentType", "model.description", "model.id", ->
+	text: Ember.computed "fundingInstrumentType", "model.balance", "model.description", "model.id", ->
 		switch @get("fundingInstrumentType")
 			when "payable-account"
-				@get("model.id")
+				"Balance: #{Util.formatCurrency(@get("model.balance"))}"
 			else
 				@get("model.description")
 
 	hoverValue: Ember.computed("text", "fundingInstrumentType", ->
-		"#{@get("text")} (#{@get("model.type_name")})"
+		"#{@get("model.type_name")} (#{@get("text")})"
 	)
 
 	lastFour: Ember.computed.reads("model.last_four")

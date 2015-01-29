@@ -9,7 +9,7 @@ var CustomerSummarySectionView = SummarySectionBase.extend({
 		});
 
 		this.addLabel("Payable account", "payable-account");
-		this.addSummaryItem("account", {
+		this.addSummaryItem("funding-instrument", {
 			modelBinding: "summaryView.model.account",
 			summaryView: this
 		});

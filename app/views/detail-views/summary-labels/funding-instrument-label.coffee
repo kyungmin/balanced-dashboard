@@ -22,13 +22,13 @@ View = LabelBase.extend(
 		prefixText = @get("prefixText") || ""
 		switch @get("fundingInstrumentType")
 			when "card"
-				"#{prefixText} card"
+				"#{prefixText}: Card"
 			when "bank-account"
-				"#{prefixText} bank account"
+				"#{prefixText}: Bank account"
 			when "payable-account"
-				"#{prefixText} payable account"
+				"#{prefixText}: Payable account"
 			else
-				"#{prefixText} funding instrument"
+				"#{prefixText}: Funding instrument"
 )
 
 `export default View;`

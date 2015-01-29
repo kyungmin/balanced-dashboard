@@ -19,7 +19,7 @@ var RefundSummarySectionView = SummarySectionBase.extend({
 			modelBinding: "sectionView.debit.customer"
 		});
 
-		this.addFundingInstrumentLabel("Source", "model.debit.source")
+		this.addFundingInstrumentLabel("Source", "model.debit.source");
 		this.addSummaryItem("funding-instrument", {
 			summaryView: this,
 			modelBinding: "summaryView.model.debit.source"

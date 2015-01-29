@@ -21,13 +21,13 @@ var SettlementSummarySectionView = BaseSummarySection.extend({
 			modelBinding: "sectionView.model.destination.customer"
 		});
 
-		this.addFundingInstrumentLabel("Source", "model.source");
+		this.addFundingInstrumentLabel("From", "model.source");
 		this.addSummaryItem("funding-instrument", {
 			modelBinding: "summaryView.model.source",
 			summaryView: this,
 		});
 
-		this.addFundingInstrumentLabel("Destination", "model.destination");
+		this.addFundingInstrumentLabel("To", "model.destination");
 		this.addSummaryItem("funding-instrument", {
 			modelBinding: "summaryView.model.destination",
 			summaryView: this,

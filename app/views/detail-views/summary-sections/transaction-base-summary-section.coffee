@@ -13,9 +13,9 @@ TransactionBaseSummarySection = SummarySectionBaseView.extend(
 		@addSummaryItem("customer", modelBinding: "transaction.customer", transaction: model)
 
 		if @get("isSource")
-			labelPrefix = "Source"
+			labelPrefix = "From"
 		else
-			labelPrefix = "Destination"
+			labelPrefix = "To"
 		@addFundingInstrumentLabel(labelPrefix, "fundingInstrument")
 
 		@addSummaryItem("funding-instrument",
