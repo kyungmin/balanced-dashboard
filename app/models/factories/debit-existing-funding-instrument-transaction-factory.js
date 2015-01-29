@@ -14,7 +14,16 @@ var DebitExistingFundingInstrumentTransactionFactory = DebitOrderFactory.extend(
 
 	validations: {
 		dollar_amount: ValidationHelpers.positiveDollarAmount,
-		appears_on_statement_as: ValidationHelpers.cardTransactionAppearsOnStatementAs,
+		appears_on_statement_as: {
+			presence: true,
+			format: {
+				validator: function(object, attribute) {
+					var validationErrors = object.get("validationErrors");
+					var maxLength = object.get("appears_on_statement_max_length");
+					ValidationHelpers.fundingInstrumentAppearsOnStatementAsValidator("appears_on_statement_as", object, maxLength);
+				}
+			}
+		},
 		source: {
 			presence: true
 		}

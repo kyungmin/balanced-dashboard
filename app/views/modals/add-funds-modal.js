@@ -2,10 +2,11 @@ import Ember from "ember";
 import ModalBaseView from "./modal-base";
 import Form from "balanced-dashboard/views/modals/mixins/form-modal-mixin";
 import Full from "balanced-dashboard/views/modals/mixins/full-modal-mixin";
+import Action from "balanced-dashboard/views/modals/mixins/object-action-mixin";
 import Constants from "balanced-dashboard/utils/constants";
-import DebitExistingBankAccountTransactionFactory from "balanced-dashboard/models/factories/debit-existing-bank-account-transaction-factory";
+import DebitExistingFundingInstrumentTransactionFactory from "balanced-dashboard/models/factories/debit-existing-funding-instrument-transaction-factory";
 
-var AddFundsModalView = ModalBaseView.extend(Full, Form, {
+var AddFundsModalView = ModalBaseView.extend(Full, Form, Action, {
 	templateName: "modals/add-funds-modal",
 	elementId: "add-funds",
 	title: "Add funds",
@@ -26,24 +27,18 @@ var AddFundsModalView = ModalBaseView.extend(Full, Form, {
 	}),
 
 	model: function() {
-		return DebitExistingBankAccountTransactionFactory.create();
+		return DebitExistingFundingInstrumentTransactionFactory.create();
 	}.property(),
+
+	onModelSaved: function(credit) {
+		this.get('controller').transitionToRoute(credit.get('route_name'), credit);
+		this.close();
+	},
 
 	actions: {
 		save: function() {
-			var self = this;
 			var model = this.get("model");
-			model.validate();
-			if (model.get("isValid")) {
-				self.set("isSaving", true);
-				model.save().then(function(credit) {
-					self.get('controller').transitionToRoute(credit.get('route_name'), credit);
-					self.close();
-				}).
-				finally(function() {
-					self.set("isSaving", false);
-				});
-			}
+			this.save(model);
 		}
 	}
 });

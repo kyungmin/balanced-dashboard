@@ -45,6 +45,23 @@ var generateTransactionAppearsOnStatementAsValidation = function(maxLength) {
 	});
 };
 
+var validateAppearsOnStatementAs = function(propertyName, factory, maxLength) {
+	var validationErrors = factory.get("validationErrors");
+	var value = factory.get(propertyName) || "";
+
+	if (maxLength < value.length) {
+		validationErrors.add(propertyName, "format", null, "must be under %@ characters".fmt(maxLength + 1));
+	}
+
+	var invalidCharacters = Transaction.findAppearsOnStatementAsInvalidCharacters(value);
+
+	if (invalidCharacters.length === 1) {
+		validationErrors.add(propertyName, "format", null, '"%@" is an invalid character'.fmt(invalidCharacters));
+	} else if (invalidCharacters.length > 1) {
+		validationErrors.add(propertyName, "format", null, '"%@" are invalid characters'.fmt(invalidCharacters));
+	}
+};
+
 var ValidationHelpers = Ember.Namespace.create({
 	phoneNumberValidator: function(object, attribute, value) {
 		var stripped = $.trim(value).replace(/[\d- ()+]/g, "");
@@ -67,7 +84,7 @@ var ValidationHelpers = Ember.Namespace.create({
 		})
 	},
 
-	generateTransactionAppearsOnStatementFormatValidation: generateTransactionAppearsOnStatementAsValidation,
+	fundingInstrumentAppearsOnStatementAsValidator: validateAppearsOnStatementAs,
 
 	bankTransactionAppearsOnStatementAs: {
 		presence: true,
