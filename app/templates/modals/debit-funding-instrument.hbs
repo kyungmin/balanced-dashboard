@@ -6,10 +6,14 @@
 	{{view "form-fields/email-form-field" model=view.model field="seller_email_address" labelText="Merchant's email address" inputClassNames="full"}}
 {{/view}}
 
-{{#view "form-fields/form-section" appearsOnStatementAsLabelText=view.appearsOnStatementAsLabelText model=view.model sectionTitle="Debit information"}}
+{{#view "form-fields/form-section" model=view.model sectionTitle="Debit information"}}
 	{{view "form-fields/amount-form-field" model=view.model field="dollar_amount" labelText="Amount"}}
 
-	{{view "form-fields/text-form-field" model=view.model field="appears_on_statement_as" labelText=view.appearsOnStatementAsLabelText maxlength=view.model.source.appears_on_statement_max_length inputClassNames="full"}}
+	{{view "form-fields/statement-descriptor-text-form-field"
+		model=view.model
+		field="appears_on_statement_as"
+		maxlength=view.parentView.appearsOnStatementAsMaxLength
+	}}
 
 	{{view "form-fields/text-form-field" model=view.model field="description" labelText="Internal description" inputClassNames="full" maxlength=Constants.MAXLENGTH.DESCRIPTION}}
 {{/view}}

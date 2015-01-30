@@ -1,8 +1,8 @@
-import BaseFormFieldView from "./base-form-field";
+import TextFormFieldView from "./text-form-field";
 
-var TextAreaFormFieldView = BaseFormFieldView.extend({
-	templateName: "form-fields/textarea-form-field",
+var StatementDescriptorTextFormFieldView = TextFormFieldView.extend({
 	maxlength: 0,
+	labelText: "On statement as",
 	explanationText: function() {
 		var maxLength = this.get('maxlength');
 
@@ -16,4 +16,4 @@ var TextAreaFormFieldView = BaseFormFieldView.extend({
 	}.property('value.length'),
 });
 
-export default TextAreaFormFieldView;
+export default StatementDescriptorTextFormFieldView;

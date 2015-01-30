@@ -16,11 +16,7 @@ var CreditFundingInstrumentModalView = BaseFundingInstrumentModalView.extend({
 		return "This credit is expected to appear on %@.".fmt(Utils.humanReadableDate(creditDate));
 	}.property("model.destination.expected_credit_date"),
 
-	appearsOnStatementAsLabelText: function() {
-		var length = this.get("model.destination.appears_on_statement_max_length");
-		return "Appears on statement as (%@ characters max)".fmt(length);
-	}.property("model.destination.appears_on_statement_max_length"),
-
+	appearsOnStatementAsMaxLength: Ember.computed.reads("model.destination.appears_on_statement_max_length"),
 });
 
 CreditFundingInstrumentModalView.reopenClass({

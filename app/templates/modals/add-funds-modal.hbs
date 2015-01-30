@@ -1,4 +1,4 @@
-{{#view "form-fields/form-section" appearsOnStatementAsLabelText=view.appearsOnStatementAsLabelText appearsOnStatementAsMaxLength=view.appearsOnStatementAsMaxLength debitableBankAccounts=view.debitableBankAccounts model=view.model sectionTitle="Payment information"}}
+{{#view "form-fields/form-section" debitableBankAccounts=view.debitableBankAccounts model=view.model sectionTitle="Payment information" sectionDescription="Funds will appear in your balance in 3-5 business days."}}
 	{{#if view.debitableBankAccounts}}
 		{{view "form-fields/select-form-field"
 			model=view.model
@@ -32,12 +32,10 @@
 		field="dollar_amount"
 	}}
 
-	{{view "form-fields/text-form-field"
+	{{view "form-fields/statement-descriptor-text-form-field"
 		model=view.model
-		labelText=view.appearsOnStatementAsLabelText
 		field="appears_on_statement_as"
-		inputClassNames="full"
-		maxlength=view.appearsOnStatementAsMaxLength
+		maxlength=view.parentView.appearsOnStatementAsMaxLength
 	}}
 
 	{{view "form-fields/text-form-field"
@@ -46,10 +44,4 @@
 		inputClassNames="full"
 		field="description"
 	}}
-{{/view}}
-
-{{#view "form-fields/form-section" sectionTitle="Note"}}
-	<div class="form-group">
-		<p>Funds will appear in your balance in 3-5 business days.</p>
-	</div>
 {{/view}}

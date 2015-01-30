@@ -7,6 +7,8 @@ var CreditOrderModalView = CreditCustomerModalView.extend({
 	elementId: "credit-order",
 	title: "Credit from this order",
 
+	appearsOnStatementAsMaxLength: Ember.computed.reads("model.appears_on_statement_max_length"),
+
 	model: function() {
 		return CreditExistingFundingInstrumentTransactionFactory.create({
 			customer: this.get("recipient"),

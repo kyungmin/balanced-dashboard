@@ -40,10 +40,14 @@
 	{{/if}}
 {{/view}}
 
-{{#view "form-fields/form-section" sectionTitle="Debit information" appearsOnStatementAsMaxLength=view.appearsOnStatementAsMaxLength appearsOnStatementAsLabelText=view.appearsOnStatementAsLabelText model=view.model}}
+{{#view "form-fields/form-section" sectionTitle="Debit information" model=view.model}}
 	{{view "form-fields/amount-form-field" model=view.model field="dollar_amount" labelText="Amount"}}
-
-	{{view "form-fields/text-form-field" model=view.model field="appears_on_statement_as" labelText=view.appearsOnStatementAsLabelText maxlength=view.appearsOnStatementAsMaxLength inputClassNames="full"}}
+	{{view.model}} || {{view.parentView.appearsOnStatementAsMaxLength}}
+	{{view "form-fields/statement-descriptor-text-form-field"
+		model=view.model
+		field="appears_on_statement_as"
+		maxlength=view.parentView.appearsOnStatementAsMaxLength
+	}}
 
 	{{view "form-fields/text-form-field" model=view.model field="debit_description" labelText="Internal description" inputClassNames="full" maxlength=Constants.MAXLENGTH.DESCRIPTION}}
 {{/view}}

@@ -14,10 +14,6 @@ var DebitCustomerModalView = ModalBaseView.extend(Full, Form, Save, {
 	submitButtonText: "Debit",
 
 	appearsOnStatementAsMaxLength: Ember.computed.oneWay("model.appears_on_statement_max_length"),
-	appearsOnStatementAsLabelText: function() {
-		var length = this.get("appearsOnStatementAsMaxLength");
-		return "Appears on statement as (%@ characters max)".fmt(length);
-	}.property("appearsOnStatementAsMaxLength"),
 
 	transactionFactoryClass: function() {
 		if (this.get("isDisplayExistingFundingInstruments")) {

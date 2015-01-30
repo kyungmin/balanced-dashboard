@@ -23,11 +23,6 @@ var BankAccountCreditCreateModalView = ModalBaseView.extend(Save, Full, Form, {
 		};
 	}),
 
-	appearsOnStatementAsLabelText: function() {
-		var length = this.get("appearsOnStatementAsMaxLength");
-		return "Appears on statement as (%@ characters max)".fmt(length);
-	}.property("appearsOnStatementAsMaxLength"),
-
 	appearsOnStatementAsMaxLength: Constants.MAXLENGTH.APPEARS_ON_STATEMENT_BANK_ACCOUNT,
 
 	actions: {

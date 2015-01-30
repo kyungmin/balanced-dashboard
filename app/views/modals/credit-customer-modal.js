@@ -32,10 +32,6 @@ var CreditCustomerModalView = ModalBaseView.extend(Full, Form, Save, {
 	}.property("model.order.amount_escrowed"),
 
 	appearsOnStatementAsMaxLength: Ember.computed.oneWay("model.appears_on_statement_max_length"),
-	appearsOnStatementAsLabelText: function() {
-		var length = this.get("appearsOnStatementAsMaxLength");
-		return "Appears on statement as (%@ characters max)".fmt(length);
-	}.property("appearsOnStatementAsMaxLength"),
 
 	creditableOrders: function() {
 		return this.get("customer").getOrdersLoader().get("results");

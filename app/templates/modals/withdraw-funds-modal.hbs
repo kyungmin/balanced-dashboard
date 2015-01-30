@@ -1,4 +1,4 @@
-{{#view "form-fields/form-section" availableBalance=view.availableBalance appearsOnStatementAsLabelText=view.appearsOnStatementAsLabelText appearsOnStatementAsMaxLength=view.appearsOnStatementAsMaxLength bankAccounts=view.bankAccounts model=view.model sectionTitle="Payment information"}}
+{{#view "form-fields/form-section" availableBalance=view.availableBalance bankAccounts=view.bankAccounts model=view.model sectionTitle="Payment information"}}
 	{{#if view.bankAccounts}}
 		{{view "form-fields/select-form-field"
 			model=view.model
@@ -35,11 +35,10 @@
 		explanationText=view.availableBalance
 	}}
 
-	{{view "form-fields/text-form-field"
+	{{view "form-fields/statement-descriptor-text-form-field"
 		model=view.model
-		labelText=view.appearsOnStatementAsLabelText
 		field="appears_on_statement_as"
-		maxlength=view.appearsOnStatementAsMaxLength
+		maxlength=view.parentView.appearsOnStatementAsMaxLength
 	}}
 
 	{{view "form-fields/text-form-field"

@@ -10,10 +10,7 @@ var DebitFundingInstrumentModalView = BaseFundingInstrumentModalView.extend({
 	cancelButtonText: "Cancel",
 	submitButtonText: "Debit",
 
-	appearsOnStatementAsLabelText: function() {
-		var length = this.get("model.source.appears_on_statement_max_length");
-		return "Appears on statement as (%@ characters max)".fmt(length);
-	}.property("model.source.appears_on_statement_max_length"),
+	appearsOnStatementAsMaxLength: Ember.computed.reads("model.source.appears_on_statement_max_length"),
 });
 
 DebitFundingInstrumentModalView.reopenClass({

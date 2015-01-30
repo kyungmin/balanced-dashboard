@@ -20,11 +20,6 @@ var DebitOrderModalView = ModalBaseView.extend(Save, Full, Form, {
 
 	appearsOnStatementAsMaxLength: Constants.MAXLENGTH.APPEARS_ON_STATEMENT_CARD,
 
-	appearsOnStatementAsLabelText: function() {
-		var length = this.get("appearsOnStatementAsMaxLength");
-		return "Appears on statement as (%@ characters max)".fmt(length);
-	}.property("appearsOnStatementAsMaxLength"),
-
 	actions: {
 		save: function() {
 			var controller = this.get("controller");

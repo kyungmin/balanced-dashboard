@@ -14,10 +14,6 @@ var WithdrawFundsModalView = ModalBaseView.extend(Full, Form, {
 	submitButtonText: "Withdraw",
 
 	appearsOnStatementAsMaxLength: Constants.MAXLENGTH.APPEARS_ON_STATEMENT_BANK_ACCOUNT,
-	appearsOnStatementAsLabelText: function() {
-		var length = this.get("appearsOnStatementAsMaxLength");
-		return "Appears on statement as (%@ characters max)".fmt(length);
-	}.property("appearsOnStatementAsMaxLength"),
 
 	bankAccounts: Ember.computed.readOnly('marketplace.owner_customer.bank_accounts'),
 	availableBalance: function() {

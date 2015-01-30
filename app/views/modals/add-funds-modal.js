@@ -14,9 +14,6 @@ var AddFundsModalView = ModalBaseView.extend(Full, Form, Action, {
 	submitButtonText: "Add",
 
 	appearsOnStatementAsMaxLength: Constants.MAXLENGTH.APPEARS_ON_STATEMENT_BANK_ACCOUNT,
-	appearsOnStatementAsLabelText: function() {
-		return "Appears on statement as (%@ characters max)".fmt(this.get("appearsOnStatementAsMaxLength"));
-	}.property("appearsOnStatementAsMaxLength"),
 
 	debitableBankAccounts: Ember.computed.readOnly("marketplace.owner_customer.debitable_bank_accounts"),
 	debitableBankAccountsForSelect: Ember.computed.map("debitableBankAccounts", function(bankAccount) {
