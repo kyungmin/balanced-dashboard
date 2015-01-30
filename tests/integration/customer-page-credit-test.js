@@ -88,7 +88,7 @@ test('can credit to a debit card', function() {
 		.fillForm('#credit-customer', {
 			dollar_amount: '1',
 			appears_on_statement_as: "DEBIT",
-			description: 'Test credit to a debit card'
+			credit_description: 'Test credit to a debit card'
 		}, {
 			click: '.modal-footer button[name=modal-submit]'
 		})
@@ -99,7 +99,7 @@ test('can credit to a debit card', function() {
 			equal(spy.firstCall.args[1], '/cards/CCxxxxxxxxxxxxxxxxxxx/credits');
 
 			deepEqual(spy.firstCall.args[2].amount, '100');
-			deepEqual(spy.firstCall.args[2].description, "Test credit to a debit card");
+			deepEqual(spy.firstCall.args[2].credit_description, "Test credit to a debit card");
 		});
 });
 
@@ -114,7 +114,7 @@ test('when crediting customer triggers an error, the error is displayed to the u
 		.click(".page-navigation a:contains(Credit)")
 		.fillForm('#credit-customer', {
 			dollar_amount: '10',
-			description: 'Test credit'
+			credit_description: 'Test credit'
 		}, {
 			click: '.modal-footer button[name=modal-submit]'
 		})
@@ -137,7 +137,7 @@ test("can't credit customer multiple times using the same modal", function() {
 		.fillForm('#credit-customer', {
 			dollar_amount: '1000',
 			appears_on_statement_as: "SODA",
-			description: 'Test credit'
+			credit_description: 'Test credit'
 		})
 		.click('#credit-customer .modal-footer button[name=modal-submit]')
 		.click('#credit-customer .modal-footer button[name=modal-submit]')

@@ -53,7 +53,7 @@ test('can charge a card', function() {
 			expiration_date: '12 / 2020',
 			postal_code: '95014',
 			appears_on_statement_as: 'My Charge',
-			description: 'Internal',
+			debit_description: 'Internal',
 			dollar_amount: '12.00'
 		})
 		.then(function() {
@@ -70,7 +70,7 @@ test('can charge a card', function() {
 			matchesProperties(args[2], {
 				amount: "1200",
 				appears_on_statement_as: 'My Charge',
-				description: 'Internal',
+				debit_description: 'Internal',
 				source_uri: '/cards/' + Testing.CARD_ID
 			});
 		});

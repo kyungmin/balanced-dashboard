@@ -25,19 +25,6 @@ module("Integration - Customer Page: Delete", {
 	}
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 test('can delete bank account', function() {
 	var spy = sinon.stub(Adapter, "delete");
 	var ModelClass = BalancedApp.__container__.lookupFactory("model:bank-account");
@@ -69,6 +56,7 @@ test('can delete bank account', function() {
 				}));
 			});
 		})
+		.click(".main-panel .nav-tabs a:contains(Payment methods)")
 		.click("table.items.funding-instruments tr.type-bank-account .funding-instrument-delete:last")
 		.click('#delete-funding-instrument button[name=modal-submit]')
 		.then(function() {
@@ -107,6 +95,7 @@ test('can delete cards', function() {
 				}));
 			});
 		})
+		.click(".main-panel .nav-tabs a:contains(Payment methods)")
 		.click("table.items.funding-instruments tr.type-card .funding-instrument-delete:last")
 		.click('#delete-funding-instrument button[name=modal-submit]')
 		.then(function() {

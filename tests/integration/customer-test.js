@@ -173,7 +173,7 @@ test('can debit customer using card', function() {
 		})
 		.fillForm("#debit-customer", {
 			dollar_amount: "1000",
-			description: "Card debit",
+			debit_description: "Card debit",
 			appears_on_statement_as: "Cool"
 		})
 		.click('#debit-customer .modal-footer button[name=modal-submit]')
@@ -183,7 +183,7 @@ test('can debit customer using card', function() {
 			deepEqual(args.slice(0, 2), [Models.lookupFactory("debit"), "/cards/%@/debits".fmt(Testing.CARD_ID)]);
 			matchesProperties(args[2], {
 				amount: "100000",
-				description: "Card debit",
+				debit_description: "Card debit",
 				appears_on_statement_as: "Cool",
 				source_uri: "/cards/%@".fmt(Testing.CARD_ID)
 			});
@@ -210,7 +210,7 @@ test('can debit customer using bank account', function() {
 		})
 		.fillForm('#debit-customer', {
 			dollar_amount: '1000',
-			description: 'Test debit',
+			debit_description: 'Test debit',
 			appears_on_statement_as: "Cool",
 		}, {
 			click: '.modal-footer button[name=modal-submit]'
@@ -221,7 +221,7 @@ test('can debit customer using bank account', function() {
 			deepEqual(args.slice(0, 2), [Models.lookupFactory('debit'), "/bank_accounts/%@/debits".fmt(Testing.BANK_ACCOUNT_ID)]);
 			matchesProperties(args[2], {
 				amount: "100000",
-				description: "Test debit",
+				debit_description: "Test debit",
 				appears_on_statement_as: "Cool",
 				source_uri: "/bank_accounts/%@".fmt(Testing.BANK_ACCOUNT_ID)
 			});
@@ -244,7 +244,7 @@ test("can't debit customer multiple times using the same modal", function() {
 		})
 		.fillForm('#debit-customer', {
 			dollar_amount: '1000',
-			description: 'Test debit',
+			debit_description: 'Test debit',
 			appears_on_statement_as: "Cool",
 		})
 		.click('#debit-customer .modal-footer button[name=modal-submit]')
@@ -257,7 +257,7 @@ test("can't debit customer multiple times using the same modal", function() {
 			matchesProperties(spy.firstCall.args[2], {
 				amount: "100000",
 				appears_on_statement_as: "Cool",
-				description: "Test debit",
+				debit_description: "Test debit",
 				source_uri: "/bank_accounts/%@".fmt(Testing.BANK_ACCOUNT_ID)
 			});
 		});
@@ -270,7 +270,7 @@ test("debit customer triggers reload of transactions", function() {
 		.click(".page-navigation a:contains(Debit)")
 		.fillForm('#debit-customer', {
 			dollar_amount: '1000',
-			description: 'Test debit'
+			debit_description: 'Test debit'
 		}, {
 			click: '.modal-footer button[name=modal-submit]'
 		})

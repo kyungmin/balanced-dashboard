@@ -40,6 +40,7 @@ test('can pay a seller', function() {
 		.click('#pay-seller .modal-footer button:contains(Create)')
 		.then(function() {
 			var args = stub.firstCall.args;
+			console.log(args);
 			deepEqual(args.slice(0, 2), [Models.lookupFactory("credit"), "/credits"]);
 			matchesProperties(args[2], {
 				amount: "9800",

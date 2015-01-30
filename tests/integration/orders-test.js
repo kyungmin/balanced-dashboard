@@ -45,7 +45,7 @@ test("can visit orders page", function() {
 			deepEqual(resultsUri.split("?")[0], "/transactions");
 
 			assertQueryString(resultsUri, {
-				limit: "20",
+				limit: "50",
 			});
 		});
 });
