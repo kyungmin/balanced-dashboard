@@ -257,12 +257,6 @@ header.results-label h3 {
             text-transform: none;
             padding-left: 10px;
 
-            &.orders > a > span {
-              &:before {
-                margin-left: 0;
-              }
-            }
-
             & > a > span {
               &:before {
                 margin-left: 2px;
@@ -316,18 +310,6 @@ header.results-label h3 {
       }
     }
 
-    &.orders > a > span {
-      &:before {
-        font-family: 'Balanced-Icon';
-        background-color: transparent;
-        &:extend(.icon-orders:before);
-        font-size: 12px;
-        color: @gray4;
-        margin-top: -14px;
-        margin-left: 0;
-      }
-    }
-
     &.dispute > a > span {
       &:before {
         font-family: 'Balanced-Icon';
@@ -367,7 +349,7 @@ header.results-label h3 {
       }
     }
 
-    .failed, .expired, .lost, .arbitration, .canceled, .voided, .invalidated, .removed, .bad {
+    .failed, .expired, .lost, .arbitration, .canceled, .voided, .invalidated, .removed, .overdue, .bad {
       &:before {
         background-color: @imperialRed80;
       }
@@ -375,6 +357,10 @@ header.results-label h3 {
 
     .under_review:before {
       background-color: @byzantiumPurple80;
+    }
+
+    .completed:before {
+      background-color: @gray3;
     }
   }
 

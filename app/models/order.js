@@ -54,8 +54,8 @@ var Order = Model.extend({
 	status: function() {
 		if (this.get("isOverdue")) {
 			return "overdue";
-		} else if (this.get('amount_escrowed') === 0) {
-			return (this.get("debits_list.length") === 0) ? "inactive" : "completed";
+		} else if (this.get('amount_escrowed') === 0 && this.get("debits_list.length") !== 0) {
+			return "completed";
 		}
 
 		return "active";
