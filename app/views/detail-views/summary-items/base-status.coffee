@@ -39,7 +39,7 @@ BaseStatus = Base.extend(
 	isUnderReview: computedContains("underReviewValues", "status")
 
 	completedValues: ["completed"]
-	isCompleted: computedContains("inactiveValues", "status")
+	isCompleted: computedContains("completedValues", "status")
 
 )
 

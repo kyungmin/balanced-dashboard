@@ -54,12 +54,12 @@ var Order = Model.extend({
 	status: function() {
 		if (this.get("isOverdue")) {
 			return "overdue";
-		} else if (this.get('amount_escrowed') === 0 && this.get("debits_list.length") !== 0) {
+		} else if (this.get('amount_escrowed') === 0 && this.get("credits_list.length") > 0) {
 			return "completed";
 		}
 
 		return "active";
-	}.property("isOverdue", "amount_escrowed", "debits_list.length"),
+	}.property("isOverdue", "amount_escrowed", "credits_list.length"),
 
 	isOverdue: function() {
 		if (this.get('amount_escrowed') === 0) {
