@@ -15,7 +15,7 @@
 	</td>
 {{/unless}}
 {{#unless view.hideFromColumn}}
-	<td class="payment-method">
+	<td class="payment-method two-lines">
 		{{#link-to view.routeName view.item}}
 			<span {{bind-attr class="view.spanClassNames"}}>
 				{{view.paymentMethodFromText}}
@@ -24,7 +24,7 @@
 	</td>
 {{/unless}}
 {{#unless view.hideToColumn}}
-	<td class="payment-method">
+	<td class="payment-method two-lines">
 		{{#link-to view.routeName view.item}}
 			<span {{bind-attr class="view.spanClassNames"}}>
 				{{view.paymentMethodToText}}

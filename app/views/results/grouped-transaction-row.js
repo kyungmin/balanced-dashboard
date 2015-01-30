@@ -45,99 +45,121 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 	}.property('item.created_at'),
 
 	paymentMethodFromText: function() {
-		var label = "";
-		var type = "";
+		var primaryLabel = "";
+		var secondaryLabel = "";
+		var iconName = "";
 		var typeName = this.get('typeName');
 
 		if (typeName === "Debit" || typeName === "Hold") {
-			label = this.get("item.source.last_four");
+			primaryLabel = this.get("item.source.last_four");
+			secondaryLabel = this.get("item.source.type_name");
+
 			if (this.get("item.source")) {
-				type = Ember.String.dasherize(this.get("item.source.type_name"));
+				iconName = Ember.String.dasherize(this.get("item.source.type_name"));
 			}
 		}
 		if (typeName === "Credit" || typeName === "Refund") {
 			if (this.get("item.order_uri")) {
-				label = "Order balance";
-				type = "orders";
+				primaryLabel = "Balance";
+				secondaryLabel = "Order";
+				iconName = "orders";
 			} else if (this.get("item.isLoaded")) {
-				label = "Marketplace balance";
-				type = "escrow";
+				primaryLabel = "Balance";
+				secondaryLabel = "Marketplace";
+				iconName = "escrow";
 			}
 		}
 		if (typeName === "Reversal") {
 			if (this.get("item.credit.destination.last_four")) {
-				label = this.get("item.credit.destination.last_four");
+				primaryLabel = this.get("item.credit.destination.last_four");
+				secondaryLabel = this.get("item.credit.destination.type_name");
+
 				if (this.get("item.credit.destination")) {
-					type = Ember.String.dasherize(this.get("item.credit.destination.type_name"));
+					iconName = Ember.String.dasherize(this.get("item.credit.destination.type_name"));
 				}
 			} else {
-				label = "Payable account";
-				type = "payable-account";
+				primaryLabel = "Balance";
+				secondaryLabel = "Payable account";
+				iconName = "payable-account";
 			}
 		}
 		if (typeName === "Settlement") {
 			if (this.get("settlementSource.last_four")) {
-				label = this.get("settlementSource.last_four");
+				primaryLabel = this.get("settlementSource.last_four");
+				secondaryLabel = this.get("settlementSource.type_name");
+
 				if (this.get("settlementSource")) {
-					type = Ember.String.dasherize(this.get("settlementSource.type_name"));
+					iconName = Ember.String.dasherize(this.get("settlementSource.type_name"));
 				}
 			} else if (this.get("settlementSource.type") === "payable") {
-				label = "Payable account";
-				type = "payable-account";
+				primaryLabel = "Balance";
+				secondaryLabel = "Payable account";
+				iconName = "payable-account";
 			}
 		}
-		return Utils.safeFormat('<i class="icon-%@ non-interactive"></i>%@', type, label).htmlSafe();
+		return Utils.safeFormat('<span class="primary"><i class="icon-%@ non-interactive"></i>%@</span><span class="secondary">%@</span>', iconName, primaryLabel, secondaryLabel).htmlSafe();
 	}.property("typeName", "item.source.last_four", "item.source.type_name", "item.credit.destination.last_four", "item.credit.destination.type_name", "settlementSource.last_four", "settlementSource.type_name", "settlementSource.type", "item.isLoaded", "item.order_uri"),
 
 	paymentMethodToText: function() {
-		var label = "";
-		var type = "";
+		var primaryLabel = "";
+		var secondaryLabel = "";
+		var iconName = "";
 		var typeName = this.get('typeName');
+
 		if (typeName === "Debit" || typeName === "Hold") {
 			if (this.get("item.order_uri")) {
-				label = "Order balance";
-				type = "orders";
+				primaryLabel = "Balance";
+				secondaryLabel = "Order";
+				iconName = "orders";
 			} else if (this.get("item.isLoaded")) {
-				label = "Marketplace balance";
-				type = "escrow";
+				primaryLabel = "Balance";
+				secondaryLabel = "Marketplace";
+				iconName = "escrow";
 			}
 		}
 		if (typeName === "Credit") {
 			if (this.get("item.destination.last_four")) {
-				label = this.get("item.destination.last_four");
+				primaryLabel = this.get("item.destination.last_four");
 				if (this.get("item.destination")) {
-					type = Ember.String.dasherize(this.get("item.destination.type_name"));
+					secondaryLabel = this.get("item.destination.type_name");
+					iconName = Ember.String.dasherize(this.get("item.destination.type_name"));
 				}
 			} else {
-				label = "Payable account";
-				type = "payable-account";
+				primaryLabel = "Balance";
+				secondaryLabel = "Payable account";
+				iconName = "payable-account";
 			}
 		}
 		if (typeName === "Refund") {
-			label = this.get("item.debit.source.last_four");
+			primaryLabel = this.get("item.debit.source.last_four");
 			if (this.get("item.debit.source")) {
-				type = Ember.String.dasherize(this.get("item.debit.source.type_name"));
+				secondaryLabel = this.get("item.debit.source.type_name");
+				iconName = Ember.String.dasherize(this.get("item.debit.source.type_name"));
 			}
 		}
 		if (typeName === "Reversal") {
 			if (this.get("item.order_uri")) {
-				label = "Order balance";
-				type = "orders";
+				primaryLabel = "Balance";
+				secondaryLabel = "Order";
+				iconName = "orders";
 			} else if (this.get("item.isLoaded")) {
-				label = "Marketplace balance";
-				type = "escrow";
+				primaryLabel = "Balance";
+				secondaryLabel = "Marketplace";
+				iconName = "escrow";
 			}
 		}
 		if (typeName === "Settlement") {
 			if (this.get("settlementDestination.last_four")) {
-				label = this.get("settlementDestination.last_four");
-				type = Ember.String.dasherize(this.get("settlementDestination.type_name"));
+				primaryLabel = this.get("settlementDestination.last_four");
+				secondaryLabel = this.get("settlementDestination.type_name");
+				iconName = Ember.String.dasherize(this.get("settlementDestination.type_name"));
 			} else if (this.get("settlementDestination.type") === "payable") {
-				label = "Payable account";
-				type = "payable-account";
+				primaryLabel = "Balance";
+				secondaryLabel = "Payable acccount";
+				iconName = "payable-account";
 			}
 		}
-		return Utils.safeFormat('<i class="icon-%@ non-interactive"></i>%@', type, label).htmlSafe();
+		return Utils.safeFormat('<span class="primary"><i class="icon-%@ non-interactive"></i>%@</span><span class="secondary">%@</span>', iconName, primaryLabel, secondaryLabel).htmlSafe();
 	}.property("typeName", "item.destination.last_four", "item.destination.type_name", "item.debit.source.last_four", "item.debit.source.type_name", "settlementDestination.last_four", "settlementDestination.type_name", "settlementDestination.type", "item.isLoaded", "item.order_uri"),
 
 	settlementSource: function(attr) {
@@ -165,8 +187,6 @@ var GroupedTransactionRowView = LinkedTwoLinesCellView.extend({
 			var primaryLabel = this.get("item.seller.display_me");
 
 			return Utils.safeFormat(label, primaryLabel).htmlSafe();
-		} else if (typeName === "Settlement") {
-			return null;
 		} else {
 			return this.get("item.customer.display_me");
 		}

@@ -257,6 +257,12 @@ header.results-label h3 {
             text-transform: none;
             padding-left: 10px;
 
+            &.orders > a > span {
+              &:before {
+                margin-left: 0;
+              }
+            }
+
             & > a > span {
               &:before {
                 margin-left: 2px;
@@ -285,6 +291,10 @@ header.results-label h3 {
     [class^="icon-"] {
       font-family: 'Balanced-Icon';
       color: @gray4;
+    }
+
+    & > a > span > .secondary {
+      margin-left: 19px;
     }
   }
 
