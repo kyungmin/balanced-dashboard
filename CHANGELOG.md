@@ -4,6 +4,7 @@
 
 * Refactoring how model sidebars are displayed
 * Turning off marketplace application process temporarily
+* Fixing restart verification button not showing after the wait period is over
 
 ### 1.2.1
 

@@ -14,7 +14,7 @@ var BankAccountSummarySectionView = BaseSummarySection.extend({
 			modelBinding: "fundingInstrument.customer",
 			fundingInstrument: model
 		});
-	},
+	}
 });
 
 export default BankAccountSummarySectionView;
