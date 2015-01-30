@@ -1,5 +1,5 @@
-`import Base from "./base-status";`
+`import BaseStatus from "./base-status";`
 
-CardStatus = Base.extend()
+CardStatus = BaseStatus.extend()
 
 `export default CardStatus;`

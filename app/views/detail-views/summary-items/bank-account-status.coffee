@@ -1,7 +1,7 @@
-`import Base from "./base-status";`
+`import BaseStatus from "./base-status";`
 `import Utils from "balanced-dashboard/lib/utils";`
 
-BankAccountStatus = Base.extend(
+BankAccountStatus = BaseStatus.extend(
 	description: Ember.computed("model.status", "formattedVerificationDate", ->
 		switch @get("model.status")
 			when "pending"

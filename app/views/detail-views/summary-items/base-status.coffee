@@ -8,7 +8,7 @@ computedContains = (arrayName, valueName) ->
 
 BaseStatus = Base.extend(
 	isLink: false
-	classNameBindings: [":status", "isSuccess:succeeded", "isError:failed", "isOverdue:overdue", "isWarning:pending", "isUnderReview:under_review"]
+	classNameBindings: [":status", "isSuccess:succeeded", "isError:failed", "isOverdue:overdue", "isWarning:pending", "isUnderReview:under_review", "isInactive:inactive"]
 
 	isDescription: Ember.computed("description", ->
 		!Ember.isBlank(@get("description"))
@@ -37,6 +37,10 @@ BaseStatus = Base.extend(
 
 	underReviewValues: ["under_review"]
 	isUnderReview: computedContains("underReviewValues", "status")
+
+	inactiveValues: ["inactive", "completed"]
+	isInactive: computedContains("inactiveValues", "status")
+
 )
 
 `export default BaseStatus;`

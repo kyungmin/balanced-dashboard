@@ -13,8 +13,8 @@ test "selected tab", ->
 	t("order_transaction", "isOrdersTabSelected")
 	t("customer", "isCustomersTabSelected")
 	t("funding_instrument", "isFundingInstrumentsTabSelected")
-	t("account", "isAccountTabSelected")
-	t("settlement", "isSettlementTabSelected")
+	t("account", "isAccountsTabSelected")
+	t("settlement", "isSettlementsTabSelected")
 	t("log", "isLogsTabSelected")
 
 test "#totalResults", ->

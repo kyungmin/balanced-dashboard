@@ -1,6 +1,6 @@
-`import Base from "./base-status";`
+`import BaseStatus from "./base-status";`
 
-DisputeStatus = Base.extend(
+DisputeStatus = BaseStatus.extend(
 	description: Ember.computed "model.status", ->
 		switch @get('model.status')
 			when "needs_attention"
