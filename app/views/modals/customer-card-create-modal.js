@@ -3,7 +3,7 @@ import ModalBaseView from "./modal-base";
 import Form from "balanced-dashboard/views/modals/mixins/form-modal-mixin";
 import Full from "balanced-dashboard/views/modals/mixins/full-modal-mixin";
 import Save from "balanced-dashboard/views/modals/mixins/object-action-mixin";
-import CardValidatable from "balanced-dashboard/models/card-validatable";
+import Card from "balanced-dashboard/models/card";
 
 var CustomerCardCreateModalView = ModalBaseView.extend(Full, Form, Save, {
 	templateName: 'modals/customer-card-create-modal',
@@ -13,22 +13,21 @@ var CustomerCardCreateModalView = ModalBaseView.extend(Full, Form, Save, {
 	submitButtonText: "Add",
 
 	model: function() {
-		return CardValidatable.create({
-			name: '',
-			number: '',
+		return Card.create({
+			name: 'Carlos',
+			number: '4111 1111 1111 1111',
 			cvv: '',
-			expiration_month: '',
-			expiration_year: '',
+			expiration_month: "12",
+			expiration_year: "2000",
 			address: this.get('customer.address') || {}
 		});
-	}.property(),
+	}.property("customer.address"),
 
 	expiration_error: Computed.orProperties('model.validationErrors.expiration_month', 'model.validationErrors.expiration_year'),
 	isSaving: Ember.computed.oneWay("model.isSaving"),
 
 	save: function(fundingInstrument) {
 		var self = this;
-		fundingInstrument.get("validationErrors").clear();
 		return fundingInstrument
 			.tokenizeAndCreate(this.get('customer.id'))
 			.then(function(model) {
@@ -40,10 +39,16 @@ var CustomerCardCreateModalView = ModalBaseView.extend(Full, Form, Save, {
 	actions: {
 		save: function() {
 			var controller = this.get("controller");
-			this.save(this.get("model"))
-				.then(function(model) {
-					controller.transitionToRoute(model.get("route_name"), model);
-				});
+			var model = this.get("model");
+
+			model.get("validationErrors").clear();
+			model.validate();
+			if (model.get("isValid")) {
+				this.save(this.get("model"))
+					.then(function(model) {
+						controller.transitionToRoute(model.get("route_name"), model);
+					});
+			}
 		}
 	}
 });

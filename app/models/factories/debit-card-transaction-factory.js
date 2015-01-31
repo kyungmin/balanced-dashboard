@@ -2,8 +2,7 @@ import DebitOrderFactory from "./debit-order-factory";
 import ValidationHelpers from "balanced-dashboard/utils/validation-helpers";
 import Customer from "../customer";
 import Card from "../card";
-
-var EXPIRATION_DATE_FORMAT = /^(\d\d) [\/-] (\d\d\d\d)$/;
+import Constants from "balanced-dashboard/utils/constants";
 
 var DebitCardTransactionFactory = DebitOrderFactory.extend({
 	getSourceAttributes: function() {
@@ -23,7 +22,7 @@ var DebitCardTransactionFactory = DebitOrderFactory.extend({
 		cvv: ValidationHelpers.cardCvv,
 		expiration_date: {
 			presence: true,
-			format: EXPIRATION_DATE_FORMAT,
+			format: Constants.EXPIRATION_DATE_FORMAT,
 			expired: {
 				validator: function(object, attrName, value) {
 					var date = object.getExpirationDate();

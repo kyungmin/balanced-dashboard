@@ -1,3 +1,8 @@
+{{#view "form-fields/form-section" sectionTitle="Note"}}
+	<div class="form-group">
+		<p>One-off credits are reserved for unusual situations. Use orders as the default method to debit your buyers and credit your merchants. <a href="https://www.balancedpayments.com/compliance" target="_blank">Learn more</a></p>
+	</div>
+{{/view}}
 {{#view "form-fields/form-section" model=view.model sectionTitle="Credit information" sectionDescription=view.expectedDateText}}
 	{{view "form-fields/amount-form-field" model=view.model field="dollar_amount" labelText="Amount"}}
 

@@ -1,13 +1,14 @@
 {{#view "page-navigations/page-navigation" pageType="Customer" title=model.display_me}}
 	<div class="buttons page-actions">
-	{{#if model.hasCreditableOrders}}
-		<a class="btn" {{action "openModal" "modals/credit-customer-modal" model}}>Credit</a>
-	{{else}}
-		{{#view "popover" class="sl-none" data-trigger="hover" data-placement="bottom" data-original-title="Can't credit this customer" data-content="This customer does not have any active orders as a merchant."}}
-			<a class="btn disabled" disabled="disabled">Credit</a>
-		{{/view}}
-	{{/if}}
 		<a class="btn" {{action "openModal" "modals/debit-customer-modal" model}}>Debit</a>
+
+		{{#if model.hasCreditableOrders}}
+			<a class="btn" {{action "openModal" "modals/credit-customer-modal" model}}>Credit</a>
+		{{else}}
+			{{#view "popover" class="sl-none" data-trigger="hover" data-placement="bottom" data-original-title="Can't credit this customer" data-content="This customer does not have any active orders as a merchant."}}
+				<a class="btn disabled" disabled="disabled">Credit</a>
+			{{/view}}
+		{{/if}}
 	</div>
 {{/view}}
 

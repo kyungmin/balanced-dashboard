@@ -23,6 +23,21 @@ var Card = FundingInstrument.extend(Ember.Validations, {
 		expiration_year: {
 			presence: true
 		},
+		expiration_date: {
+			presence: true,
+			format: Constants.EXPIRATION_DATE_FORMAT,
+			expired: {
+				validator: function(object, attrName, value) {
+					var date = object.getExpirationDate();
+					if (Ember.isBlank(date)) {
+						object.get("validationErrors").add(attrName, "expired", null, "" + value + " is not a valid card expiration date");
+					}
+					else if (date < new Date()) {
+						object.get("validationErrors").add(attrName, "expired", null, "is expired");
+					}
+				}
+			}
+		},
 		cvv: {
 			presence: true,
 			numericality: true,
@@ -85,7 +100,37 @@ var Card = FundingInstrument.extend(Ember.Validations, {
 		);
 	}.property('name', 'last_four', 'brand'),
 
-	human_readable_expiration: Computed.fmt('expiration_month', 'expiration_year', '%@/%@'),
+	human_readable_expiration: Ember.computed.reads('expiration_date'),
+
+	expiration_date: function(attrName, value) {
+		if (arguments.length) {
+			var match = this.getExpirationDateMatch(value);
+			if (match) {
+				this.setProperties({
+					expiration_month: match[1],
+					expiration_year: match[2]
+				});
+			}
+		}
+		return "%@ / %@".fmt(this.get("expiration_month"), this.get("expiration_year"));
+	}.property("expiration_month", "expiration_year"),
+
+
+	getExpirationDate: function() {
+		var match = this.getExpirationDateMatch(this.get("expiration_date"));
+		if (match) {
+			var month = parseInt(match[0]);
+			if (0 < month && month <= 12) {
+				return moment(match[0], "MM / YYYY").endOf("month").toDate();
+			}
+		}
+	},
+
+	getExpirationDateMatch: function(expirationDate) {
+		if (!Ember.isBlank(expirationDate)) {
+			return expirationDate.match(Constants.EXPIRATION_DATE_FORMAT);
+		}
+	},
 
 	tokenizeAndCreate: function(customerId) {
 		var self = this;

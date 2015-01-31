@@ -12,6 +12,8 @@ Constants.KEYS = {
 	ESCAPE: 27
 };
 
+Constants.EXPIRATION_DATE_FORMAT = /^(\d\d) [\/-] (\d\d\d\d)$/;
+
 Constants.BANK_ACCOUNT_TYPES = [{
 	label: 'Checking',
 	value: 'checking'

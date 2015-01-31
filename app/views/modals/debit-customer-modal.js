@@ -17,9 +17,9 @@ var DebitCustomerModalView = ModalBaseView.extend(Full, Form, Save, {
 
 	transactionFactoryClass: function() {
 		if (this.get("isDisplayExistingFundingInstruments")) {
-			return DebitCardTransactionFactory;
-		} else {
 			return DebitExistingFundingInstrumentTransactionFactory;
+		} else {
+			return DebitCardTransactionFactory;
 		}
 	}.property("isDisplayExistingFundingInstruments"),
 

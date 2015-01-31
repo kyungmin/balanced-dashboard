@@ -1,15 +1,37 @@
 {{#view "page-navigations/page-navigation" pageType=model.type_name title=model.title_description}}
 	{{#unless model.isRemoved}}
 		<div class="buttons page-actions">
-			{{#if can_debit}}
+			{{#if model.can_debit}}
 				<a class="btn debit-button" {{action "openModal" "modals/debit-funding-instrument-modal" model}}>Debit</a>
 			{{else}}
 				{{#view "popover" class="sl-none" data-trigger="hover" data-placement="bottom" data-original-title="Can't debit this bank account" data-content="You must verify this bank account to debit from it."}}
 					<a class="btn disabled" disabled="disabled">Debit</a>
 				{{/view}}
 			{{/if}}
-			{{#if can_credit}}
-				<a class="btn credit-button" {{action "openModal" "modals/credit-funding-instrument-modal" model}}>Credit</a>
+
+			{{#if model.can_credit}}
+				{{#if model.customer}}
+					{{#if model.customer.hasCreditableOrders}}
+						<a class="btn" {{action "openModal" "modals/credit-customer-modal" model.customer}}>Credit</a>
+					{{else}}
+						{{#view "popover" class="sl-none" data-trigger="hover" data-placement="bottom" data-original-title="Can't credit this bank account" data-content="The customer of this bank account does not have any active orders as a merchant."}}
+							<a class="btn disabled" disabled="disabled">Credit</a>
+						{{/view}}
+					{{/if}}
+				{{/if}}
+
+				<div class="dropdown right">
+					<a class="btn secondary ellipsis dropdown-toggle" data-toggle="dropdown" href="#">
+						<span>•••</span>
+					</a>
+					<ul class="dropdown-menu right">
+						<li>
+							<a class="credit-button" {{action "openModal" "modals/credit-funding-instrument-modal" model}}>
+								Create a one-off credit
+							</a>
+						</li>
+					</ul>
+				</div>
 			{{/if}}
 		</div>
 	{{/unless}}

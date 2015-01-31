@@ -6,12 +6,7 @@
 		inputClassNames="full"
 	}}
 
-	{{view "form-fields/text-form-field"
-		model=view.model
-		labelText="Card number"
-		field="number"
-		inputClassNames="full"
-	}}
+	{{view "form-fields/credit-card-number-form-field" model=view.model field="number" labelText="Card number"}}
 
 	{{view "form-fields/text-form-field"
 		model=view.model
@@ -21,10 +16,9 @@
 		tooltipContent='<img src="images/credit-card-instructions.png" alt="Credit Card Instructions" class="modal-informational-content"/>'
 	}}
 
-	{{view "form-fields/month-year-select-form-field"
+	{{view "form-fields/credit-card-expiration-date-form-field"
 		model=view.model
-		monthValue=view.model.expiration_month
-		yearValue=view.model.expiration_year
+		field="expiration_date"
 		labelText="Expiration date"
 		name="expiration_date"
 	}}

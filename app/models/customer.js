@@ -62,9 +62,7 @@ var Customer = Model.extend({
 		return DisputesResultsLoader.create(attributes);
 	},
 
-	hasCreditableOrders: function() {
-		return (this.get("creditableOrders.isLoaded") && this.get("creditableOrders.length") > 0);
-	}.property("creditableOrders.isLoaded", "creditableOrders.length"),
+	hasCreditableOrders: Ember.computed.reads("creditableOrders.length"),
 
 	creditableOrders: function () {
 		return this.getOrdersLoader().get("results");
