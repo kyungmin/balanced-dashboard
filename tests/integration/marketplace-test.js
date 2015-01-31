@@ -51,7 +51,7 @@ test('add funds', function() {
 		.checkElements({
 			"#add-funds:visible": 1,
 			'#add-funds select option': 1,
-			'#add-funds label:contains(characters max)': 'Appears on statement as (14 characters max)',
+			'#add-funds .alert-info': '14 characters remaining',
 			'#add-funds input[name=appears_on_statement_as][maxlength=14]': 1
 		})
 		.fillForm("#add-funds form", {
@@ -113,7 +113,7 @@ test('withdraw funds', function() {
 		.checkElements({
 			'#withdraw-funds:visible': 1,
 			'#withdraw-funds select option': 1,
-			'#withdraw-funds label.control-label:contains(characters max)': 'Appears on statement as (14 characters max)'
+			'#withdraw-funds .alert-info': '14 characters remaining'
 		})
 		.fillForm("#withdraw-funds form", {
 			"dollar_amount": "55.55",

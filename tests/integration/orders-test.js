@@ -57,7 +57,7 @@ test('Filter orders table by type & status', function() {
 			var resultsUri = getResultsUri();
 			deepEqual(resultsUri.split("?")[0], '/transactions', 'Activity Transactions URI is correct');
 			assertQueryString(resultsUri, {
-				type: "hold",
+				type: "card_hold",
 				'status[in]': 'failed,succeeded,pending',
 				limit: "50",
 				sort: "created_at,desc"

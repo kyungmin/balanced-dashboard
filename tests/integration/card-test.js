@@ -48,7 +48,7 @@ test('debit card', function() {
 			});
 		})
 		.click(".page-actions a:contains(Debit)")
-		.check('#debit-funding-instrument label:contains(characters max)', "Appears on statement as (18 characters max)")
+		.check('#debit-funding-instrument .alert-info', "18 characters remaining")
 		.then(function() {
 			var l = $('#debit-funding-instrument input[name=appears_on_statement_as]').prop('maxlength');
 			equal(l, 18);

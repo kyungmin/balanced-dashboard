@@ -42,7 +42,7 @@ test('credit bank account', function() {
 
 	visit(Testing.BANK_ACCOUNT_ROUTE)
 		.click(".page-navigation a:contains(Credit)")
-		.checkText('#credit-funding-instrument label:contains(characters max)', 'Appears on statement as (14 characters max)')
+		.checkText('#credit-funding-instrument .alert-info', '14 characters remaining')
 		.then(function() {
 			var attribute = $('#credit-funding-instrument input[name=appears_on_statement_as]').prop("maxLength");
 			equal(attribute, 14);
@@ -74,7 +74,7 @@ test('displays error message if properties are invalid', function() {
 
 	visit(Testing.BANK_ACCOUNT_ROUTE)
 		.click(".page-navigation a:contains(Credit)")
-		.checkText('#credit-funding-instrument label:contains(characters max)', 'Appears on statement as (14 characters max)')
+		.checkText('#credit-funding-instrument .alert-info', '14 characters remaining')
 		.then(function() {
 			var attribute = $('#credit-funding-instrument input[name=appears_on_statement_as]').prop("maxLength");
 			equal(attribute, 14);
@@ -101,7 +101,7 @@ test('debit bank account', function() {
 			});
 		})
 		.click(".page-navigation a:contains(Debit)")
-		.checkText('#debit-funding-instrument label:contains(characters max)', 'Appears on statement as (14 characters max)')
+		.checkText('#debit-funding-instrument .alert-info', '14 characters remaining')
 		.then(function() {
 			var attr = $('#debit-funding-instrument input[name=appears_on_statement_as]').prop('maxLength');
 			equal(attr, 14);
