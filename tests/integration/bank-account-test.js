@@ -41,7 +41,7 @@ test('credit bank account', function() {
 	var stub = sinon.stub(Adapter, "create");
 
 	visit(Testing.BANK_ACCOUNT_ROUTE)
-		.click(".page-navigation a:contains(Credit)")
+		.click(".page-navigation .dropdown a:contains(Create a one-off credit)")
 		.checkText('#credit-funding-instrument .alert-info', '14 characters remaining')
 		.then(function() {
 			var attribute = $('#credit-funding-instrument input[name=appears_on_statement_as]').prop("maxLength");
@@ -73,7 +73,7 @@ test('displays error message if properties are invalid', function() {
 	var stub = sinon.stub(Adapter, "create");
 
 	visit(Testing.BANK_ACCOUNT_ROUTE)
-		.click(".page-navigation a:contains(Credit)")
+		.click(".page-navigation .dropdown a:contains(Create a one-off credit)")
 		.checkText('#credit-funding-instrument .alert-info', '14 characters remaining')
 		.then(function() {
 			var attribute = $('#credit-funding-instrument input[name=appears_on_statement_as]').prop("maxLength");

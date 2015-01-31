@@ -77,7 +77,7 @@ var DebitCardTransactionFactory = DebitOrderFactory.extend({
 	getExpirationDateMatch: function() {
 		var expirationDate = this.get("expiration_date");
 		if (!Ember.isBlank(expirationDate)) {
-			return expirationDate.match(EXPIRATION_DATE_FORMAT);
+			return expirationDate.match(Constants.EXPIRATION_DATE_FORMAT);
 		}
 	},
 
