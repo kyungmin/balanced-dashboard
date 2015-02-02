@@ -38,7 +38,7 @@ test('can view bank account page', function() {
 });
 
 test('credit bank account', function() {
-	var stub = sinon.stub(Adapter, "create");
+	var spy = sinon.spy(Adapter, "create");
 
 	visit(Testing.BANK_ACCOUNT_ROUTE)
 		.click(".page-navigation .dropdown a:contains(Create a one-off credit)")
@@ -49,19 +49,15 @@ test('credit bank account', function() {
 		})
 		.fillForm("#credit-funding-instrument", {
 			dollar_amount: '1000',
-			description: 'Test credit',
+			credit_description: 'Test credit',
 			appears_on_statement_as: "Test credit"
 		})
 		.click('#credit-funding-instrument .modal-footer button[name=modal-submit]')
-		.click('#credit-funding-instrument .modal-footer button[name=modal-submit]')
-		.click('#credit-funding-instrument .modal-footer button[name=modal-submit]')
-		.click('#credit-funding-instrument .modal-footer button[name=modal-submit]')
-		.click('#credit-funding-instrument .modal-footer button[name=modal-submit]')
 		.then(function() {
-			ok(stub.calledOnce);
-			deepEqual(stub.firstCall.args[0], Models.lookupFactory("credit"));
-			deepEqual(stub.firstCall.args[1], '/bank_accounts/' + Testing.BANK_ACCOUNT_ID + '/credits');
-			matchesProperties(stub.firstCall.args[2], {
+			console.log(spy.args);
+			deepEqual(spy.args[0][1], '/customers', "Create customer call");
+			deepEqual(spy.args[1][1], '/bank_accounts/' + Testing.BANK_ACCOUNT_ID + '/credits', "Credit bank account call");
+			matchesProperties(spy.args[1][2], {
 				amount: 100000,
 				description: "Test credit",
 				appears_on_statement_as: "Test credit"
@@ -92,7 +88,7 @@ test('displays error message if properties are invalid', function() {
 });
 
 test('debit bank account', function() {
-	var stub = sinon.spy(Adapter, "create");
+	var spy = sinon.spy(Adapter, "create");
 
 	visit(Testing.BANK_ACCOUNT_ROUTE)
 		.then(function() {
@@ -115,12 +111,10 @@ test('debit bank account', function() {
 		})
 		.click('#debit-funding-instrument .modal-footer button[name=modal-submit]')
 		.then(function() {
-			console.log(stub.args)
-
-			deepEqual(stub.args[0][1], "/customers", "Create customer call");
-			deepEqual(stub.args[1][1].replace(/CU[\w\d]+/g, "CUxxxxxx"), "/customers/CUxxxxxx/orders", "Create order call");
-			deepEqual(stub.args[2][1], '/bank_accounts/' + Testing.BANK_ACCOUNT_ID + '/debits', "create debit");
-			matchesProperties(stub.args[2][2], {
+			deepEqual(spy.args[0][1], "/customers", "Create customer call");
+			deepEqual(spy.args[1][1].replace(/CU[\w\d]+/g, "CUxxxxxx"), "/customers/CUxxxxxx/orders", "Create order call");
+			deepEqual(spy.args[2][1], '/bank_accounts/' + Testing.BANK_ACCOUNT_ID + '/debits', "create debit");
+			matchesProperties(spy.args[2][2], {
 				amount: 100000,
 				description: "Test debit",
 				appears_on_statement_as: "Test debit"
