@@ -158,7 +158,7 @@ test('can debit customer using card', function() {
 
 	var spy, fundingInstrumentUri;
 	andThen(function() {
-		spy = sinon.stub(Adapter, "create");
+		spy = sinon.spy(Adapter, "create");
 	});
 
 	visit(Testing.CUSTOMER_ROUTE)
@@ -178,10 +178,10 @@ test('can debit customer using card', function() {
 		})
 		.click('#debit-customer .modal-footer button[name=modal-submit]')
 		.then(function() {
-			ok(spy.calledOnce, "Called once");
-			var args = spy.firstCall.args;
+			console.log(spy.args)
+			var args = spy.args;
 			deepEqual(args.slice(0, 2), [Models.lookupFactory("debit"), "/cards/%@/debits".fmt(Testing.CARD_ID)]);
-			matchesProperties(args[2], {
+			matchesProperties(args[1][2], {
 				amount: "100000",
 				debit_description: "Card debit",
 				appears_on_statement_as: "Cool",

@@ -113,7 +113,7 @@ test('withdraw funds', function() {
 		.checkElements({
 			'#withdraw-funds:visible': 1,
 			'#withdraw-funds select option': 1,
-			'#withdraw-funds .alert-info': '14 characters remaining'
+			'#withdraw-funds .alert-info': 'Available balance: $014 characters remaining'
 		})
 		.fillForm("#withdraw-funds form", {
 			"dollar_amount": "55.55",

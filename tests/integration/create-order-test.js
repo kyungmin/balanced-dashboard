@@ -18,7 +18,6 @@ module('Integration - Create Order', {
 	},
 	teardown: function() {
 		Testing.restoreMethods(
-			balanced.card.create,
 			Adapter.create
 		);
 		Ember.run(App, "destroy");
@@ -37,13 +36,7 @@ test('form validation', 2, function() {
 
 test('can charge a card', function() {
 	var spy = sinon.spy(Adapter, 'create');
-	var tokenizingStub = sinon.stub(balanced.card, 'create');
-	tokenizingStub.callsArgWith(1, {
-		status: 201,
-		cards: [{
-			href: '/cards/' + Testing.CARD_ID
-		}]
-	});
+
 	visit(Testing.MARKETPLACE_ROUTE)
 		.click('.page-navigation a:contains(Create an order)')
 		.fillForm('#charge-card', {
@@ -56,18 +49,13 @@ test('can charge a card', function() {
 			debit_description: 'Internal',
 			dollar_amount: '12.00'
 		})
-		.then(function() {
-			var model = App.__container__.lookup("controller:modals-container").get("currentModal.model");
-			model.saveCard = function() {
-				return App.__container__.lookupFactory("model:card").find("/cards/" + Testing.CARD_ID);
-			};
-		})
 		.click('button:contains(Create)')
 		.then(function() {
-			var args = spy.firstCall.args;
-			ok(spy.calledOnce);
+			var args = spy.args;
+			deepEqual(spy.args[0][1], '/customers', "Create customer call");
+			deepEqual(spy.args[1][1].replace(/CU[\w\d]+/g, "CUxxxxxx"), "/customers/CUxxxxxx/orders", "Create order call");
 			deepEqual(args.slice(0, 2), [Models.Debit, "/cards/%@/debits".fmt(Testing.CARD_ID)]);
-			matchesProperties(args[2], {
+			matchesProperties(args[2][2], {
 				amount: "1200",
 				appears_on_statement_as: 'My Charge',
 				debit_description: 'Internal',

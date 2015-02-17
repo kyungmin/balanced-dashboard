@@ -24,7 +24,7 @@ module('Integration - Customer Page: Credit', {
 });
 
 test('can credit to a debit card', function() {
-	var spy = sinon.stub(Adapter, "create");
+	var spy = sinon.spy(Adapter, "create");
 
 	visit(Testing.CUSTOMER_ROUTE)
 		.then(function() {
@@ -94,12 +94,10 @@ test('can credit to a debit card', function() {
 		})
 		.then(function() {
 			var card = BalancedApp.__container__.lookup("controller:customer").get("model.creditable_cards").objectAt(0);
-			ok(spy.calledOnce, "Create was called once");
-			equal(spy.firstCall.args[0], Models.lookupFactory("credit"));
-			equal(spy.firstCall.args[1], '/cards/CCxxxxxxxxxxxxxxxxxxx/credits');
-
-			deepEqual(spy.firstCall.args[2].amount, '100');
-			deepEqual(spy.firstCall.args[2].credit_description, "Test credit to a debit card");
+			equal(spy.args[0][1], '/customers', "Create customer call");
+			equal(spy.args[1][1], '/cards/CCxxxxxxxxxxxxxxxxxxx/credits');
+			equal(spy.args[1][2].amount, '100');
+			equal(spy.args[1][2].description, "Test credit to a debit card");
 		});
 });
 

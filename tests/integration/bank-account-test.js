@@ -54,7 +54,6 @@ test('credit bank account', function() {
 		})
 		.click('#credit-funding-instrument .modal-footer button[name=modal-submit]')
 		.then(function() {
-			console.log(spy.args);
 			deepEqual(spy.args[0][1], '/customers', "Create customer call");
 			deepEqual(spy.args[1][1], '/bank_accounts/' + Testing.BANK_ACCOUNT_ID + '/credits', "Credit bank account call");
 			matchesProperties(spy.args[1][2], {

@@ -225,8 +225,7 @@ test('can create cards', function() {
 			name: "TEST",
 			number: "1234123412341234",
 			cvv: "123",
-			expiration_date_year: "2020",
-			expiration_date_month: "1"
+			expiration_date: "1 / 2020"
 		})
 		.click('#add-card .modal-footer button[name=modal-submit]')
 		.then(function() {

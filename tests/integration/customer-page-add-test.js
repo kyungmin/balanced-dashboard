@@ -70,8 +70,7 @@ test('can add card', function() {
 		.click('.main-panel a:contains(Add a card)')
 		.fillForm('#add-card', {
 			number: '1234123412341234',
-			expiration_date_month: 1,
-			expiration_date_year: 2020,
+			expiration_date: '1 / 2020',
 			cvv: '123',
 			name: 'TEST'
 		})
@@ -113,8 +112,7 @@ test('can add card with postal code', function() {
 		.click('.main-panel a:contains(Add a card)')
 		.fillForm('#add-card', {
 			number: '1234123412341234',
-			expiration_date_month: 1,
-			expiration_date_year: 2020,
+			expiration_date: '1 / 2020',
 			cvv: '123',
 			name: 'TEST',
 			address_postal_code: '94612'
@@ -156,8 +154,7 @@ test('can add card with address', function() {
 		.click('.main-panel a:contains(Add a card)')
 		.fillForm('#add-card', {
 			number: '1234123412341234',
-			expiration_date_month: 1,
-			expiration_date_year: 2020,
+			expiration_date: '1 / 2020',
 			cvv: '123',
 			name: 'TEST',
 			address_postal_code: '94612',
